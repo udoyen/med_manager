@@ -29,12 +29,12 @@ public class AppDbHelper extends SQLiteOpenHelper {
     // Table create statements
     private static final String CREATE_TABLE_LOGINS = "CREATE TABLE "
             + UserContract.UserEntry.TABLE_NAME + "(" + UserContract.UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + UserContract.UserEntry.EMAIL
-            + " TEXT," + UserContract.UserEntry.PASSWORD + " TEXT" + ")";
+            + " TEXT," + UserContract.UserEntry.PASSWORD + " TEXT)";
 
     private static final String CREATE_TABLE_DRUGS = "CREATE TABLE "
             + DrugContract.DrugEntry.TABLE_NAME + "(" + DrugContract.DrugEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + DrugContract.DrugEntry.NAME
             + " TEXT," + DrugContract.DrugEntry.DESCRIPTION + " TEXT," + DrugContract.DrugEntry.INTERVAL + " INTEGER," + DrugContract.DrugEntry.START_DATE + " INTEGER," + DrugContract.DrugEntry.END_DATE
-            + " INTEGER" + ")";
+            + " INTEGER)";
 
     public AppDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDrugsList = (RecyclerView) findViewById(R.id.drug_list_recycler_view);
+        mDrugsList = findViewById(R.id.drug_list_recycler_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mDrugsList.setLayoutManager(layoutManager);
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDrugsList.setAdapter(drugListAdapter);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

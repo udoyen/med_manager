@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
 public class UserContract {
     // The authority, which is how the right content provider is known
     // to access
-    public static final String AUTHORITY = "com.example.android.medmanager.user";
+    public static final String AUTHORITY = "com.example.android.medmanagerapplication.user";
 
     // The base content URI = "content://" + <authority>
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);

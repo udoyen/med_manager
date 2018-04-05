@@ -37,7 +37,8 @@
         </activity>
         <provider
             android:authorities="com.example.android.medmanagerapplication.user"
-            android:name=".user.UserContentProvider"/>
+            android:name=".user.UserContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

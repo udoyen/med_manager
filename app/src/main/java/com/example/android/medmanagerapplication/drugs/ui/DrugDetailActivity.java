@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.CloseSoftKeyboardHelperClass;
 import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.util.Calendar;
@@ -106,6 +107,21 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
                 }, year, month, day);
                 pickerDialog.show();
 
+            }
+        });
+
+
+        startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                CloseSoftKeyboardHelperClass.hideKeyboard(DrugDetailActivity.this);
+            }
+        });
+
+        endDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                CloseSoftKeyboardHelperClass.hideKeyboard(DrugDetailActivity.this);
             }
         });
 

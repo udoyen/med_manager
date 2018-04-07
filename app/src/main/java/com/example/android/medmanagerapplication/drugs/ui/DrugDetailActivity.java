@@ -1,6 +1,8 @@
 package com.example.android.medmanagerapplication.drugs.ui;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,14 +14,18 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.travijuu.numberpicker.library.NumberPicker;
+
+import java.util.Calendar;
 
 public class DrugDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -36,6 +42,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
     EditText endDate;
     TextView duration;
     NumberPicker interval;
+    DatePickerDialog pickerDialog;
 
     LoaderManager loaderManager;
     private static final int DETAILPAGE_LOADER_ID = 4;
@@ -53,6 +60,54 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         endDate = findViewById(R.id.detail_EndDate_editText);
         interval = findViewById(R.id.detail_Number_picker);
         duration = findViewById(R.id.detailDuration_TextView);
+
+        startDate.setInputType(InputType.TYPE_NULL);
+        endDate.setInputType(InputType.TYPE_NULL);
+
+
+        startDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+
+                // Date picker dialog
+                pickerDialog = new DatePickerDialog(DrugDetailActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Resources resource = getResources();
+                        String text = String.format(resource.getString(R.string.date), dayOfMonth, (month + 1), year);
+                        startDate.setText(text);
+                    }
+                }, year, month, day);
+                pickerDialog.show();
+
+            }
+        });
+
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+
+                // Date picker dialog
+                pickerDialog = new DatePickerDialog(DrugDetailActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Resources resource = getResources();
+                        String text = String.format(resource.getString(R.string.date), dayOfMonth, (month + 1), year);
+                        endDate.setText(text);
+                    }
+                }, year, month, day);
+                pickerDialog.show();
+
+            }
+        });
 
         FloatingActionButton fab = findViewById(R.id.update_drug_detail);
         fab.setOnClickListener(new View.OnClickListener() {

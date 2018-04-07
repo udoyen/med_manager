@@ -14,10 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:label="@string/app_name">
-
-        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
@@ -28,21 +27,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".drugs.ui.AddDrugActivity"
             android:label="@string/title_activity_add_drug"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        </activity>
         <provider
-            android:authorities="com.example.android.medmanagerapplication.user"
             android:name=".user.UserContentProvider"
-            android:exported="false"/>
-        <provider
-            android:authorities="com.example.android.medmanagerapplication.drugs"
-            android:name=".drugs.DrugContentProvider"
+            android:authorities="com.example.android.medmanagerapplication.user"
             android:exported="false" />
+        <provider
+            android:name=".drugs.DrugContentProvider"
+            android:authorities="com.example.android.medmanagerapplication.drugs"
+            android:exported="false" />
+
+        <activity
+            android:name=".drugs.ui.DrugDetailActivty"
+            android:label="@string/title_activity_drug_detail_activty"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

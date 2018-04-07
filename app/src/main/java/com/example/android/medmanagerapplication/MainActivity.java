@@ -23,15 +23,15 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.drugs.ui.AddDrugActivity;
+import com.example.android.medmanagerapplication.drugs.ui.DrugDetailActivty;
 import com.example.android.medmanagerapplication.drugs.ui.DrugListAdapter;
-import com.example.android.medmanagerapplication.helperUtilitiesClasses.RecyclerItemClickListener;
 
 import static com.example.android.medmanagerapplication.drugs.DrugContract.DRUG_BASE_CONTENT_URI;
 import static com.example.android.medmanagerapplication.drugs.DrugContract.PATH_DRUG;
 
 //import android.content.Loader;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, DrugListAdapter.OnItemClicked {
 
     private static final int DRUG_LIST_ITEMS = 100;
     private DrugListAdapter drugListAdapter;
@@ -57,42 +57,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         drugListAdapter = new DrugListAdapter(this, null);
 
+        drugListAdapter.setOnClick(this);
+
         mDrugsListRecylcerView.setAdapter(drugListAdapter);
 
+
+
         getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, this);
-
-        mDrugsListRecylcerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), mDrugsListRecylcerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                // ...
-                Toast mToast;
-                mToast = Toast.makeText(MainActivity.this, "Recycler item clicked: " + position, Toast.LENGTH_SHORT);
-
-                if (mToast != null) {
-                    mToast.cancel();
-                }
-
-                assert mToast != null;
-                mToast.show();
-
-
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-                // ...
-                Toast mToast;
-                mToast = Toast.makeText(MainActivity.this, "Recycler item clicked: " + position, Toast.LENGTH_SHORT);
-
-                if (mToast != null) {
-                    mToast.cancel();
-                }
-
-                assert mToast != null;
-                mToast.show();
-
-            }
-        }));
 
 
 
@@ -164,5 +135,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.v(TAG, "onLoaderReset called");
         getLoaderManager().destroyLoader(DRUG_LOADER_ID);
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Log.v(TAG, "onIemClick called from MainActivty");
+        Toast.makeText(this, "Clicked: " + position, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, DrugDetailActivty.class);
+        // Pass information to the Activity here
+        startActivity(intent);
     }
 }

@@ -3,6 +3,7 @@ package com.example.android.medmanagerapplication.drugs.ui;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,12 +16,25 @@ import com.example.android.medmanagerapplication.drugs.DrugContract;
 
 public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugViewHolder> {
 
+    private static final String TAG = AddDrugActivity.class.getSimpleName();
+
+    //declare interface
+    private OnItemClicked onClick;
+
+    //make interface like this
+    public interface OnItemClicked {
+        void onItemClick(int position);
+    }
+
+
     private int mNumberItems;
     private Context mContext;
     private Cursor mCursor;
 
 
-
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
 
     public DrugListAdapter(Context context, Cursor  cursor) {
         this.mContext = context;
@@ -44,7 +58,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DrugListAdapter.DrugViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final DrugListAdapter.DrugViewHolder holder, int position) {
         Log.v("Adapter", "onBindViewHolder called");
         mCursor.moveToPosition(position);
         int idIndex = mCursor.getColumnIndex(DrugContract.DrugEntry._ID);
@@ -69,6 +83,20 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         holder.intervalTextView.setText(String.valueOf(interval));
         holder.drugNameTextView.setTag(drugId);
 
+        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClick.onItemClick(holder.getAdapterPosition());
+            }
+        });
+
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+
 
     }
 
@@ -78,14 +106,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         mCursor = newCursor;
         this.notifyDataSetChanged();
         // TODO: Tidy
-//        if (mCursor != null) {
-//            mCursor.close();
-//        }
-//        mCursor = newCursor;
-//        if (mCursor != null) {
-//            // Force the RecyclerView to refresh
-//            this.notifyDataSetChanged();
-//        }
+
     }
 
     /**
@@ -107,6 +128,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         TextView durationTextView;
         TextView startDateTextView;
         TextView endDateTextView;
+        ConstraintLayout constraintLayout;
 
         public DrugViewHolder(View itemView) {
             super(itemView);
@@ -116,19 +138,15 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
             durationTextView = itemView.findViewById(R.id.duration_textView);
             startDateTextView = itemView.findViewById(R.id.starDate_textView);
             endDateTextView = itemView.findViewById(R.id.endDate_textView);
-
-
+            constraintLayout = itemView.findViewById(R.id.contrain_box);
 
         }
 
+    }
 
-        // TODO: Tidy
-//        void bind( int listIndex) {
-//            drugNameTextView.setText(String.valueOf(listIndex));
-//            intervalTextView.setText(String.valueOf(listIndex));
-//            durationTextView.setText(String.valueOf(listIndex));
-//            startDateTextView.setText(listIndex);
-//            endDateTextView.setText(listIndex);
-//        }
+    public void setOnClick(OnItemClicked onClick)
+    {
+        Log.v(TAG, "setOnClick called from DrugListAdapter");
+        this.onClick = onClick;
     }
 }

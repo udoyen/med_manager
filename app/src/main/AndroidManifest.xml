@@ -39,6 +39,10 @@
             android:authorities="com.example.android.medmanagerapplication.user"
             android:name=".user.UserContentProvider"
             android:exported="false"/>
+        <provider
+            android:authorities="com.example.android.medmanagerapplication.drugs"
+            android:name=".drugs.DrugContentProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

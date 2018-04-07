@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".drugs.ui.AddDrugActivity"
     tools:showIn="@layout/activity_add_drug">
@@ -12,12 +13,13 @@
         android:id="@+id/endDate_editText"
         android:layout_width="147dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="End Date"
-        app:layout_constraintTop_toBottomOf="@+id/drug_description"
-        tools:layout_editor_absoluteX="209dp" />
+        android:hint="Enter end date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/drug_description" />
 
     <EditText
         android:id="@+id/nameOfDrug"
@@ -89,32 +91,47 @@
         app:layout_constraintTop_toBottomOf="@+id/nameOfDrug" />
 
     <EditText
-        android:id="@+id/starDate_editText"
+        android:id="@+id/startDate_editText"
         android:layout_width="147dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="28dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Start Date"
+        android:hint="Enter Start Date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/drug_description" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="316dp"
-        android:layout_height="39dp"
+    <com.travijuu.numberpicker.library.NumberPicker
+        android:id="@+id/number_picker"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/endDate_editText"
-        app:layout_constraintVertical_bias="0.26" />
+        app:layout_constraintTop_toBottomOf="@+id/interval_textView"
+        app:layout_constraintVertical_bias="0.196"
+        numberpicker:focusable="false"
+        numberpicker:max="10"
+        numberpicker:min="0"
+        numberpicker:unit="1"
+        numberpicker:value="-5" />
+
+    <TextView
+        android:id="@+id/interval_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="monospace"
+        android:text="Select a medication interval:"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.246"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startDate_editText" />
 
 </android.support.constraint.ConstraintLayout>

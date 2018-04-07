@@ -1,12 +1,18 @@
 package com.example.android.medmanagerapplication;
 
-import android.app.LoaderManager;
+//import android.app.LoaderManager;
+
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,15 +20,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.drugs.ui.AddDrugActivity;
 import com.example.android.medmanagerapplication.drugs.ui.DrugListAdapter;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.RecyclerItemClickListener;
+
+import static com.example.android.medmanagerapplication.drugs.DrugContract.DRUG_BASE_CONTENT_URI;
+import static com.example.android.medmanagerapplication.drugs.DrugContract.PATH_DRUG;
+
+//import android.content.Loader;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int DRUG_LIST_ITEMS = 100;
     private DrugListAdapter drugListAdapter;
-    private RecyclerView mDrugsList;
+    private RecyclerView mDrugsListRecylcerView;
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -35,16 +48,53 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDrugsList = findViewById(R.id.drug_list_recycler_view);
+        mDrugsListRecylcerView = findViewById(R.id.rv_drugs);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mDrugsList.setLayoutManager(layoutManager);
+        mDrugsListRecylcerView.setLayoutManager(layoutManager);
 
-        mDrugsList.setHasFixedSize(true);
+        mDrugsListRecylcerView.setHasFixedSize(true);
 
-        drugListAdapter = new DrugListAdapter(DRUG_LIST_ITEMS);
+        drugListAdapter = new DrugListAdapter(this, null);
 
-        mDrugsList.setAdapter(drugListAdapter);
+        mDrugsListRecylcerView.setAdapter(drugListAdapter);
+
+        getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, this);
+
+        mDrugsListRecylcerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), mDrugsListRecylcerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // ...
+                Toast mToast;
+                mToast = Toast.makeText(MainActivity.this, "Recycler item clicked: " + position, Toast.LENGTH_SHORT);
+
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+
+                assert mToast != null;
+                mToast.show();
+
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                // ...
+                Toast mToast;
+                mToast = Toast.makeText(MainActivity.this, "Recycler item clicked: " + position, Toast.LENGTH_SHORT);
+
+                if (mToast != null) {
+                    mToast.cancel();
+                }
+
+                assert mToast != null;
+                mToast.show();
+
+            }
+        }));
+
+
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -53,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                onAddFabClick(view);
             }
         });
     }
@@ -79,20 +130,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
 
     /**
      * Open the add drug Activity
@@ -102,6 +140,29 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Intent intent = new Intent(this, AddDrugActivity.class);
         startActivity(intent);
+
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        Log.v(TAG, "onCreateLoader called");
+        Uri DRUG_URI = DRUG_BASE_CONTENT_URI.buildUpon().appendPath(PATH_DRUG).build();
+        return new CursorLoader(this, DRUG_URI, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        Log.v(TAG, "onLoaderFinished called");
+        data.moveToFirst();
+        drugListAdapter.swapCursor(data);
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        Log.v(TAG, "onLoaderReset called");
+        getLoaderManager().destroyLoader(DRUG_LOADER_ID);
 
     }
 }

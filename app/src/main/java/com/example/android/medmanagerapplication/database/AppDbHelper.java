@@ -33,8 +33,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_DRUGS = "CREATE TABLE "
             + DrugContract.DrugEntry.TABLE_NAME + "(" + DrugContract.DrugEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + DrugContract.DrugEntry.NAME
-            + " TEXT," + DrugContract.DrugEntry.DESCRIPTION + " TEXT," + DrugContract.DrugEntry.INTERVAL + " INTEGER," + DrugContract.DrugEntry.START_DATE + " INTEGER," + DrugContract.DrugEntry.END_DATE
-            + " INTEGER)";
+            + " TEXT," + DrugContract.DrugEntry.DESCRIPTION + " TEXT," + DrugContract.DrugEntry.INTERVAL + " INTEGER," + DrugContract.DrugEntry.START_DATE + " TEXT," + DrugContract.DrugEntry.END_DATE
+            + " TEXT," + DrugContract.DrugEntry.DURATION + " INTEGER)";
 
     public AppDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

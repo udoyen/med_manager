@@ -7,14 +7,16 @@ public class Drugs {
     public int interval;
     public String startDate;
     public String endDate;
+    public long duration;
 
-    public Drugs (long durgId, String name, String description, int interval, String startDate, String endDate) {
+    public Drugs (long durgId, String name, String description, int interval, String startDate, String endDate, long duration) {
         this.drugId = durgId;
         this.name = name;
         this.description = description;
         this.interval = interval;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.duration = duration;
     }
 }
 

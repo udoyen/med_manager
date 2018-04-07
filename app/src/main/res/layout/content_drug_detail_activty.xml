@@ -4,8 +4,167 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".drugs.ui.DrugDetailActivty"
+    tools:context=".drugs.ui.DrugDetailActivity"
     tools:showIn="@layout/activity_drug_detail_activty">
+
+    <EditText
+        android:id="@+id/detail_EndDate_editText"
+        android:layout_width="147dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="@string/enter_end_date_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_description" />
+
+    <EditText
+        android:id="@+id/detail_NameOfDrug"
+        android:layout_width="329dp"
+        android:layout_height="49dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/name_of_drug_hint"
+        android:inputType="text"
+        android:singleLine="true"
+        android:typeface="monospace"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameOfDrugLable_textView" />
+
+    <EditText
+        android:id="@+id/detail_description"
+        android:layout_width="328dp"
+        android:layout_height="77dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="@string/drug_description_hint"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailDescriptionLabel_textView" />
+
+    <TextView
+        android:id="@+id/nameOfDrugLable_textView"
+        android:layout_width="149dp"
+        android:layout_height="27dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:padding="1dp"
+        android:text="@string/name_of_drug"
+        android:textSize="20sp"
+        app:fontFamily="@font/roboto_bold_italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.091"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/detailDescriptionLabel_textView"
+        android:layout_width="157dp"
+        android:layout_height="27dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/roboto_bold_italic"
+        android:padding="1dp"
+        android:text="@string/drug_description"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.094"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_NameOfDrug" />
+
+    <EditText
+        android:id="@+id/detail_StartDate_editText"
+        android:layout_width="147dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:hint="@string/enter_start_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_description" />
+
+    <com.travijuu.numberpicker.library.NumberPicker
+        android:id="@+id/detail_Number_picker"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/detailDurationLabel_TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_Interval_textView"
+        app:layout_constraintVertical_bias="0.287"
+        numberpicker:focusable="false"
+        numberpicker:max="10"
+        numberpicker:min="0"
+        numberpicker:unit="1"
+        numberpicker:value="-5" />
+
+    <TextView
+        android:id="@+id/detail_Interval_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/roboto_bold_italic"
+        android:text="@string/select_a_medication_interval"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.083"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detail_StartDate_editText" />
+
+    <TextView
+        android:id="@+id/detailDurationLabel_TextView"
+        android:layout_width="111dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:fontFamily="@font/roboto_bold_italic"
+        android:maxLines="100"
+        android:text="Medication Duration"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/detail_Number_picker"
+        app:layout_constraintEnd_toStartOf="@+id/detailDuration_TextView" />
+
+    <TextView
+        android:id="@+id/detailDuration_TextView"
+        android:layout_width="34dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:ems="10"
+        android:fontFamily="@font/roboto_bold_italic"
+        android:gravity="center_vertical|center_horizontal"
+        android:inputType="textPersonName"
+        android:text="1"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/detailDurationLabel_TextView"
+        numberpicker:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

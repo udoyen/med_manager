@@ -23,7 +23,7 @@
     <include layout="@layout/content_add_drug" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/update_drug_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

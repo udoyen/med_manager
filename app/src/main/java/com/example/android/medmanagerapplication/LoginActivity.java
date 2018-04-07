@@ -336,6 +336,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     null);
             assert cursor != null;
             int passwordIndex = cursor.getColumnIndex(UserContract.UserEntry.PASSWORD);
+            //TODO: Tidy
             Log.v(TAG, "passwordIndex: " + passwordIndex);
             if (cursor.moveToFirst()) {
                 passwd = cursor.getString(passwordIndex);

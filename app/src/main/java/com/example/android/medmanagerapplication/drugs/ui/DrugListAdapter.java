@@ -89,7 +89,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
                 onClick.onItemClick(holder.getAdapterPosition());
             }
         });
-
+            // TODO: Tidy
 //        holder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {

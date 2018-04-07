@@ -23,6 +23,13 @@
     <string name="last_name">Last Name</string>
     <string name="action_settings">Settings</string>
     <string name="date">%1$d/%2$d/%3$d</string>
-    <string name="title_activity_drug_detail_activty">DrugDetailActivty</string>
+    <string name="title_activity_drug_detail_activty">Drug Details</string>
+    <string name="drug_description">Drug Description:</string>
+    <string name="drug_description_hint">Drug Description</string>
+    <string name="name_of_drug">Name of Drug:</string>
+    <string name="enter_start_date">Enter Start Date</string>
+    <string name="select_a_medication_interval">Select a medication interval:</string>
+    <string name="name_of_drug_hint">Name of Drug</string>
+    <string name="enter_end_date_hint">Enter end date</string>
 
 </resources>

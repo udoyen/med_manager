@@ -14,6 +14,7 @@ public class CloseSoftKeyboardHelperClass {
         if (view == null) {
             view = new View(activity);
         }
+        assert imm != null;
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

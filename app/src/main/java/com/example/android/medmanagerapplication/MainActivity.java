@@ -20,10 +20,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.example.android.medmanagerapplication.drugs.ui.AddDrugActivity;
-import com.example.android.medmanagerapplication.drugs.ui.DrugDetailActivty;
+import com.example.android.medmanagerapplication.drugs.ui.DrugDetailActivity;
 import com.example.android.medmanagerapplication.drugs.ui.DrugListAdapter;
 
 import static com.example.android.medmanagerapplication.drugs.DrugContract.DRUG_BASE_CONTENT_URI;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.update_drug_detail);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,10 +139,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onItemClick(int position) {
-        Log.v(TAG, "onIemClick called from MainActivty");
-        Toast.makeText(this, "Clicked: " + position, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, DrugDetailActivty.class);
+        Log.v(TAG, "onItemClick called from MainActivty");
+
+        String[] projection = {
+                DrugContract.DrugEntry._ID
+        };
+        Cursor cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI,
+                projection, "_ID = ?",
+                new String[]{String.valueOf(position + 1)},
+                null);
+        assert cursor != null;
+        int drugId = cursor.getColumnIndex(DrugContract.DrugEntry._ID);
+        cursor.moveToFirst();
+        int id = cursor.getInt(drugId);
+        Log.v(TAG, "Clicked position: " + position + " " + "Drug id: " + id);
+        cursor.close();
+        Intent intent = new Intent(this, DrugDetailActivity.class);
         // Pass information to the Activity here
+        intent.putExtra("DrugID", id);
         startActivity(intent);
     }
 }

@@ -47,7 +47,7 @@ public class AddDrugActivity extends AppCompatActivity {
         startDateEditText = findViewById(R.id.startDate_editText);
         endDateEditText = findViewById(R.id.endDate_editText);
 
-        numberPicker = findViewById(R.id.number_picker);
+        numberPicker = findViewById(R.id.detail_Number_picker);
 
 
         startDateEditText.setInputType(InputType.TYPE_NULL);
@@ -114,7 +114,7 @@ public class AddDrugActivity extends AppCompatActivity {
 
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.update_drug_detail);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

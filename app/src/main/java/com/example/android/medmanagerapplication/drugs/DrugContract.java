@@ -1,5 +1,6 @@
 package com.example.android.medmanagerapplication.drugs;
 
+import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -16,11 +17,15 @@ public class DrugContract {
     public static final String PATH_DRUG = "drugs";
 
     public static final long INVALID_DRUG_ID = -1;
+    private static final int ITEM_ID = 2;
 
     public static final class DrugEntry implements BaseColumns {
         // TaskEntry content URI = base content URI + path
         public static final Uri CONTENT_URI =
                 DRUG_BASE_CONTENT_URI.buildUpon().appendPath(PATH_DRUG).build();
+
+        public static final Uri DELETE_CONTENT_URI = ContentUris.withAppendedId(DRUG_BASE_CONTENT_URI.buildUpon().appendPath(PATH_DRUG).build(), ITEM_ID);
+
 
         public final static String _ID = BaseColumns._ID;
 

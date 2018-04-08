@@ -1,6 +1,7 @@
 package com.example.android.medmanagerapplication.drugs.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -21,6 +22,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
     //declare interface
     private OnItemClicked onClick;
 
+
     //make interface like this
     public interface OnItemClicked {
         void onItemClick(int position);
@@ -32,6 +34,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
     private Cursor mCursor;
 
 
+
     public interface ListItemClickListener {
         void onListItemClick(int clickedItemIndex);
     }
@@ -40,7 +43,13 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         this.mContext = context;
         this.mCursor = cursor;
 
+
     }
+
+    public Cursor getCursor() {
+        return mCursor;
+    }
+
 
     @NonNull
     @Override
@@ -60,6 +69,8 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
     @Override
     public void onBindViewHolder(@NonNull final DrugListAdapter.DrugViewHolder holder, int position) {
         Log.v("Adapter", "onBindViewHolder called");
+        Resources resources = mContext.getResources();
+
         mCursor.moveToPosition(position);
         int idIndex = mCursor.getColumnIndex(DrugContract.DrugEntry._ID);
         int drugNameIndex = mCursor.getColumnIndex(DrugContract.DrugEntry.NAME);
@@ -76,11 +87,16 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         long duration = mCursor.getLong(durationIndex);
 
 
-        holder.endDateTextView.setText(endDate);
-        holder.startDateTextView.setText(startDate);
-        holder.durationTextView.setText(String.valueOf(duration));
+        String tDuration = String.format(resources.getString(R.string.mainView_durationTextView), duration);
+        String text = String.format(resources.getString(R.string.mainPage_intervalTextView), interval);
+        String tStart = String.format(resources.getString(R.string.mainView_StartTextView), startDate);
+        String tEnd = String.format(resources.getString(R.string.mainView_EndTextView), endDate);
+
+        holder.endDateTextView.setText(tEnd);
+        holder.startDateTextView.setText(tStart);
+        holder.durationTextView.setText(tDuration);
         holder.drugNameTextView.setText(drugName);
-        holder.intervalTextView.setText(String.valueOf(interval));
+        holder.intervalTextView.setText(text);
         holder.drugNameTextView.setTag(drugId);
 
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
@@ -89,13 +105,6 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
                 onClick.onItemClick(holder.getAdapterPosition());
             }
         });
-            // TODO: Tidy
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
 
 
     }
@@ -103,8 +112,21 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
 
     public void swapCursor(Cursor newCursor) {
         Log.v("Adapter", "swapCursor called");
-        mCursor = newCursor;
-        this.notifyDataSetChanged();
+
+        try {
+            if (mCursor != null) {
+                mCursor.close();
+            }
+            mCursor = newCursor;
+            if (mCursor != null) {
+                // Force the RecyclerView to refresh
+                this.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+            Log.v(TAG, "swapCursor error: " + e);
+        }
+
+
         // TODO: Tidy
 
     }
@@ -149,4 +171,6 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         Log.v(TAG, "setOnClick called from DrugListAdapter");
         this.onClick = onClick;
     }
+
+
 }

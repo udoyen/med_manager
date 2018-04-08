@@ -22,17 +22,17 @@ public class DrugContentProvider extends ContentProvider {
 
 
     // Declare a static variable for the Uri matcher that you construct
-    private static final UriMatcher sUriMatcher = buildUriMatcher();
+    private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     private static final String TAG = DrugContentProvider.class.getName();
 
     // Define a static buildUriMatcher method that associates URI's with their int match
-    public static UriMatcher buildUriMatcher() {
+   static  {
         // Initialize a UriMatcher
-        UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+//        UriMatcher uriMatcher =
         // Add URI matches
-        uriMatcher.addURI(DrugContract.AUTHORITY, DrugContract.PATH_DRUG, DRUGS);
-        uriMatcher.addURI(DrugContract.AUTHORITY, DrugContract.PATH_DRUG + "/#", DRUG_ID);
-        return uriMatcher;
+        sUriMatcher.addURI(DrugContract.AUTHORITY, DrugContract.PATH_DRUG, DRUGS);
+        sUriMatcher.addURI(DrugContract.AUTHORITY, DrugContract.PATH_DRUG + "/#", DRUG_ID);
+//        return uriMatcher;
     }
 
     //Member variable to access database
@@ -105,7 +105,8 @@ public class DrugContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        return null;
     }
 
     @Nullable
@@ -159,25 +160,25 @@ public class DrugContentProvider extends ContentProvider {
         final SQLiteDatabase db = mDrugDbHelper.getWritableDatabase();
         int match = sUriMatcher.match(uri);
         // Keep track of the number of deleted plants
-        int plantsDeleted; // starts as 0
+        int drugDeleted; // starts as 0
         switch (match) {
             // Handle the single item case, recognized by the ID included in the URI path
             case DRUG_ID:
                 // Get the plant ID from the URI path
                 String id = uri.getPathSegments().get(1);
                 // Use selections/selectionArgs to filter for this ID
-                plantsDeleted = db.delete(DrugContract.DrugEntry.TABLE_NAME, "_id=?", new String[]{id});
+                drugDeleted = db.delete(DrugContract.DrugEntry.TABLE_NAME, "_id=?", new String[]{id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         // Notify the resolver of a change and return the number of items deleted
-        if (plantsDeleted != 0) {
+        if (drugDeleted != 0) {
             // A plant (or more) was deleted, set notification
             getContext().getContentResolver().notifyChange(uri, null);
         }
         // Return the number of plant deleted
-        return plantsDeleted;
+        return drugDeleted;
     }
 
     /***

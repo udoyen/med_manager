@@ -2,6 +2,7 @@ package com.example.android.medmanagerapplication.drugs.ui;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -20,10 +21,14 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.android.medmanagerapplication.MainActivity;
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CloseSoftKeyboardHelperClass;
+import com.travijuu.numberpicker.library.Enums.ActionEnum;
+import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.util.Calendar;
@@ -64,6 +69,19 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
         startDate.setInputType(InputType.TYPE_NULL);
         endDate.setInputType(InputType.TYPE_NULL);
+
+        // Get the id from the intent object then query database
+        // to get drug of interest
+        Bundle extras = getIntent().getExtras();
+        // Make sure the extra captures something
+        if (extras == null) {
+
+            return;
+        }
+
+        drugID = extras.getInt(DRUG_ID);
+
+        Log.v(TAG, "Drug id: " + drugID);
 
 
         startDate.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +128,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
             }
         });
 
-
+        // Get rid of the soft key when this has focus
         startDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -138,8 +156,20 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                try {
+                    if (deleteDrug(drugID)) {
+                        finish();
+                    } else {
+                        Snackbar.make(view, "Item was not deleted!", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+                } catch (Exception e) {
+                    Log.v(TAG, "Error from item delete: " + e);
+                    Snackbar.make(view, "Error: Item was not deleted!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+
+
             }
         });
 
@@ -151,22 +181,20 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
             }
         });
 
-        // Get the id from the intent object then query database
-        // to get drug of interest
-        Bundle extras = getIntent().getExtras();
-        // Make sure the extra captures something
-        if (extras == null) {
 
-            return;
-        }
-
-        drugID = extras.getInt(DRUG_ID);
-
-        Log.v(TAG, "Drug id: " + drugID);
 
         loaderManager = getSupportLoaderManager();
 
         loaderManager.initLoader(DETAILPAGE_LOADER_ID, null, this);
+
+        interval.setValueChangedListener(new ValueChangedListener() {
+
+            @Override
+            public void valueChanged(int value, ActionEnum action) {
+                Toast.makeText(DrugDetailActivity.this, "From number picker value change event", Toast.LENGTH_LONG).show();
+            }
+        });
+
 
     }
 
@@ -231,7 +259,24 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        cursor.close();
+//        cursor.close();
 
+    }
+
+    public boolean deleteDrug(int drugId) {
+
+        int itemToRemove = getContentResolver().delete(DrugContract.DrugEntry.DELETE_CONTENT_URI, DrugContract.DrugEntry._ID + " = ? ", new String[]{String.valueOf(drugId)});
+
+
+        return itemToRemove == 1;
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("detail", true);
+        startActivity(intent);
     }
 }

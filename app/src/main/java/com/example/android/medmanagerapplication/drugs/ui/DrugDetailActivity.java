@@ -1,10 +1,13 @@
 package com.example.android.medmanagerapplication.drugs.ui;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,7 +18,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -23,9 +29,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.medmanagerapplication.MainActivity;
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.CalculateDays;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CloseSoftKeyboardHelperClass;
 import com.travijuu.numberpicker.library.Enums.ActionEnum;
 import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
@@ -143,12 +149,52 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
             }
         });
 
+        startDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!TextUtils.isEmpty(endDate.getText().toString())) {
+                    duration.setText(String.valueOf(CalculateDays.getDaysBetweenDates(startDate.getText().toString(), endDate.getText().toString())));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        endDate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!TextUtils.isEmpty(startDate.getText().toString())) {
+                    duration.setText(String.valueOf(CalculateDays.getDaysBetweenDates(startDate.getText().toString(), endDate.getText().toString())));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
         FloatingActionButton fab = findViewById(R.id.update_drug_detail);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (!checkUserInputs()) {
+                    updateDrugItem(view);
+                }
             }
         });
 
@@ -191,6 +237,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
             @Override
             public void valueChanged(int value, ActionEnum action) {
+
                 Toast.makeText(DrugDetailActivity.this, "From number picker value change event", Toast.LENGTH_LONG).show();
             }
         });
@@ -265,18 +312,61 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
     public boolean deleteDrug(int drugId) {
 
-        int itemToRemove = getContentResolver().delete(DrugContract.DrugEntry.DELETE_CONTENT_URI, DrugContract.DrugEntry._ID + " = ? ", new String[]{String.valueOf(drugId)});
+        Uri SINGLE_DRUG_DELETE = ContentUris.withAppendedId(
+                DrugContract.DrugEntry.CONTENT_URI, drugId
+        );
+
+        int itemToRemove = getContentResolver().delete(SINGLE_DRUG_DELETE, null, null);
 
 
         return itemToRemove == 1;
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("detail", true);
-        startActivity(intent);
+    @SuppressLint("Assert")
+    public void updateDrugItem(View view) {
+
+        // TODO: Remove
+        Log.v(TAG, "AddDrugActivity onCreateLoader called");
+        // Calculate the duration in days
+        long dur = CalculateDays.getDaysBetweenDates(startDate.getText().toString(), endDate.getText().toString());
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DrugContract.DrugEntry.NAME, name.getText().toString());
+        contentValues.put(DrugContract.DrugEntry.DESCRIPTION, description.getText().toString());
+        contentValues.put(DrugContract.DrugEntry.START_DATE, startDate.getText().toString());
+        contentValues.put(DrugContract.DrugEntry.END_DATE, endDate.getText().toString());
+        contentValues.put(DrugContract.DrugEntry.INTERVAL, interval.getValue());
+        contentValues.put(DrugContract.DrugEntry.DURATION, dur);
+
+        int result = getContentResolver().update(DrugContract.DrugEntry.CONTENT_URI, contentValues, "_ID = ?", new String[]{String.valueOf(drugID)});
+        // TODO: Add DrugWidget Action here
+
+        if (result == 1) {
+            Snackbar.make(view, "Success: The drug item was upated!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        } else {
+            Snackbar.make(view, "Error: The drug item was not upated!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+
     }
+
+    public boolean checkUserInputs() {
+
+        String nameText = name.getText().toString();
+        String desc = description.getText().toString();
+        String sDate = startDate.getText().toString();
+        String eDate = endDate.getText().toString();
+        int pValue = interval.getValue();
+        if (TextUtils.isEmpty(String.valueOf(pValue)) || TextUtils.isEmpty(nameText) || TextUtils.isEmpty(desc) || TextUtils.isEmpty(sDate) || TextUtils.isEmpty(eDate) ) {
+            return true;
+        }
+
+
+        return false;
+
+    }
+
+
 }

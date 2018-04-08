@@ -32,6 +32,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
     private int mNumberItems;
     private Context mContext;
     private Cursor mCursor;
+    long id;
 
 
 
@@ -42,6 +43,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
     public DrugListAdapter(Context context, Cursor  cursor) {
         this.mContext = context;
         this.mCursor = cursor;
+
 
 
     }
@@ -72,14 +74,14 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         Resources resources = mContext.getResources();
 
         mCursor.moveToPosition(position);
-        int idIndex = mCursor.getColumnIndex(DrugContract.DrugEntry._ID);
+        final int idIndex = mCursor.getColumnIndex(DrugContract.DrugEntry._ID);
         int drugNameIndex = mCursor.getColumnIndex(DrugContract.DrugEntry.NAME);
         int intervalIndex = mCursor.getColumnIndex(DrugContract.DrugEntry.INTERVAL);
         int startDateIndex = mCursor.getColumnIndex(DrugContract.DrugEntry.START_DATE);
         int endDateIndex = mCursor.getColumnIndex(DrugContract.DrugEntry.END_DATE);
         int durationIndex = mCursor.getColumnIndex(DrugContract.DrugEntry.DURATION);
 
-        long drugId = mCursor.getLong(idIndex);
+        final long drugId = mCursor.getLong(idIndex);
         String drugName = mCursor.getString(drugNameIndex);
         String startDate = mCursor.getString(startDateIndex);
         String endDate = mCursor.getString(endDateIndex);
@@ -102,7 +104,9 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClick.onItemClick(holder.getAdapterPosition());
+                onClick.onItemClick((int) drugId);
+                id = holder.getItemId();
+
             }
         });
 

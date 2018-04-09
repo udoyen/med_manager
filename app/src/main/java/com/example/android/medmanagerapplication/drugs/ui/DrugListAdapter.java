@@ -21,6 +21,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
 
     //declare interface
     private OnItemClicked onClick;
+    Resources resources;
 
 
     //make interface like this
@@ -69,7 +70,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
     @Override
     public void onBindViewHolder(@NonNull final DrugListAdapter.DrugViewHolder holder, int position) {
         Log.v("Adapter", "onBindViewHolder called");
-        Resources resources = mContext.getResources();
+        resources = mContext.getResources();
 
         mCursor.moveToPosition(position);
         int idIndex = mCursor.getColumnIndex(DrugContract.DrugEntry._ID);

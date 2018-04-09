@@ -4,7 +4,6 @@ package com.example.android.medmanagerapplication;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,9 +25,6 @@ import com.example.android.medmanagerapplication.drugs.ui.AddDrugActivity;
 import com.example.android.medmanagerapplication.drugs.ui.DrugDetailActivity;
 import com.example.android.medmanagerapplication.drugs.ui.DrugListAdapter;
 
-import static com.example.android.medmanagerapplication.drugs.DrugContract.DRUG_BASE_CONTENT_URI;
-import static com.example.android.medmanagerapplication.drugs.DrugContract.PATH_DRUG;
-
 //import android.content.Loader;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, DrugListAdapter.OnItemClicked {
@@ -39,7 +35,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public static final String TAG = MainActivity.class.getName();
 
-    private static final int DRUG_LOADER_ID = 300;
+    private static final int DRUG_LOADER_ID = 3;
+
+    public boolean bDetail;
 
 
     @Override
@@ -77,6 +75,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 onAddFabClick(view);
             }
         });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.v(TAG, "onResumeCalled");
+        drugListAdapter = new DrugListAdapter(this, null);
+
+        drugListAdapter.setOnClick(this);
+        mDrugsListRecylcerView.setAdapter(drugListAdapter);
+        getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, this);
+        drugListAdapter.notifyDataSetChanged();
+
+
     }
 
     @Override
@@ -118,45 +130,69 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         Log.v(TAG, "onCreateLoader called");
-        Uri DRUG_URI = DRUG_BASE_CONTENT_URI.buildUpon().appendPath(PATH_DRUG).build();
-        return new CursorLoader(this, DRUG_URI, null, null, null, null);
+        String[] projection = {
+                DrugContract.DrugEntry._ID,
+                DrugContract.DrugEntry.NAME,
+                DrugContract.DrugEntry.DESCRIPTION,
+                DrugContract.DrugEntry.INTERVAL,
+                DrugContract.DrugEntry.START_DATE,
+                DrugContract.DrugEntry.END_DATE,
+                DrugContract.DrugEntry.DURATION
+        };
+        return new CursorLoader(this, DrugContract.DrugEntry.CONTENT_URI, projection, null, null, null);
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         Log.v(TAG, "onLoaderFinished called");
         data.moveToFirst();
+        int c = drugListAdapter.getItemCount();
+        int d = data.getCount();
+        Log.v(TAG, "Item Count is: " + c + " " + "And cursor count: " + d);
         drugListAdapter.swapCursor(data);
+
 
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         Log.v(TAG, "onLoaderReset called");
-        getLoaderManager().destroyLoader(DRUG_LOADER_ID);
+        drugListAdapter.swapCursor(null);
 
     }
 
     @Override
     public void onItemClick(int position) {
         Log.v(TAG, "onItemClick called from MainActivty");
-
         String[] projection = {
                 DrugContract.DrugEntry._ID
         };
         Cursor cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI,
                 projection, "_ID = ?",
-                new String[]{String.valueOf(position + 1)},
+                new String[]{String.valueOf(position)},
                 null);
-        assert cursor != null;
-        int drugId = cursor.getColumnIndex(DrugContract.DrugEntry._ID);
-        cursor.moveToFirst();
-        int id = cursor.getInt(drugId);
-        Log.v(TAG, "Clicked position: " + position + " " + "Drug id: " + id);
-        cursor.close();
-        Intent intent = new Intent(this, DrugDetailActivity.class);
-        // Pass information to the Activity here
-        intent.putExtra("DrugID", id);
-        startActivity(intent);
+        try {
+
+            assert cursor != null;
+            int drugId = cursor.getColumnIndex(DrugContract.DrugEntry._ID);
+            cursor.moveToFirst();
+            int id = cursor.getInt(drugId);
+            //TODO: Tidy
+            Log.v(TAG, "Clicked position: " + position + " " + "Drug id: " + id);
+            cursor.close();
+            Intent intent = new Intent(this, DrugDetailActivity.class);
+            // Pass information to the Activity here
+            intent.putExtra("DrugID", id);
+            startActivity(intent);
+        } catch (Exception e) {
+            Log.v(TAG, "Item detail presentation error!: " + e);
+        } finally {
+            assert cursor != null;
+            cursor.close();
+        }
+
+
     }
+
+
 }

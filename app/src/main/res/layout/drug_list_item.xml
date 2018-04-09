@@ -35,7 +35,7 @@
             android:padding="3dp"
             android:text="Name of Drug"
             android:textSize="18sp"
-            app:fontFamily="monospace" />
+            app:fontFamily="@font/roboto_bold_italic" />
 
         <TextView
             android:id="@+id/interval_textView"
@@ -44,9 +44,9 @@
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:padding="3dp"
-            android:text="Interval"
+            android:text="@string/mainPage_intervalTextView"
             android:textSize="18sp"
-            app:fontFamily="monospace" />
+            app:fontFamily="@font/roboto_bold_italic" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -60,9 +60,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="4dp"
-                android:text="Start Date"
+                android:text="@string/mainView_StartTextView"
                 android:textSize="18sp"
-                app:fontFamily="monospace" />
+                app:fontFamily="@font/roboto_bold_italic" />
 
             <TextView
                 android:id="@+id/duration_textView"
@@ -72,9 +72,9 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
                 android:padding="4dp"
-                android:text="Duration"
+                android:text="@string/mainView_durationTextView"
                 android:textSize="18sp"
-                app:fontFamily="monospace" />
+                app:fontFamily="@font/roboto_bold_italic" />
 
             <TextView
                 android:id="@+id/endDate_textView"
@@ -82,9 +82,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="4dp"
-                android:text="End Date"
+                android:text="@string/mainView_EndTextView"
                 android:textSize="18sp"
-                app:fontFamily="monospace" />
+                app:fontFamily="@font/roboto_bold_italic" />
         </LinearLayout>
 
     </LinearLayout>

@@ -75,7 +75,7 @@
 
     <TextView
         android:id="@+id/drugDescriptionLabel_textView"
-        android:layout_width="157dp"
+        android:layout_width="180dp"
         android:layout_height="27dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -117,7 +117,7 @@
         app:layout_constraintVertical_bias="0.196"
         numberpicker:focusable="false"
         numberpicker:max="10"
-        numberpicker:min="0"
+        numberpicker:min="1"
         numberpicker:unit="1"
         numberpicker:value="-5" />
 

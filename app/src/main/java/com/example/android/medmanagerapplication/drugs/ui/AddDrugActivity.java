@@ -2,6 +2,7 @@ package com.example.android.medmanagerapplication.drugs.ui;
 
 import android.app.DatePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -35,6 +36,9 @@ public class AddDrugActivity extends AppCompatActivity {
     EditText startDateEditText;
     EditText endDateEditText;
     NumberPicker numberPicker;
+    Context context;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +116,6 @@ public class AddDrugActivity extends AppCompatActivity {
         });
 
 
-
-
         FloatingActionButton fab = findViewById(R.id.update_drug_detail);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +125,7 @@ public class AddDrugActivity extends AppCompatActivity {
 
                 if (!checkUserInputs()) {
                     onCreateLoader(view);
+
                 } else {
                     Snackbar.make(view, "All fields are required!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
@@ -137,27 +140,8 @@ public class AddDrugActivity extends AppCompatActivity {
         fab_backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Remove
-                Toast.makeText(AddDrugActivity.this, "Back button clicked", Toast.LENGTH_SHORT).show();
-                Toast.makeText(AddDrugActivity.this, "End Date from date: " + endDateEditText.getText().toString(), Toast.LENGTH_LONG).show();
 
-
-                // TODO: Remove
-                long d;
-
-                try {
-
-                    d = CalculateDays.getDaysBetweenDates(startDateEditText.getText().toString(), endDateEditText.getText().toString());
-                    Log.v(TAG, "Days between dates: " + String.valueOf(d));
-
-                } catch (Exception e) {
-                    Log.v(TAG, "StartDate: " + startDateEditText.getText().toString() + " " + "End Date: " + endDateEditText.getText().toString());
-                    Log.v(TAG, "Error from CalculateDays: " + e.getMessage());
-                }
-
-
-
-
+               finish();
             }
         });
 
@@ -166,7 +150,6 @@ public class AddDrugActivity extends AppCompatActivity {
 
 
     public void onCreateLoader(View view) {
-
         Cursor cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI, null, null, null, null);
         assert cursor != null;
         int bfCount = cursor.getCount();
@@ -204,6 +187,13 @@ public class AddDrugActivity extends AppCompatActivity {
         Toast.makeText(AddDrugActivity.this, "Count: " + afCount, Toast.LENGTH_LONG).show();
         Log.v(TAG, "Created cursor closing");
         cursor.close();
+
+        // Clear the input fields
+        nameEditTextView.setText("");
+        descriptionEditTextView.setText("");
+        startDateEditText.setText(R.string.enter_start_date);
+        endDateEditText.setText(R.string.enter_end_date_hint);
+        numberPicker.setValue(1);
 
 
 

@@ -35,5 +35,6 @@
     <string name="mainView_durationTextView">Duration %d days</string>
     <string name="mainView_StartTextView">Starts: %s</string>
     <string name="mainView_EndTextView">Ends: %s</string>
+    <string name="notificatio_title">Medication Notice</string>
 
 </resources>

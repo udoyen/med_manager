@@ -122,16 +122,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
      * @param view to launch
      */
     public void onAddFabClick(View view) {
-//
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.HOUR_OF_DAY, 3);
-//        calendar.set(Calendar.MINUTE, 30);
-//        calendar.set(Calendar.SECOND, 0);
-//        Intent intent1 = new Intent(MainActivity.this, DrugReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-//        AlarmManager am = (AlarmManager) MainActivity.this.getSystemService(ALARM_SERVICE);
-//        assert am != null;
-//        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
 
         Intent intent = new Intent(this, AddDrugActivity.class);
         startActivity(intent);

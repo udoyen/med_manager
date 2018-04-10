@@ -6,9 +6,11 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +21,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
@@ -41,6 +42,21 @@ public class AddDrugActivity extends AppCompatActivity {
     EditText endDateEditText;
     NumberPicker numberPicker;
     Context context;
+    public static long addId;
+    public static String addName;
+    SharedPreferences sharedPreferences;
+    Long addDuration;
+
+    //Declare the interface
+    private PassInformationForAddedDrug dGet;
+
+    // Use this to pass the
+    // id and name of the drug
+    public interface PassInformationForAddedDrug {
+        void onGetData(long id, String name);
+    }
+
+    public static final String drugPreference = "drugpref";
 
 
 
@@ -157,6 +173,8 @@ public class AddDrugActivity extends AppCompatActivity {
         Cursor cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI, null, null, null, null);
         assert cursor != null;
         int bfCount = cursor.getCount();
+        Log.v(TAG, "Count before: " + bfCount);
+
 
         // TODO: Remove
         Log.v(TAG, "AddDrugActivity onCreateLoader called");
@@ -173,13 +191,27 @@ public class AddDrugActivity extends AppCompatActivity {
 
         getContentResolver().insert(DrugContract.DrugEntry.CONTENT_URI, contentValues);
         // TODO: Add DrugWidget Action here
+        // Pass item information to DrugReceiver class
+        String[] projection = {
+                DrugContract.DrugEntry._ID,
+                DrugContract.DrugEntry.NAME,
+                DrugContract.DrugEntry.DESCRIPTION,
+                DrugContract.DrugEntry.INTERVAL,
+                DrugContract.DrugEntry.START_DATE,
+                DrugContract.DrugEntry.END_DATE,
+                DrugContract.DrugEntry.DURATION
+        };
 
-        cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI, null, null, null, null);
+        cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI, projection, null, null, null);
+
+
         assert cursor != null;
         int afCount = cursor.getCount();
 
+        Log.v(TAG, "Before Notification created");
         if (afCount > bfCount) {
             Log.v(TAG, "Notification created");
+            setDrumItemInfo();
             addNotification();
             Snackbar.make(view, "New drug was added!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
@@ -188,7 +220,7 @@ public class AddDrugActivity extends AppCompatActivity {
             Snackbar.make(view, "New drug was not added!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
-        Toast.makeText(AddDrugActivity.this, "Count: " + afCount, Toast.LENGTH_LONG).show();
+        Log.v(TAG, "Count after: " + afCount);
         Log.v(TAG, "Created cursor closing");
         cursor.close();
 
@@ -200,13 +232,38 @@ public class AddDrugActivity extends AppCompatActivity {
         numberPicker.setValue(1);
     }
 
-    public Cursor addNotification(Cursor cursor) {
+    public void setDrumItemInfo () {
+        Log.v(TAG, "setDrumInfo called");
+
+        String[] projection = {
+                DrugContract.DrugEntry._ID,
+                DrugContract.DrugEntry.NAME,
+                DrugContract.DrugEntry.DESCRIPTION,
+                DrugContract.DrugEntry.INTERVAL,
+                DrugContract.DrugEntry.START_DATE,
+                DrugContract.DrugEntry.END_DATE,
+                DrugContract.DrugEntry.DURATION
+        };
+
+        Cursor cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI, projection, null, null, null);
+
+        Log.v(TAG, "About to get information");
+        assert cursor != null;
+        cursor.moveToPosition(cursor.getCount() - 1);
+        addName = cursor.getString(cursor.getColumnIndex(DrugContract.DrugEntry.NAME));
+        addId = cursor.getLong(cursor.getColumnIndex(DrugContract.DrugEntry._ID));
+        Log.v(TAG, "Name of item: " + addName + "" + "Id of item: " + addId);
 
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("drugId", (int) addId);
+        editor.putString("drugName", addName);
+        editor.apply();
 
-
-        return cursor;
+        cursor.close();
     }
+
 
     private void addNotification() {
 
@@ -215,7 +272,7 @@ public class AddDrugActivity extends AppCompatActivity {
         calendar.set(Calendar.MINUTE, 30);
         calendar.set(Calendar.SECOND, 0);
         Intent intent1 = new Intent(this, DrugReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) addId,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
         assert am != null;
         am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);

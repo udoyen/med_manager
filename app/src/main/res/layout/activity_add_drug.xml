@@ -22,20 +22,6 @@
 
     <include layout="@layout/content_add_drug" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/update_drug_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/add_white" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_backBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/arraow_back_white" />
 
 </android.support.design.widget.CoordinatorLayout>

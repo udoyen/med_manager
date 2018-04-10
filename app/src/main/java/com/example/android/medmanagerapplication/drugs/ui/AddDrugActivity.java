@@ -1,13 +1,20 @@
 package com.example.android.medmanagerapplication.drugs.ui;
 
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -18,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.android.medmanagerapplication.MainActivity;
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CalculateDays;
@@ -170,13 +178,13 @@ public class AddDrugActivity extends AppCompatActivity {
         getContentResolver().insert(DrugContract.DrugEntry.CONTENT_URI, contentValues);
         // TODO: Add DrugWidget Action here
 
-
         cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI, null, null, null, null);
         assert cursor != null;
         int afCount = cursor.getCount();
 
         if (afCount > bfCount) {
-
+            Log.v(TAG, "Notification created");
+            addNotification();
             Snackbar.make(view, "New drug was added!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else {
@@ -194,10 +202,48 @@ public class AddDrugActivity extends AppCompatActivity {
         startDateEditText.setText(R.string.enter_start_date);
         endDateEditText.setText(R.string.enter_end_date_hint);
         numberPicker.setValue(1);
+    }
+
+    public Cursor addNotification(Cursor cursor) {
 
 
 
 
+        return cursor;
+    }
+
+    private void addNotification() {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this.getApplicationContext(), "notify_001");
+        Intent ii = new Intent(this.getApplicationContext(), MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this.getApplicationContext(), 0, ii, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+//        bigText.bigText("Heelo there");
+//        bigText.setBigContentTitle("Today's Bible Verse");
+//        bigText.setSummaryText("Text in detail");
+
+        mBuilder.setContentIntent(pendingIntent);
+        mBuilder.setSmallIcon(R.drawable.arraow_back_white);
+        mBuilder.setContentTitle("Your Title");
+        mBuilder.setContentText("Your text");
+        mBuilder.setPriority(Notification.PRIORITY_MAX);
+//        mBuilder.setStyle(bigText);
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) this.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("notify_001",
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            assert mNotificationManager != null;
+            mNotificationManager.createNotificationChannel(channel);
+        }
+
+        assert mNotificationManager != null;
+        mNotificationManager.notify(0, mBuilder.build());
     }
 
 

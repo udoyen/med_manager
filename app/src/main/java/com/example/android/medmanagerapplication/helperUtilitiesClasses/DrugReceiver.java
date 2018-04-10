@@ -72,10 +72,5 @@ public class DrugReceiver extends BroadcastReceiver {
 
     }
 
-//    @Override
-//    public void onGetData(long id, String name) {
-//        Log.v(TAG, "onGetData called from DrugReceiver class: id:-" + drugId + " " + "Name: " + name);
-//        drugId = id;
-//        drugname = name;
-//    }
+
 }

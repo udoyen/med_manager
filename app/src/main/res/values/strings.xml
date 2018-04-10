@@ -31,7 +31,7 @@
     <string name="select_a_medication_interval">Select a medication interval:</string>
     <string name="name_of_drug_hint">Name of Drug</string>
     <string name="enter_end_date_hint">Enter end date</string>
-    <string name="mainPage_intervalTextView">Interval  %d</string>
+    <string name="mainPage_intervalTextView">Medication Interval  %d</string>
     <string name="mainView_durationTextView">Duration %d days</string>
     <string name="mainView_StartTextView">Starts: %s</string>
     <string name="mainView_EndTextView">Ends: %s</string>

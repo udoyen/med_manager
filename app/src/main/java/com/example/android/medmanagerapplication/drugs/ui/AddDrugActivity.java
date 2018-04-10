@@ -44,19 +44,7 @@ public class AddDrugActivity extends AppCompatActivity {
     Context context;
     public static long addId;
     public static String addName;
-    SharedPreferences sharedPreferences;
     Long addDuration;
-
-    //Declare the interface
-    private PassInformationForAddedDrug dGet;
-
-    // Use this to pass the
-    // id and name of the drug
-    public interface PassInformationForAddedDrug {
-        void onGetData(long id, String name);
-    }
-
-    public static final String drugPreference = "drugpref";
 
 
 
@@ -168,7 +156,10 @@ public class AddDrugActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Create new drug item
+     * @param view
+     */
     public void onCreateLoader(View view) {
         Cursor cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI, null, null, null, null);
         assert cursor != null;
@@ -265,6 +256,9 @@ public class AddDrugActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Add drug medication notifications
+     */
     private void addNotification() {
 
         Calendar calendar = Calendar.getInstance();
@@ -280,7 +274,10 @@ public class AddDrugActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Check that user input are not empty
+     * @return boolean
+     */
     public boolean checkUserInputs() {
 
         String name = nameEditTextView.getText().toString();

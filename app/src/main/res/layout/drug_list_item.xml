@@ -7,6 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
     android:layout_marginTop="5dp"
+    android:background="@drawable/contraint_round_corners"
     android:paddingBottom="1dp"
     android:paddingTop="1dp">
 
@@ -17,7 +18,7 @@
         android:layout_margin="5dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@color/colorPrimaryLight"
+        android:background="@drawable/round_corners"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,6 +35,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:padding="3dp"
             android:text="Name of Drug"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp"
             app:fontFamily="@font/roboto_bold_italic" />
 
@@ -45,8 +47,8 @@
             android:gravity="center_vertical|center_horizontal"
             android:padding="3dp"
             android:text="@string/mainPage_intervalTextView"
-            android:textSize="18sp"
-            app:fontFamily="@font/roboto_bold_italic" />
+            android:textSize="12sp"
+            app:fontFamily="@font/roboto_slab" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -61,8 +63,8 @@
                 android:layout_weight="1"
                 android:padding="4dp"
                 android:text="@string/mainView_StartTextView"
-                android:textSize="18sp"
-                app:fontFamily="@font/roboto_bold_italic" />
+                android:textSize="12sp"
+                app:fontFamily="@font/roboto_slab" />
 
             <TextView
                 android:id="@+id/duration_textView"
@@ -71,9 +73,10 @@
                 android:layout_gravity="end"
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
-                android:padding="4dp"
+                android:padding="1dp"
                 android:text="@string/mainView_durationTextView"
-                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="12sp"
                 app:fontFamily="@font/roboto_bold_italic" />
 
             <TextView
@@ -83,8 +86,8 @@
                 android:layout_weight="1"
                 android:padding="4dp"
                 android:text="@string/mainView_EndTextView"
-                android:textSize="18sp"
-                app:fontFamily="@font/roboto_bold_italic" />
+                android:textSize="12sp"
+                app:fontFamily="@font/roboto_slab" />
         </LinearLayout>
 
     </LinearLayout>

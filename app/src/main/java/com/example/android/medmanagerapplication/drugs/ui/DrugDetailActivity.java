@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.AlarmDeleter;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CalculateDays;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CloseSoftKeyboardHelperClass;
 import com.travijuu.numberpicker.library.Enums.ActionEnum;
@@ -58,6 +60,8 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
     LoaderManager loaderManager;
     private static final int DETAILPAGE_LOADER_ID = 4;
+
+    AlarmDeleter deleter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,6 +208,10 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
             public void onClick(View view) {
                 try {
                     if (deleteDrug(drugID)) {
+                        Intent intent = new Intent(DrugDetailActivity.this, AlarmDeleter.class);
+                        intent.putExtra("drugId", drugID);
+                        startService(intent);
+//                        deleter.cancelNotification(drugID);
                         finish();
                     } else {
                         Snackbar.make(view, "Item was not deleted!", Snackbar.LENGTH_LONG)
@@ -306,7 +314,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-//        cursor.close();
+        cursor.close();
 
     }
 
@@ -319,7 +327,11 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         int itemToRemove = getContentResolver().delete(SINGLE_DRUG_DELETE, null, null);
 
 
+
+
         return itemToRemove == 1;
+
+
 
     }
 

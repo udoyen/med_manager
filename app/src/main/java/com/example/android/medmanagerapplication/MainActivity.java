@@ -2,12 +2,19 @@ package com.example.android.medmanagerapplication;
 
 //import android.app.LoaderManager;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
@@ -20,11 +27,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.example.android.medmanagerapplication.drugs.ui.AddDrugActivity;
 import com.example.android.medmanagerapplication.drugs.ui.DrugDetailActivity;
 import com.example.android.medmanagerapplication.drugs.ui.DrugListAdapter;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.AlarmDeleter;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.JobSchedulerService;
+
+import java.util.Date;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 //import android.content.Loader;
 
@@ -38,15 +52,92 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final int DRUG_LOADER_ID = 3;
 
+    private static final String CHECK_FOR_PAST_ALARMS = "com.example.android.medmanagerapplication.helperUtilitiesClasses.jobservice.CUSTOM_INTENT";
+
+
     public boolean bDetail;
     Context context;
 
+    JobScheduler jobScheduler;
+    private static final int JOB_ID = 1;
 
+    public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+        Cursor cursor;
+
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Date currentDate = new Date();
+            //TODO: Tidy
+            Date yesterday = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis((1)));
+            AlarmDeleter alarmDeleter = new AlarmDeleter();
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                // Use this to remove expired notifications
+                if (Objects.equals(intent.getAction(), CHECK_FOR_PAST_ALARMS)) {
+
+                    Log.v(TAG, "Broadcast receiver fired from HomeActivity");
+                    Toast.makeText(MainActivity.this, "Database to checked", Toast.LENGTH_LONG).show();
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI,
+                                null,
+                                null,
+                                null);
+                        if (cursor != null) {
+                            if (cursor.moveToFirst()) {
+                                do {
+                                    int duration = cursor.getColumnIndex(DrugContract.DrugEntry.DURATION);
+                                    Date futureDate = new Date(System.currentTimeMillis() + duration);
+                                    int id = (int) cursor.getLong(cursor.getColumnIndex(DrugContract.DrugEntry._ID));
+
+                                    if (currentDate.after(futureDate)) {
+                                        Log.v(TAG, "do loop in receiver called: " + id);
+                                        Intent nRIntent = new Intent(MainActivity.this, AlarmDeleter.class);
+                                        nRIntent.putExtra("drugId", id);
+                                        startService(intent);
+//                                        alarmDeleter.cancelNotification(id);
+                                    }
+
+                                } while (cursor.moveToNext());
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+
+    };
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v(TAG, "Creating MainActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(CHECK_FOR_PAST_ALARMS);
+        registerReceiver(this.broadcastReceiver, intentFilter);
+
+        // Initialize JobScheduler
+        jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        jobScheduler.schedule(new JobInfo.Builder(JOB_ID,
+                new ComponentName(this, JobSchedulerService.class))
+                .setBackoffCriteria(15000, JobInfo.BACKOFF_POLICY_EXPONENTIAL)
+                .setPeriodic(15000)
+//                .setMinimumLatency(15000) TODO: Remove
+//                .setOverrideDeadline(10000)
+                .setRequiresCharging(false)
+                .setPersisted(true)
+                .build());
 
         mDrugsListRecylcerView = findViewById(R.id.rv_drugs);
 
@@ -62,10 +153,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mDrugsListRecylcerView.setAdapter(drugListAdapter);
 
 
-
         getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, this);
-
-
 
 
         FloatingActionButton fab = findViewById(R.id.update_drug_detail);
@@ -116,9 +204,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-
     /**
      * Open the add drug Activity
+     *
      * @param view to launch
      */
     public void onAddFabClick(View view) {
@@ -127,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         startActivity(intent);
 
     }
-
 
 
     @NonNull
@@ -195,6 +282,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             cursor.close();
         }
 
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(CHECK_FOR_PAST_ALARMS));
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
 
     }
 

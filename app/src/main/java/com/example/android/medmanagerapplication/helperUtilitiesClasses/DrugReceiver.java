@@ -38,12 +38,7 @@ public class DrugReceiver extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context.getApplicationContext(), DRUG_NOTIFICATION_CHANNEL);
         Intent ii = new Intent(context.getApplicationContext(), MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), 0, ii, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
-//        bigText.bigText("Heelo there");
-//        bigText.setBigContentTitle("Today's Bible Verse");
-//        bigText.setSummaryText("Text in detail");
+        PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), drugId, ii, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.setContentIntent(pendingIntent);
         mBuilder.setSmallIcon(R.drawable.arraow_back_white);
@@ -51,11 +46,9 @@ public class DrugReceiver extends BroadcastReceiver {
         mBuilder.setContentText(drugname);
         mBuilder.setPriority(Notification.PRIORITY_MAX);
         mBuilder.setChannelId(DRUG_NOTIFICATION_CHANNEL);
-//        mBuilder.setStyle(bigText);
 
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(DRUG_NOTIFICATION_CHANNEL,

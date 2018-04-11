@@ -31,6 +31,7 @@ import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class AddDrugActivity extends AppCompatActivity {
 
@@ -289,7 +290,7 @@ public class AddDrugActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) addId,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
         assert am != null;
-        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), dailyInterval(numberPicker.getValue()), pendingIntent);
 
     }
 
@@ -316,5 +317,12 @@ public class AddDrugActivity extends AppCompatActivity {
 
         return false;
 
+    }
+
+    public long dailyInterval(long drugInterval) {
+
+        int result = (int) Math.ceil(24 / drugInterval);
+
+        return TimeUnit.HOURS.toMillis(result);
     }
 }

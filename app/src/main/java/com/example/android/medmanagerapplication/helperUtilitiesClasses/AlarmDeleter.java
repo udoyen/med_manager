@@ -25,23 +25,6 @@ public class AlarmDeleter extends IntentService {
 
 
 
-    //TODO: Remove
-//    public void cancelNotification (int requestCode) {
-//        Log.v(TAG, "do loop in receiver called from AlarmDeleter class:" + requestCode);
-//
-//        try {
-//            Intent notificationIntent = new Intent(context.getApplicationContext(), DrugReceiver.class);
-//            PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), requestCode, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//            AlarmManager alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-//            assert alarmManager != null;
-//            alarmManager.cancel(pendingIntent);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
-
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 

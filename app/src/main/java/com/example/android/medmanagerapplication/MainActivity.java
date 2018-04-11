@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                                         Intent nRIntent = new Intent(MainActivity.this, AlarmDeleter.class);
                                         nRIntent.putExtra("drugId", id);
                                         startService(intent);
-//                                        alarmDeleter.cancelNotification(id);
                                     }
 
                                 } while (cursor.moveToNext());
@@ -134,10 +133,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.schedule(new JobInfo.Builder(JOB_ID,
                 new ComponentName(this, JobSchedulerService.class))
-//                .setBackoffCriteria(15000, JobInfo.BACKOFF_POLICY_EXPONENTIAL)
-//                .setPeriodic(15000)
-                .setMinimumLatency(15000) //TODO: Remove
-                .setOverrideDeadline(10000)
+                .setBackoffCriteria(TimeUnit.DAYS.toMillis(24), JobInfo.BACKOFF_POLICY_EXPONENTIAL)
+                .setPeriodic(TimeUnit.DAYS.toMillis(24))
+//                .setMinimumLatency(15000) //TODO: Remove
+//                .setOverrideDeadline(10000)
                 .setRequiresCharging(false)
                 .setPersisted(true)
                 .build());
@@ -165,9 +164,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 long id = (long) viewHolder.itemView.getTag();
                 if (deleteDrug((int) id)) {
-//                    mDrugsListRecylcerView.setAdapter(drugListAdapter);
-//                getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, MainActivity.this);
-//                drugListAdapter.notifyDataSetChanged();
+                    Log.v(TAG, "Item removed: " + id);
                     Intent intent = new Intent(MainActivity.this, AlarmDeleter.class);
                     intent.putExtra("drugId", id);
                     startService(intent);

@@ -35,9 +35,9 @@ public class AlarmDeleter extends IntentService {
             Log.v(TAG, "do loop in receiver called from AlarmDeleter class:" + id);
 
             try {
-                Intent notificationIntent = new Intent(context.getApplicationContext(), DrugReceiver.class);
+                Intent notificationIntent = new Intent(context, DrugReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 assert alarmManager != null;
                 alarmManager.cancel(pendingIntent);
             } catch (Exception e) {

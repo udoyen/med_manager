@@ -29,6 +29,7 @@ import com.example.android.medmanagerapplication.helperUtilitiesClasses.CloseSof
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.DrugReceiver;
 import com.travijuu.numberpicker.library.NumberPicker;
 
+import java.text.ParseException;
 import java.util.Calendar;
 
 public class AddDrugActivity extends AppCompatActivity {
@@ -133,14 +134,31 @@ public class AddDrugActivity extends AppCompatActivity {
                 // TODO: Remove
                 Log.v(TAG, "AddDrugActivity add drug button called");
 
-                if (!checkUserInputs()) {
-                    onCreateLoader(view);
+                String start = startDateEditText.getText().toString();
+                String end = endDateEditText.getText().toString();
 
-                } else {
+                try {
+
+                    if (!checkUserInputs()) {
+                        Log.v(TAG, "first if block");
+                        if (!CalculateDays.compareDate(start, end)) {
+                            Log.v(TAG, "Second if block");
+
+                            onCreateLoader(view);
+                        } else {
+                            Snackbar.make(view, "Please make sure the end date is not behind the start date!", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+
+                    } else {
+                        Snackbar.make(view, "Please check the entered values, and make sure the end date is not behind of the start date!", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+                } catch (ParseException e) {
                     Snackbar.make(view, "All fields are required!", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                    e.printStackTrace();
                 }
-
 
 
             }
@@ -280,7 +298,7 @@ public class AddDrugActivity extends AppCompatActivity {
      * Check that user input are not empty
      * @return boolean
      */
-    public boolean checkUserInputs() {
+    public boolean checkUserInputs() throws ParseException {
 
         String name = nameEditTextView.getText().toString();
         String desc = descriptionEditTextView.getText().toString();
@@ -288,7 +306,11 @@ public class AddDrugActivity extends AppCompatActivity {
         String eDate = endDateEditText.getText().toString();
         int pValue = numberPicker.getValue();
         if (TextUtils.isEmpty(String.valueOf(pValue)) || TextUtils.isEmpty(name) || TextUtils.isEmpty(desc) || TextUtils.isEmpty(sDate) || TextUtils.isEmpty(eDate) ) {
-            return true;
+            if (!CalculateDays.compareDate(sDate, eDate)) {
+
+                return true;
+
+            }
         }
 
 

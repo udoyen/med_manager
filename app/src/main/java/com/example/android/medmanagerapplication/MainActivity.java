@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 long id = (long) viewHolder.itemView.getTag();
                 deleteDrug((int) id);
 //                mDrugsListRecylcerView.setAdapter(drugListAdapter);
-                getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, MainActivity.this);
+//                getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, MainActivity.this);
                 drugListAdapter.notifyDataSetChanged();
                 Intent intent = new Intent(MainActivity.this, AlarmDeleter.class);
                 intent.putExtra("drugId", id);

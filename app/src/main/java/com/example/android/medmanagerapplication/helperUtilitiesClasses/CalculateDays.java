@@ -34,4 +34,21 @@ public class CalculateDays {
         long timeDiff = endDate.getTime() - startDate.getTime();
         return timeDiff;
     }
+
+    public static boolean compareDate(String d1, String d2) throws ParseException {
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+
+        Date date1 = format.parse(d1);
+        Date date2 = format.parse(d2);
+
+        if (date2.before(date1)) {
+            return true;
+        } else {
+            return false;
+        }
+
+
+
+    }
 }

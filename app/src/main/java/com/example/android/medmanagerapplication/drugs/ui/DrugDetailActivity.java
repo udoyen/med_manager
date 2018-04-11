@@ -39,6 +39,7 @@ import com.travijuu.numberpicker.library.Enums.ActionEnum;
 import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 import com.travijuu.numberpicker.library.NumberPicker;
 
+import java.text.ParseException;
 import java.util.Calendar;
 
 public class DrugDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -198,8 +199,31 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!checkUserInputs()) {
-                    updateDrugItem(view);
+
+                String start = startDate.getText().toString();
+                String end = endDate.getText().toString();
+
+                try {
+
+                    if (!checkUserInputs()) {
+                        Log.v(TAG, "first if block");
+                        if (!CalculateDays.compareDate(start, end)) {
+                            Log.v(TAG, "Second if block");
+
+                            updateDrugItem(view);
+                        } else {
+                            Snackbar.make(view, "Please make sure the end date is not behind the start date!", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+
+                    } else {
+                        Snackbar.make(view, "Please check the entered values, and make sure the end date is not behind of the start date!", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+                } catch (ParseException e) {
+                    Snackbar.make(view, "All fields are required!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    e.printStackTrace();
                 }
             }
         });
@@ -361,7 +385,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
     }
 
-    public boolean checkUserInputs() {
+    public boolean checkUserInputs() throws ParseException {
 
         String nameText = name.getText().toString();
         String desc = description.getText().toString();
@@ -369,7 +393,10 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         String eDate = endDate.getText().toString();
         int pValue = interval.getValue();
         if (TextUtils.isEmpty(String.valueOf(pValue)) || TextUtils.isEmpty(nameText) || TextUtils.isEmpty(desc) || TextUtils.isEmpty(sDate) || TextUtils.isEmpty(eDate) ) {
-            return true;
+            if (!CalculateDays.compareDate(sDate, eDate)) {
+                return true;
+
+            }
         }
 
 

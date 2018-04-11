@@ -6,10 +6,12 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +25,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -131,10 +134,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.schedule(new JobInfo.Builder(JOB_ID,
                 new ComponentName(this, JobSchedulerService.class))
-                .setBackoffCriteria(15000, JobInfo.BACKOFF_POLICY_EXPONENTIAL)
-                .setPeriodic(15000)
-//                .setMinimumLatency(15000) TODO: Remove
-//                .setOverrideDeadline(10000)
+//                .setBackoffCriteria(15000, JobInfo.BACKOFF_POLICY_EXPONENTIAL)
+//                .setPeriodic(15000)
+                .setMinimumLatency(15000) //TODO: Remove
+                .setOverrideDeadline(10000)
                 .setRequiresCharging(false)
                 .setPersisted(true)
                 .build());
@@ -151,6 +154,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         drugListAdapter.setOnClick(this);
 
         mDrugsListRecylcerView.setAdapter(drugListAdapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                long id = (long) viewHolder.itemView.getTag();
+                deleteDrug((int) id);
+//                mDrugsListRecylcerView.setAdapter(drugListAdapter);
+                getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, MainActivity.this);
+                drugListAdapter.notifyDataSetChanged();
+                Intent intent = new Intent(MainActivity.this, AlarmDeleter.class);
+                intent.putExtra("drugId", id);
+                startService(intent);
+            }
+        }).attachToRecyclerView(mDrugsListRecylcerView);
 
 
         getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, this);
@@ -283,6 +305,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
 
 
+    }
+
+    public boolean deleteDrug(int drugId) {
+
+        Uri SINGLE_DRUG_DELETE = ContentUris.withAppendedId(
+                DrugContract.DrugEntry.CONTENT_URI, drugId
+        );
+
+        int itemToRemove = getContentResolver().delete(SINGLE_DRUG_DELETE, null, null);
+
+        return itemToRemove == 1;
     }
 
 

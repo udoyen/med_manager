@@ -24,9 +24,6 @@ public class DrugReceiver extends BroadcastReceiver {
     public int drugId;
 
 
-
-
-
     @Override
     public void onReceive(Context context, Intent intent) {
         // TODO Auto-generated method stub
@@ -53,6 +50,7 @@ public class DrugReceiver extends BroadcastReceiver {
         mBuilder.setContentTitle(context.getString(R.string.notificatio_title));
         mBuilder.setContentText(drugname);
         mBuilder.setPriority(Notification.PRIORITY_MAX);
+        mBuilder.setChannelId(DRUG_NOTIFICATION_CHANNEL);
 //        mBuilder.setStyle(bigText);
 
         NotificationManager mNotificationManager =

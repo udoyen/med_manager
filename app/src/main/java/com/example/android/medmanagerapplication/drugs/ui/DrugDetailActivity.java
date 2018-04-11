@@ -111,6 +111,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
                         startDate.setText(text);
                     }
                 }, year, month, day);
+                pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 pickerDialog.show();
 
             }
@@ -133,6 +134,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
                         endDate.setText(text);
                     }
                 }, year, month, day);
+                pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 pickerDialog.show();
 
             }
@@ -211,6 +213,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
                         Intent intent = new Intent(DrugDetailActivity.this, AlarmDeleter.class);
                         intent.putExtra("drugId", drugID);
                         startService(intent);
+                        //TODO: Remove
 //                        deleter.cancelNotification(drugID);
                         finish();
                     } else {
@@ -326,13 +329,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
         int itemToRemove = getContentResolver().delete(SINGLE_DRUG_DELETE, null, null);
 
-
-
-
         return itemToRemove == 1;
-
-
-
     }
 
     @SuppressLint("Assert")

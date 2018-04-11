@@ -82,6 +82,7 @@ public class AddDrugActivity extends AppCompatActivity {
                         startDateEditText.setText(text);
                     }
                 }, year, month, day);
+                pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 pickerDialog.show();
 
             }
@@ -104,6 +105,7 @@ public class AddDrugActivity extends AppCompatActivity {
                         endDateEditText.setText(text);
                     }
                 }, year, month, day);
+                pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 pickerDialog.show();
 
             }
@@ -202,7 +204,7 @@ public class AddDrugActivity extends AppCompatActivity {
         Log.v(TAG, "Before Notification created");
         if (afCount > bfCount) {
             Log.v(TAG, "Notification created");
-            setDrumItemInfo();
+            setDrugItemInfo();
             addNotification();
             Snackbar.make(view, "New drug was added!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
@@ -223,7 +225,7 @@ public class AddDrugActivity extends AppCompatActivity {
         numberPicker.setValue(1);
     }
 
-    public void setDrumItemInfo () {
+    public void setDrugItemInfo() {
         Log.v(TAG, "setDrumInfo called");
 
         String[] projection = {

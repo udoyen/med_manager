@@ -99,7 +99,8 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         holder.durationTextView.setText(tDuration);
         holder.drugNameTextView.setText(drugName);
         holder.intervalTextView.setText(text);
-        holder.drugNameTextView.setTag(drugId);
+        // Used to hold non-displayed views
+        holder.itemView.setTag(drugId);
 
         holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -164,13 +164,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 long id = (long) viewHolder.itemView.getTag();
-                deleteDrug((int) id);
-//                mDrugsListRecylcerView.setAdapter(drugListAdapter);
+                if (deleteDrug((int) id)) {
+//                    mDrugsListRecylcerView.setAdapter(drugListAdapter);
 //                getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, MainActivity.this);
-                drugListAdapter.notifyDataSetChanged();
-                Intent intent = new Intent(MainActivity.this, AlarmDeleter.class);
-                intent.putExtra("drugId", id);
-                startService(intent);
+//                drugListAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent(MainActivity.this, AlarmDeleter.class);
+                    intent.putExtra("drugId", id);
+                    startService(intent);
+                }
+
             }
         }).attachToRecyclerView(mDrugsListRecylcerView);
 

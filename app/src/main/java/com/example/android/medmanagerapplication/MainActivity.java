@@ -40,9 +40,7 @@ import com.example.android.medmanagerapplication.helperUtilitiesClasses.AlarmDel
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.ExpiredNotificationClearingService;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.JobSchedulerService;
 
-import java.util.Date;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 //import android.content.Loader;
 
@@ -67,14 +65,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
-        Cursor cursor;
-
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Date currentDate = new Date();
-            //TODO: Tidy
-            Date yesterday = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis((1)));
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 // Use this to remove expired notifications
@@ -85,31 +78,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     Intent clearIntent = new Intent(MainActivity.this, ExpiredNotificationClearingService.class);
                     startService(clearIntent);
 
-//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                        cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI,
-//                                null,
-//                                null,
-//                                null);
-//                        if (cursor != null) {
-//                            if (cursor.moveToFirst()) {
-//                                do {
-//                                    int duration = cursor.getColumnIndex(DrugContract.DrugEntry.DURATION);
-//                                    Date futureDate = new Date(System.currentTimeMillis() + duration);
-//                                    int id = (int) cursor.getLong(cursor.getColumnIndex(DrugContract.DrugEntry._ID));
-//
-//                                    if (currentDate.after(futureDate)) {
-//                                        Log.v(TAG, "Result of date comparison: " + currentDate.after(futureDate));
-//                                        Log.v(TAG, "do loop in receiver called: " + id);
-//                                        Intent nRIntent = new Intent(MainActivity.this, AlarmDeleter.class);
-//                                        nRIntent.putExtra("drugId", id);
-//                                        startService(intent);
-//                                    }
-//
-//                                } while (cursor.moveToNext());
-//                            }
-//                        }
-//
-//                    }
 
                 }
             }

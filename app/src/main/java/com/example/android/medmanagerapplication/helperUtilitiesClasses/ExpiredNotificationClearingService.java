@@ -11,6 +11,7 @@ import android.util.Log;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class ExpiredNotificationClearingService extends IntentService {
 
@@ -29,7 +30,10 @@ public class ExpiredNotificationClearingService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+
         Date currentDate = new Date();
+        Date yesterday = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis((1)));
+
 
         Log.v(TAG, "ExpiredNotificationService onHandle method called");
 

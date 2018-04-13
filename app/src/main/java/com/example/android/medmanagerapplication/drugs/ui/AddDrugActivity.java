@@ -281,6 +281,7 @@ public class AddDrugActivity extends AppCompatActivity {
      * Add drug medication notifications
      */
     private void addNotification() {
+        Log.v(TAG, "addNotifiction call");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 3);

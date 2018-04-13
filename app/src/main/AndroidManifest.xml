@@ -28,6 +28,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".drugs.ui.AddDrugActivity"
@@ -54,26 +55,15 @@
 
         <receiver android:name=".helperUtilitiesClasses.DrugReceiver" />
 
-        <activity
-            android:name=".NotificationActivity"
-            android:label="Details of notification"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-
         <service
             android:name=".helperUtilitiesClasses.JobSchedulerService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
             android:name=".helperUtilitiesClasses.AlarmDeleter"
             android:exported="false" />
+        <service android:name=".helperUtilitiesClasses.loginhelper.CheckUserStatus" />
+        <service android:name=".helperUtilitiesClasses.ExpiredNotificationClearingService" />
 
-        <activity
-            android:name=".HomeActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

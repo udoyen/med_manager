@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.example.android.medmanagerapplication.MainActivity;
 import com.example.android.medmanagerapplication.R;
@@ -34,6 +35,8 @@ public class DrugReceiver extends BroadcastReceiver {
         drugname = mPreferences.getString("drugName", "");
         editor.apply();
 
+        Log.v(TAG, "From DrugReceiver Drug id: " + " " + "Drug Name: " + drugname);
+
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context.getApplicationContext(), DRUG_NOTIFICATION_CHANNEL);
@@ -41,7 +44,7 @@ public class DrugReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getActivity(context.getApplicationContext(), drugId, ii, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.setContentIntent(pendingIntent);
-        mBuilder.setSmallIcon(R.drawable.arraow_back_white);
+        mBuilder.setSmallIcon(R.drawable.ic_first_aid_white);
         mBuilder.setContentTitle(context.getString(R.string.notificatio_title));
         mBuilder.setContentText(drugname);
         mBuilder.setPriority(Notification.PRIORITY_MAX);

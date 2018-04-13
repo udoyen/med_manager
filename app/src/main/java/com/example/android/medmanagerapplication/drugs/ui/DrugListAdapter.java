@@ -28,17 +28,10 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         void onItemClick(int position);
     }
 
-
-    private int mNumberItems;
     private Context mContext;
     private Cursor mCursor;
     long id;
 
-
-
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
-    }
 
     public DrugListAdapter(Context context, Cursor  cursor) {
         this.mContext = context;
@@ -115,6 +108,8 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
     }
 
 
+
+
     public void swapCursor(Cursor newCursor) {
         Log.v("Adapter", "swapCursor called");
 
@@ -147,6 +142,8 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         return mCursor.getCount();
     }
 
+
+
     public class DrugViewHolder extends RecyclerView.ViewHolder {
 
 
@@ -176,6 +173,8 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         Log.v(TAG, "setOnClick called from DrugListAdapter");
         this.onClick = onClick;
     }
+
+
 
 
 }

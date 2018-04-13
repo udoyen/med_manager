@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public static final String TAG = LoginActivity.class.getSimpleName();
 
 
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -68,15 +69,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private EditText mFirstName;
+    private EditText mLastName;
+
+    public LoginActivity() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v(TAG, "Login onCreate called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+//        Intent uIntent = new Intent(this, CheckUserStatus.class);
+//        uIntent.putExtra("userStatus", );
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
         populateAutoComplete();
+
+        mFirstName = findViewById(R.id.firstname);
+        mLastName = findViewById(R.id.lastname);
 
         mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -328,6 +341,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
             Log.v(TAG, "Authenticating user");
             String passwd = "";
+            String mEmail = "";
             // Authentication against a database
 
             String[] projection = {

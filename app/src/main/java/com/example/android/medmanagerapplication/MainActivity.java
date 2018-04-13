@@ -37,6 +37,7 @@ import com.example.android.medmanagerapplication.drugs.ui.AddDrugActivity;
 import com.example.android.medmanagerapplication.drugs.ui.DrugDetailActivity;
 import com.example.android.medmanagerapplication.drugs.ui.DrugListAdapter;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.AlarmDeleter;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.ExpiredNotificationClearingService;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.JobSchedulerService;
 
 import java.util.Date;
@@ -68,15 +69,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         Cursor cursor;
 
-
         @Override
         public void onReceive(Context context, Intent intent) {
 
             Date currentDate = new Date();
             //TODO: Tidy
             Date yesterday = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis((1)));
-            AlarmDeleter alarmDeleter = new AlarmDeleter();
-
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 // Use this to remove expired notifications
@@ -84,31 +82,34 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                     Log.v(TAG, "Broadcast receiver fired from HomeActivity");
                     Toast.makeText(MainActivity.this, "Database to checked", Toast.LENGTH_LONG).show();
+                    Intent clearIntent = new Intent(MainActivity.this, ExpiredNotificationClearingService.class);
+                    startService(clearIntent);
 
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI,
-                                null,
-                                null,
-                                null);
-                        if (cursor != null) {
-                            if (cursor.moveToFirst()) {
-                                do {
-                                    int duration = cursor.getColumnIndex(DrugContract.DrugEntry.DURATION);
-                                    Date futureDate = new Date(System.currentTimeMillis() + duration);
-                                    int id = (int) cursor.getLong(cursor.getColumnIndex(DrugContract.DrugEntry._ID));
-
-                                    if (currentDate.after(futureDate)) {
-                                        Log.v(TAG, "do loop in receiver called: " + id);
-                                        Intent nRIntent = new Intent(MainActivity.this, AlarmDeleter.class);
-                                        nRIntent.putExtra("drugId", id);
-                                        startService(intent);
-                                    }
-
-                                } while (cursor.moveToNext());
-                            }
-                        }
-
-                    }
+//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+//                        cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI,
+//                                null,
+//                                null,
+//                                null);
+//                        if (cursor != null) {
+//                            if (cursor.moveToFirst()) {
+//                                do {
+//                                    int duration = cursor.getColumnIndex(DrugContract.DrugEntry.DURATION);
+//                                    Date futureDate = new Date(System.currentTimeMillis() + duration);
+//                                    int id = (int) cursor.getLong(cursor.getColumnIndex(DrugContract.DrugEntry._ID));
+//
+//                                    if (currentDate.after(futureDate)) {
+//                                        Log.v(TAG, "Result of date comparison: " + currentDate.after(futureDate));
+//                                        Log.v(TAG, "do loop in receiver called: " + id);
+//                                        Intent nRIntent = new Intent(MainActivity.this, AlarmDeleter.class);
+//                                        nRIntent.putExtra("drugId", id);
+//                                        startService(intent);
+//                                    }
+//
+//                                } while (cursor.moveToNext());
+//                            }
+//                        }
+//
+//                    }
 
                 }
             }
@@ -133,10 +134,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.schedule(new JobInfo.Builder(JOB_ID,
                 new ComponentName(this, JobSchedulerService.class))
-                .setBackoffCriteria(TimeUnit.DAYS.toMillis(24), JobInfo.BACKOFF_POLICY_EXPONENTIAL)
-                .setPeriodic(TimeUnit.DAYS.toMillis(24))
-//                .setMinimumLatency(15000) //TODO: Remove
-//                .setOverrideDeadline(10000)
+//                .setBackoffCriteria(30000, JobInfo.BACKOFF_POLICY_EXPONENTIAL)
+//                .setPeriodic(TimeUnit.DAYS.toMillis(24))
+                .setMinimumLatency(15000) //TODO: Remove
+                .setOverrideDeadline(10000)
                 .setRequiresCharging(false)
                 .setPersisted(true)
                 .build());
@@ -214,11 +215,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                return true;
+            case R.id.action_search:
+                return true;
+                default:
+                    break;
         }
 
         return super.onOptionsItemSelected(item);

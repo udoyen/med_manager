@@ -89,6 +89,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         profileSet = mPreferences.getBoolean("profileComplete", false);
         editor.apply();
 
+        SharedPreferences sharedPreferences = android.support.v7.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        boolean dLogin = sharedPreferences.getBoolean("login_mode", true);
+
 
         mFirstName = findViewById(R.id.firstname);
         mLastName = findViewById(R.id.lastname);
@@ -100,8 +103,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mFirstName.setVisibility(View.GONE);
             mLastName.setEnabled(false);
             mLastName.setVisibility(View.GONE);
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            LoginActivity.this.startActivity(intent);
+            if (dLogin) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                LoginActivity.this.startActivity(intent);
+                finish();
+            }
 
         } else {
             mFirstName.setEnabled(true);
@@ -482,6 +488,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     cursor.close();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     LoginActivity.this.startActivity(intent);
+                    finish();
                 } else {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override

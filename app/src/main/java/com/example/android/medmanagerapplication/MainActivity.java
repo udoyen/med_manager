@@ -38,6 +38,7 @@ import com.example.android.medmanagerapplication.drugs.ui.DrugListAdapter;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.AlarmDeleter;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.ExpiredNotificationClearingService;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.JobSchedulerService;
+import com.example.android.medmanagerapplication.user.UserProfileActivity;
 
 import java.util.Objects;
 
@@ -203,11 +204,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         switch (item.getItemId()) {
             case R.id.action_user_profile:
+                Intent iUser = new Intent(this, UserProfileActivity.class);
+                startActivity(iUser);
+                return true;
+            case R.id.action_user_settings:
+                Intent iSettings = new Intent(this, SettingsActivity.class);
+                startActivity(iSettings);
                 return true;
             case R.id.action_search:
                 return true;
             case R.id.action_addDrug:
                 onAddFabClick();
+                return true;
             default:
                 break;
         }
@@ -321,6 +329,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         unregisterReceiver(broadcastReceiver);
 
     }
-
-
 }
+

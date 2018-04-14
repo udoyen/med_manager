@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="login_mode"
+        android:summaryOff="Manual Login"
+        android:summaryOn="Automatic Login"
+        android:title="Login Mode" />
+</PreferenceScreen>

@@ -18,12 +18,13 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -31,10 +32,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.R;
+import com.example.android.medmanagerapplication.SettingsActivity;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.AlarmDeleter;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CalculateDays;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CloseSoftKeyboardHelperClass;
+import com.example.android.medmanagerapplication.user.UserProfileActivity;
 import com.travijuu.numberpicker.library.Enums.ActionEnum;
 import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 import com.travijuu.numberpicker.library.NumberPicker;
@@ -68,8 +71,8 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drug_detail_activty);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         name = findViewById(R.id.detail_NameOfDrug);
         description = findViewById(R.id.detail_description);
@@ -280,6 +283,36 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.general_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.action_user_profile:
+                Intent iUser = new Intent(this, UserProfileActivity.class);
+                startActivity(iUser);
+                return true;
+            case R.id.action_user_settings:
+                Intent iSettings = new Intent(this, SettingsActivity.class);
+                startActivity(iSettings);
+                return true;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
 
 
@@ -341,8 +374,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-        cursor.close();
-
+        loader.forceLoad();
     }
 
     public boolean deleteDrug(int drugId) {
@@ -376,10 +408,10 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         // TODO: Add DrugWidget Action here
 
         if (result == 1) {
-            Snackbar.make(view, "Success: The drug item was upated!", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Success: The drug item was updated!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else {
-            Snackbar.make(view, "Error: The drug item was not upated!", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "Error: The drug item was not updated!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
 

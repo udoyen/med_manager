@@ -13,20 +13,25 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.android.medmanagerapplication.R;
+import com.example.android.medmanagerapplication.SettingsActivity;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CalculateDays;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CloseSoftKeyboardHelperClass;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.DrugReceiver;
+import com.example.android.medmanagerapplication.user.UserProfileActivity;
 import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.text.ParseException;
@@ -66,6 +71,13 @@ public class AddDrugActivity extends AppCompatActivity {
 
         startDateEditText.setInputType(InputType.TYPE_NULL);
         endDateEditText.setInputType(InputType.TYPE_NULL);
+
+        // Prevent app closing f it's ActionBar is not set
+        ActionBar actionBar = this.getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         startDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +187,35 @@ public class AddDrugActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.general_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.action_user_profile:
+                Intent iUser = new Intent(this, UserProfileActivity.class);
+                startActivity(iUser);
+                return true;
+            case R.id.action_user_settings:
+                Intent iSettings = new Intent(this, SettingsActivity.class);
+                startActivity(iSettings);
+                return true;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**

@@ -25,5 +25,7 @@ public class UserContract {
         public static  final  String TABLE_NAME = "logins";
         public static final  String EMAIL = "email";
         public static final String PASSWORD = "password";
+        public static final String FIRSTNAME = "firstname";
+        public static final String LASTNAME = "lastname";
     }
 }

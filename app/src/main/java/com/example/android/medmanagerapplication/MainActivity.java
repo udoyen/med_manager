@@ -2,6 +2,7 @@ package com.example.android.medmanagerapplication;
 
 //import android.app.LoaderManager;
 
+import android.annotation.TargetApi;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
@@ -16,9 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -56,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String CHECK_FOR_PAST_ALARMS = "com.example.android.medmanagerapplication.helperUtilitiesClasses.jobservice.CUSTOM_INTENT";
 
+    FloatingActionButton fab;
 
     public boolean bDetail;
     Context context;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 if (Objects.equals(intent.getAction(), CHECK_FOR_PAST_ALARMS)) {
 
                     Log.v(TAG, "Broadcast receiver fired from HomeActivity");
-                    Toast.makeText(MainActivity.this, "Database to checked", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "BroadcastReceiver to clean database started", Toast.LENGTH_LONG).show();
                     Intent clearIntent = new Intent(MainActivity.this, ExpiredNotificationClearingService.class);
                     startService(clearIntent);
 
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     };
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.v(TAG, "Creating MainActivity");
@@ -123,6 +123,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mDrugsListRecylcerView.setAdapter(drugListAdapter);
 
+        fab = findViewById(R.id.update_drug_detail);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onAddFabClick();
+            }
+        });
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -143,18 +152,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }).attachToRecyclerView(mDrugsListRecylcerView);
 
 
+        mDrugsListRecylcerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                if (dy < 0 && !fab.isShown())
+                    fab.show();
+                else if (dy > 0 && fab.isShown())
+                    fab.hide();
+            }
+        });
+
+
         getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, this);
 
 
-        FloatingActionButton fab = findViewById(R.id.update_drug_detail);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                onAddFabClick(view);
-            }
-        });
     }
 
     @Override
@@ -184,13 +201,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        switch (item.getItemId()){
-            case R.id.action_settings:
+        switch (item.getItemId()) {
+            case R.id.action_user_profile:
                 return true;
             case R.id.action_search:
                 return true;
-                default:
-                    break;
+            case R.id.action_addDrug:
+                onAddFabClick();
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -199,10 +218,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     /**
      * Open the add drug Activity
-     *
-     * @param view to launch
      */
-    public void onAddFabClick(View view) {
+    public void onAddFabClick() {
 
         Intent intent = new Intent(this, AddDrugActivity.class);
         startActivity(intent);

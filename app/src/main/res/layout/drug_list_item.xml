@@ -21,37 +21,46 @@
         android:background="@drawable/round_corners"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/drugName_textView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:padding="3dp"
-            android:text="Name of Drug"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="18sp"
-            app:fontFamily="@font/roboto_bold_italic" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/interval_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:padding="3dp"
-            android:text="@string/mainPage_intervalTextView"
-            android:textSize="12sp"
-            app:fontFamily="@font/roboto_slab" />
+            <TextView
+                android:id="@+id/drugName_textView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:padding="3dp"
+                android:text="Name of Drug"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="18sp"
+                app:fontFamily="@font/roboto_bold_italic" />
+
+            <TextView
+                android:id="@+id/interval_textView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:padding="3dp"
+                android:text="@string/mainPage_intervalTextView"
+                android:textSize="12sp"
+                app:fontFamily="@font/roboto_slab" />
+
+        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
@@ -59,7 +68,7 @@
             <TextView
                 android:id="@+id/starDate_textView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:padding="4dp"
                 android:text="@string/mainView_StartTextView"
@@ -69,11 +78,11 @@
             <TextView
                 android:id="@+id/duration_textView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_gravity="end"
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
-                android:padding="1dp"
+                android:padding="4dp"
                 android:text="@string/mainView_durationTextView"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="12sp"
@@ -82,7 +91,7 @@
             <TextView
                 android:id="@+id/endDate_textView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:padding="4dp"
                 android:text="@string/mainView_EndTextView"

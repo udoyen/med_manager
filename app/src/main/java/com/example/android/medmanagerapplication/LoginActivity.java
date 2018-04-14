@@ -10,12 +10,14 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -35,6 +37,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.loginhelper.CheckUserStatus;
 import com.example.android.medmanagerapplication.user.User;
 import com.example.android.medmanagerapplication.user.UserContract;
 
@@ -48,22 +51,18 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    private User user;
+    // TODO: Remove
+    public static final String TAG = LoginActivity.class.getSimpleName();
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
-    // TODO: Remove
-    public static final String TAG = LoginActivity.class.getSimpleName();
-
-
-
+    public boolean profileSet;
+    private User user;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -82,14 +81,39 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        Intent uIntent = new Intent(this, CheckUserStatus.class);
-//        uIntent.putExtra("userStatus", );
+        Intent uIntent = new Intent(this, CheckUserStatus.class);
+        startService(uIntent);
+
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = mPreferences.edit();
+        profileSet = mPreferences.getBoolean("profileComplete", false);
+        editor.apply();
+
+
+        mFirstName = findViewById(R.id.firstname);
+        mLastName = findViewById(R.id.lastname);
+
+        // If user profile is set disable
+        // the lastname and firstname input fields
+        if (profileSet) {
+            mFirstName.setEnabled(false);
+            mFirstName.setVisibility(View.GONE);
+            mLastName.setEnabled(false);
+            mLastName.setVisibility(View.GONE);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            LoginActivity.this.startActivity(intent);
+
+        } else {
+            mFirstName.setEnabled(true);
+            mFirstName.setVisibility(View.VISIBLE);
+            mLastName.setEnabled(true);
+            mLastName.setVisibility(View.VISIBLE);
+        }
+
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
         populateAutoComplete();
 
-        mFirstName = findViewById(R.id.firstname);
-        mLastName = findViewById(R.id.lastname);
 
         mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -180,6 +204,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String firstname = mFirstName.getText().toString();
+        String lastname = mLastName.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -190,6 +216,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             focusView = mPasswordView;
             cancel = true;
         }
+
+        if (!profileSet) {
+
+            if (TextUtils.isEmpty(firstname)) {
+                mFirstName.setError("This field is required");
+                focusView = mFirstName;
+                cancel = true;
+            }
+
+
+            if (TextUtils.isEmpty(lastname)) {
+                mFirstName.setError("This field is required");
+                focusView = mLastName;
+                cancel = true;
+            }
+
+        }
+
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -210,7 +254,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password, this);
+            if (profileSet) {
+
+                mAuthTask = new UserLoginTask(email, password, this);
+
+            } else {
+
+                mAuthTask = new UserLoginTask(email, password, this, firstname, lastname);
+
+            }
             mAuthTask.execute((Void) null);
         }
     }
@@ -304,6 +356,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
 
     private interface ProfileQuery {
 
@@ -324,9 +381,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
-        private final String mPassword;
-        private final Context mContext;
+        private String mEmail;
+        private String mPassword;
+        private Context mContext;
+        private String mFirstName;
+        private String mLastName;
+
+
+        UserLoginTask(String email, String password, Context context, String firstname, String lastname) {
+            mEmail = email;
+            mPassword = password;
+            mContext = context;
+            mLastName = lastname;
+            mFirstName = firstname;
+            user = new User(1, mEmail, password, firstname, lastname);
+        }
+
 
         UserLoginTask(String email, String password, Context context) {
             mEmail = email;
@@ -387,10 +457,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected void onPostExecute(final Boolean success) {
+
             Log.v(TAG, "onPostExecute() called");
+
             mAuthTask = null;
             showProgress(false);
+
             final ContentValues values = new ContentValues();
+
             String[] projection = {
                     UserContract.UserEntry._ID,
                     UserContract.UserEntry.EMAIL
@@ -421,6 +495,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                         values.put(UserContract.UserEntry.EMAIL, user.email);
                                         values.put(UserContract.UserEntry.PASSWORD, user.password);
+                                        values.put(UserContract.UserEntry.FIRSTNAME, user.firstname);
+                                        values.put(UserContract.UserEntry.LASTNAME, user.lastname);
 
                                         // Update database
                                         getContentResolver().insert(UserContract.UserEntry.CONTENT_URI, values);
@@ -429,7 +505,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         myToast.show();
                                         Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
                                         LoginActivity.this.startActivity(myIntent);
-                                    } catch (Exception e){
+                                    } catch (Exception e) {
                                         Log.i(TAG, "Error from user creation: " + e.getMessage());
                                     }
                                     break;
@@ -460,9 +536,4 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
 }

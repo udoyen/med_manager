@@ -28,7 +28,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
 
     // Table create statements
     private static final String CREATE_TABLE_LOGINS = "CREATE TABLE "
-            + UserContract.UserEntry.TABLE_NAME + "(" + UserContract.UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + UserContract.UserEntry.EMAIL
+            + UserContract.UserEntry.TABLE_NAME + "(" + UserContract.UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + UserContract.UserEntry.FIRSTNAME + " TEXT," + UserContract.UserEntry.LASTNAME + " TEXT," + UserContract.UserEntry.EMAIL
             + " TEXT," + UserContract.UserEntry.PASSWORD + " TEXT)";
 
     private static final String CREATE_TABLE_DRUGS = "CREATE TABLE "

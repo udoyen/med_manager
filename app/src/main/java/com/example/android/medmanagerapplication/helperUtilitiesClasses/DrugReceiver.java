@@ -47,6 +47,7 @@ public class DrugReceiver extends BroadcastReceiver {
         mBuilder.setSmallIcon(R.drawable.ic_first_aid_white);
         mBuilder.setContentTitle(context.getString(R.string.notificatio_title));
         mBuilder.setContentText(drugname);
+        mBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
         mBuilder.setPriority(Notification.PRIORITY_MAX);
         mBuilder.setChannelId(DRUG_NOTIFICATION_CHANNEL);
 

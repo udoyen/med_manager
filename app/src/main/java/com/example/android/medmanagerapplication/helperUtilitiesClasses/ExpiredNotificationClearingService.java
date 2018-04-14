@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.android.medmanagerapplication.drugs.DrugContract;
@@ -28,6 +29,7 @@ public class ExpiredNotificationClearingService extends IntentService {
         super("expired_notification_clearing_service");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
@@ -37,12 +39,11 @@ public class ExpiredNotificationClearingService extends IntentService {
 
         Log.v(TAG, "ExpiredNotificationService onHandle method called");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI,
                     null,
                     null,
+                    null,
                     null);
-        }
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {

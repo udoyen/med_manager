@@ -15,7 +15,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -59,8 +58,8 @@ public class AddDrugActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_drug);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
         nameEditTextView = findViewById(R.id.nameOfDrug);
         descriptionEditTextView = findViewById(R.id.drug_description);
         startDateEditText = findViewById(R.id.startDate_editText);
@@ -205,6 +204,7 @@ public class AddDrugActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_user_profile:
                 Intent iUser = new Intent(this, UserProfileActivity.class);
+                iUser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(iUser);
                 return true;
             case R.id.action_user_settings:

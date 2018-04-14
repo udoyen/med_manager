@@ -13,7 +13,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // Prevent app closing f it's ActioBar is not set
+        // Prevent app closing f it's ActionBar is not set
         ActionBar actionBar = this.getSupportActionBar();
 
         if (actionBar != null) {

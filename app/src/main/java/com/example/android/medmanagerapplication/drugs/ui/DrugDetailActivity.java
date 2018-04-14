@@ -48,12 +48,11 @@ import java.util.Calendar;
 public class DrugDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = DrugDetailActivity.class.getSimpleName();
-
+    private static final String DRUG_ID = "DrugID";
+    private static final int DETAILPAGE_LOADER_ID = 4;
     int drugID;
     Cursor cursor;
     Context context;
-    private static final String DRUG_ID = "DrugID";
-
     EditText name;
     EditText description;
     EditText startDate;
@@ -61,10 +60,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
     TextView duration;
     NumberPicker interval;
     DatePickerDialog pickerDialog;
-
     LoaderManager loaderManager;
-    private static final int DETAILPAGE_LOADER_ID = 4;
-
     AlarmDeleter deleter;
 
     @Override
@@ -266,7 +262,6 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         });
 
 
-
         loaderManager = getSupportLoaderManager();
 
         loaderManager.initLoader(DETAILPAGE_LOADER_ID, null, this);
@@ -299,6 +294,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         switch (item.getItemId()) {
             case R.id.action_user_profile:
                 Intent iUser = new Intent(this, UserProfileActivity.class);
+                iUser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(iUser);
                 return true;
             case R.id.action_user_settings:
@@ -311,9 +307,6 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
 
 
     @NonNull
@@ -343,7 +336,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
 
-            Log.v(TAG, "Detail onLoadFinished called");
+        Log.v(TAG, "Detail onLoadFinished called");
         try {
             int dName = cursor.getColumnIndex(DrugContract.DrugEntry.NAME);
             int dDesc = cursor.getColumnIndex(DrugContract.DrugEntry.DESCRIPTION);
@@ -424,7 +417,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         String sDate = startDate.getText().toString();
         String eDate = endDate.getText().toString();
         int pValue = interval.getValue();
-        if (TextUtils.isEmpty(String.valueOf(pValue)) || TextUtils.isEmpty(nameText) || TextUtils.isEmpty(desc) || TextUtils.isEmpty(sDate) || TextUtils.isEmpty(eDate) ) {
+        if (TextUtils.isEmpty(String.valueOf(pValue)) || TextUtils.isEmpty(nameText) || TextUtils.isEmpty(desc) || TextUtils.isEmpty(sDate) || TextUtils.isEmpty(eDate)) {
             if (!CalculateDays.compareDate(sDate, eDate)) {
                 return true;
 

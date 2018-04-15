@@ -351,8 +351,8 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
                 Log.v(TAG, "cursor count after: " + cursor.getCount());
                 name.setText(cursor.getString(dName));
                 description.setText(cursor.getString(dDesc));
-                startDate.setText(cursor.getString(dStart));
-                endDate.setText(cursor.getString(dEnd));
+                startDate.setText(CalculateDays.timeInStringFormat(cursor.getLong(dStart)));
+                endDate.setText(CalculateDays.timeInStringFormat(cursor.getLong(dEnd)));
                 duration.setText(cursor.getString(dDuration));
                 interval.setValue(cursor.getInt(dInterval));
             }
@@ -382,7 +382,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
     }
 
     @SuppressLint("Assert")
-    public void updateDrugItem(View view) {
+    public void updateDrugItem(View view) throws ParseException {
 
         // TODO: Remove
         Log.v(TAG, "AddDrugActivity onCreateLoader called");
@@ -392,8 +392,8 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         ContentValues contentValues = new ContentValues();
         contentValues.put(DrugContract.DrugEntry.NAME, name.getText().toString());
         contentValues.put(DrugContract.DrugEntry.DESCRIPTION, description.getText().toString());
-        contentValues.put(DrugContract.DrugEntry.START_DATE, startDate.getText().toString());
-        contentValues.put(DrugContract.DrugEntry.END_DATE, endDate.getText().toString());
+        contentValues.put(DrugContract.DrugEntry.START_DATE, CalculateDays.dateInMillisconds(startDate.getText().toString()));
+        contentValues.put(DrugContract.DrugEntry.END_DATE, CalculateDays.dateInMillisconds(endDate.getText().toString()));
         contentValues.put(DrugContract.DrugEntry.INTERVAL, interval.getValue());
         contentValues.put(DrugContract.DrugEntry.DURATION, dur);
 

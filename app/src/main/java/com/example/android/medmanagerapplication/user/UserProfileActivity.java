@@ -1,6 +1,7 @@
 package com.example.android.medmanagerapplication.user;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,10 +14,13 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
 import com.example.android.medmanagerapplication.R;
+import com.example.android.medmanagerapplication.SettingsActivity;
 
 public class UserProfileActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -119,6 +123,38 @@ public class UserProfileActivity extends AppCompatActivity implements LoaderMana
 
         return false;
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.general_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.action_user_profile:
+                Intent iUser = new Intent(this, UserProfileActivity.class);
+                iUser.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(iUser);
+                return true;
+            case R.id.action_user_settings:
+                Intent iSettings = new Intent(this, SettingsActivity.class);
+                startActivity(iSettings);
+                return true;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {

@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.SettingsActivity;
@@ -34,7 +35,9 @@ import com.example.android.medmanagerapplication.user.UserProfileActivity;
 import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class AddDrugActivity extends AppCompatActivity {
@@ -44,6 +47,7 @@ public class AddDrugActivity extends AppCompatActivity {
     EditText nameEditTextView;
     EditText descriptionEditTextView;
     DatePickerDialog pickerDialog;
+    DatePickerDialog pickerDialog2;
     EditText startDateEditText;
     EditText endDateEditText;
     NumberPicker numberPicker;
@@ -53,6 +57,7 @@ public class AddDrugActivity extends AppCompatActivity {
     Long addDuration;
     int duration;
     String startDate;
+    String endDate;
 
 
 
@@ -60,8 +65,7 @@ public class AddDrugActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_drug);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+
         nameEditTextView = findViewById(R.id.nameOfDrug);
         descriptionEditTextView = findViewById(R.id.drug_description);
         startDateEditText = findViewById(R.id.startDate_editText);
@@ -92,9 +96,13 @@ public class AddDrugActivity extends AppCompatActivity {
                 pickerDialog = new DatePickerDialog(AddDrugActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(year, month, dayOfMonth);
                         Resources resource = getResources();
                         String text = String.format(resource.getString(R.string.date), dayOfMonth, (month + 1), year);
-                        startDateEditText.setText(text);
+                        String date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(calendar.getTime());
+
+                        startDateEditText.setText(date);
+                        Toast.makeText(AddDrugActivity.this, "start date: " + startDateEditText.getText().toString(), Toast.LENGTH_LONG).show();
                     }
                 }, year, month, day);
                 pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -103,25 +111,34 @@ public class AddDrugActivity extends AppCompatActivity {
             }
         });
 
+
+
         endDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
-
+                final Calendar calendar2 = Calendar.getInstance();
+//                calendar2.setFirstDayOfWeek(Calendar.SUNDAY);
+                int day = calendar2.get(Calendar.DAY_OF_MONTH);
+                int month = calendar2.get(Calendar.MONTH);
+                int year = calendar2.get(Calendar.YEAR);
                 // Date picker dialog
-                pickerDialog = new DatePickerDialog(AddDrugActivity.this, new DatePickerDialog.OnDateSetListener() {
+                pickerDialog2 = new DatePickerDialog(AddDrugActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                        calendar2.set(year, month, dayOfMonth);
+                        String date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(calendar2.getTime());
+
                         Resources resource = getResources();
                         String text = String.format(resource.getString(R.string.date), dayOfMonth, (month + 1), year);
-                        endDateEditText.setText(text);
+                        endDateEditText.setText(date);
+                        Toast.makeText(AddDrugActivity.this, "end date: " + endDateEditText.getText().toString(), Toast.LENGTH_LONG).show();
+
                     }
                 }, year, month, day);
-                pickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                pickerDialog.show();
+                // Disables past dates
+                pickerDialog2.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                pickerDialog2.show();
 
             }
         });
@@ -261,7 +278,9 @@ public class AddDrugActivity extends AppCompatActivity {
         // Use the variable to set the right date for the
         // alarm
         assert cursor != null;
+        cursor.moveToFirst();
         startDate = cursor.getString(cursor.getColumnIndex(DrugContract.DrugEntry.START_DATE));
+        endDate = cursor.getString(cursor.getColumnIndex(DrugContract.DrugEntry.END_DATE));
 
         int afCount = cursor.getCount();
 
@@ -326,7 +345,7 @@ public class AddDrugActivity extends AppCompatActivity {
      * Add drug medication notifications
      */
     private void addNotification() throws ParseException {
-        Log.v(TAG, "addNotifiction call");
+        Log.v(TAG, "addNotifiction call with id: " + addId + " " + "Start date: " + startDate + " " + "End date: " + endDate);
 
         // TODO: Check the Calendar for relevance
         Calendar calendar = Calendar.getInstance();

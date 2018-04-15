@@ -31,7 +31,8 @@
             android:ems="10"
             android:hint="@string/enter_end_date_hint"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/drug_description" />
+            app:layout_constraintTop_toBottomOf="@+id/drug_description"
+            android:inputType="date" />
 
         <EditText
             android:id="@+id/nameOfDrug"
@@ -112,6 +113,7 @@
             android:layout_marginLeft="28dp"
             android:layout_marginStart="28dp"
             android:layout_marginTop="24dp"
+            android:inputType="date"
             android:ems="10"
             android:hint="@string/enter_start_date"
             app:layout_constraintStart_toStartOf="parent"

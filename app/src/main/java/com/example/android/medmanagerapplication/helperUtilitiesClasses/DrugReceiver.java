@@ -35,7 +35,7 @@ public class DrugReceiver extends BroadcastReceiver {
         drugname = mPreferences.getString("drugName", "");
         editor.apply();
 
-        Log.v(TAG, "From DrugReceiver Drug id: " + " " + "Drug Name: " + drugname);
+        Log.v(TAG, "From DrugReceiver Drug id: " + drugId + " " + "Drug Name: " + drugname);
 
 
         NotificationCompat.Builder mBuilder =

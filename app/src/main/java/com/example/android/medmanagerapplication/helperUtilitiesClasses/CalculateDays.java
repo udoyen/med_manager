@@ -60,4 +60,12 @@ public class CalculateDays {
 
         return timeInMilliseconds;
     }
+
+    public static String timeInStringFormat(long time) throws ParseException {
+
+        String date = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(time);
+
+        return date;
+
+    }
 }

@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.CalculateDays;
+
+import java.text.ParseException;
 
 public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugViewHolder> {
 
@@ -76,16 +79,26 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
 
         final long drugId = mCursor.getLong(idIndex);
         String drugName = mCursor.getString(drugNameIndex);
-        String startDate = mCursor.getString(startDateIndex);
-        String endDate = mCursor.getString(endDateIndex);
+        long startDate = mCursor.getLong(startDateIndex);
+        long endDate = mCursor.getLong(endDateIndex);
         long interval = mCursor.getLong(intervalIndex);
         long duration = mCursor.getLong(durationIndex);
 
 
         String tDuration = String.format(resources.getString(R.string.mainView_durationTextView), duration);
         String text = String.format(resources.getString(R.string.mainPage_intervalTextView), interval);
-        String tStart = String.format(resources.getString(R.string.mainView_StartTextView), startDate);
-        String tEnd = String.format(resources.getString(R.string.mainView_EndTextView), endDate);
+        String tStart = null;
+        try {
+            tStart = String.format(resources.getString(R.string.mainView_StartTextView), CalculateDays.timeInStringFormat(startDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String tEnd = null;
+        try {
+            tEnd = String.format(resources.getString(R.string.mainView_EndTextView), CalculateDays.timeInStringFormat(endDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         holder.endDateTextView.setText(tEnd);
         holder.startDateTextView.setText(tStart);

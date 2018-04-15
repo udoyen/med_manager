@@ -17,14 +17,6 @@ public class AppDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "medManager";
 
 
-    // Columns Names
-    // login Table
-//    private static final String KEY_ID = "userId";
-
-
-    //Drug Table
-//    private static final String KEY_DRUG = "drugId";
-
 
     // Table create statements
     private static final String CREATE_TABLE_LOGINS = "CREATE TABLE "
@@ -34,8 +26,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_DRUGS = "CREATE TABLE "
             + DrugContract.DrugEntry.TABLE_NAME + "(" + DrugContract.DrugEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + DrugContract.DrugEntry.NAME
-            + " TEXT," + DrugContract.DrugEntry.DESCRIPTION + " TEXT," + DrugContract.DrugEntry.INTERVAL + " INTEGER," + DrugContract.DrugEntry.START_DATE + " TEXT," + DrugContract.DrugEntry.END_DATE
-            + " TEXT," + DrugContract.DrugEntry.DURATION + " INTEGER)";
+            + " TEXT," + DrugContract.DrugEntry.DESCRIPTION + " TEXT," + DrugContract.DrugEntry.INTERVAL + " INTEGER," + DrugContract.DrugEntry.START_DATE + " REAL," + DrugContract.DrugEntry.END_DATE
+            + " REAL," + DrugContract.DrugEntry.DURATION + " INTEGER)";
 
     public AppDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

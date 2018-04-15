@@ -3,8 +3,22 @@
 
     <CheckBoxPreference
         android:defaultValue="true"
-        android:key="login_mode"
-        android:summaryOff="Manual Login"
-        android:summaryOn="Automatic Login"
-        android:title="Login Mode" />
+        android:key="@string/checkbox_pref_key"
+        android:summaryOff="@string/checkbox_summary_off"
+        android:summaryOn="@string/checkbox_summary_on"
+        android:title="@string/checkbox_login_mode" />
+    <PreferenceCategory
+        android:shouldDisableView="true"
+        android:summary="%s"
+        android:title="@string/prefcat_key">
+
+        <ListPreference
+            android:defaultValue="manual"
+            android:entries="@array/sign_in_path"
+            android:entryValues="@array/sign_in_values"
+            android:key="@string/list_preference_key"
+            android:shouldDisableView="true"
+            android:summary="%s"
+            android:title="@string/list_preference_title" />
+    </PreferenceCategory>
 </PreferenceScreen>

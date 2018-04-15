@@ -38,8 +38,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.loginhelper.CheckUserStatus;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.loginhelper.GoogleSigninHelperActivity;
 import com.example.android.medmanagerapplication.user.User;
 import com.example.android.medmanagerapplication.user.UserContract;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     public boolean profileSet;
+    GoogleSignInAccount account;
     private User user;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -70,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private EditText mFirstName;
     private EditText mLastName;
+    private Button googleSiginInitiator;
 
     public LoginActivity() {
 
@@ -80,6 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Log.v(TAG, "Login onCreate called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        googleSiginInitiator = findViewById(R.id.googleSignIn_Initiator_Btn);
 
         Intent uIntent = new Intent(this, CheckUserStatus.class);
         startService(uIntent);
@@ -96,55 +102,83 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mFirstName = findViewById(R.id.firstname);
         mLastName = findViewById(R.id.lastname);
 
-        // If user profile is set disable
-        // the lastname and firstname input fields
-        if (profileSet) {
-            mFirstName.setEnabled(false);
-            mFirstName.setVisibility(View.GONE);
-            mLastName.setEnabled(false);
-            mLastName.setVisibility(View.GONE);
-            if (dLogin) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                LoginActivity.this.startActivity(intent);
-                finish();
-            }
+        SharedPreferences listShared = PreferenceManager.getDefaultSharedPreferences(this);
+        String listPref = listShared.getString("sigin_pref", "manual");
 
-        } else {
-            mFirstName.setEnabled(true);
-            mFirstName.setVisibility(View.VISIBLE);
-            mLastName.setEnabled(true);
-            mLastName.setVisibility(View.VISIBLE);
+        if (listPref.equals("manual")) {
+
+            Toast.makeText(this, "The chosen signin method is: " + listPref, Toast.LENGTH_LONG).show();
+
         }
 
-        // Set up the login form.
-        mEmailView = findViewById(R.id.email);
-        populateAutoComplete();
+        // Check for Google signin
+        if (listPref.equals("google") && account != null) {
+
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            LoginActivity.this.startActivity(intent);
+            finish();
+        } else {
+            // If user profile is set disable
+            // the lastname and firstname input fields
+            if (profileSet) {
+                mFirstName.setEnabled(false);
+                mFirstName.setVisibility(View.GONE);
+                mLastName.setEnabled(false);
+                mLastName.setVisibility(View.GONE);
+                if (dLogin) {
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(intent);
+                    finish();
+                }
+
+            } else {
+                mFirstName.setEnabled(true);
+                mFirstName.setVisibility(View.VISIBLE);
+                mLastName.setEnabled(true);
+                mLastName.setVisibility(View.VISIBLE);
+            }
+
+            // Set up the login form.
+            mEmailView = findViewById(R.id.email);
+            populateAutoComplete();
 
 
-        mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+            mPasswordView = findViewById(R.id.password);
+            mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                    if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
+                        attemptLogin();
+                        return true;
+
+                    }
+                    return false;
+                }
+            });
+
+            Button mEmailSignInButton = findViewById(R.id.emailSignIn_btn);
+            mEmailSignInButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     attemptLogin();
-                    return true;
 
                 }
-                return false;
-            }
-        });
+            });
 
-        Button mEmailSignInButton = findViewById(R.id.emailSignIn_btn);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+        }
 
-            }
-        });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        account = GoogleSignIn.getLastSignedInAccount(this);
+
     }
 
 
@@ -365,6 +399,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+    }
+
+    public void beginGoogleSignIn(View view) {
+        Intent signInIntent = new Intent(this, GoogleSigninHelperActivity.class);
+        startActivity(signInIntent);
+        finish();
 
     }
 

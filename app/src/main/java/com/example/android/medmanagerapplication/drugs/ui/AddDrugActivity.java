@@ -51,6 +51,8 @@ public class AddDrugActivity extends AppCompatActivity {
     public static long addId;
     public static String addName;
     Long addDuration;
+    int duration;
+    String startDate;
 
 
 
@@ -222,7 +224,7 @@ public class AddDrugActivity extends AppCompatActivity {
      * Create new drug item
      * @param view
      */
-    public void onCreateLoader(View view) {
+    public void onCreateLoader(View view) throws ParseException {
         Cursor cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI, null, null, null, null);
         assert cursor != null;
         int bfCount = cursor.getCount();
@@ -256,9 +258,11 @@ public class AddDrugActivity extends AppCompatActivity {
         };
 
         cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI, projection, null, null, null);
-
-
+        // Use the variable to set the right date for the
+        // alarm
         assert cursor != null;
+        startDate = cursor.getString(cursor.getColumnIndex(DrugContract.DrugEntry.START_DATE));
+
         int afCount = cursor.getCount();
 
         Log.v(TAG, "Before Notification created");
@@ -321,18 +325,16 @@ public class AddDrugActivity extends AppCompatActivity {
     /**
      * Add drug medication notifications
      */
-    private void addNotification() {
+    private void addNotification() throws ParseException {
         Log.v(TAG, "addNotifiction call");
 
+        // TODO: Check the Calendar for relevance
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 3);
-        calendar.set(Calendar.MINUTE, 30);
-        calendar.set(Calendar.SECOND, 0);
         Intent intent1 = new Intent(this, DrugReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) addId,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
         assert am != null;
-        am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), dailyInterval(numberPicker.getValue()), pendingIntent);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, CalculateDays.dateInMillisconds(startDate), dailyInterval(numberPicker.getValue()), pendingIntent);
 
     }
 

@@ -14,9 +14,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -61,7 +61,6 @@
                 android:value=".MainActivity" />
         </activity>
 
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -84,11 +83,14 @@
         <activity
             android:name=".SettingsActivity"
             android:label="User Settings"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".helperUtilitiesClasses.loginhelper.GoogleSigninHelperActivity"
+            android:label="@string/google_sigin_manifest_label">
 
         </activity>
     </application>

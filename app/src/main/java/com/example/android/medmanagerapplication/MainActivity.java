@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         drugListAdapter = new DrugListAdapter(this, null);
 
+        mDrugsListRecylcerView.scrollToPosition(0);
+
         drugListAdapter.setOnClick(this);
 
         mDrugsListRecylcerView.setAdapter(drugListAdapter);
@@ -171,6 +173,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
         getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, this);
+
+
 
 
     }
@@ -248,7 +252,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 DrugContract.DrugEntry.END_DATE,
                 DrugContract.DrugEntry.DURATION
         };
-        return new CursorLoader(this, DrugContract.DrugEntry.CONTENT_URI, projection, null, null, null);
+        return new CursorLoader(this, DrugContract.DrugEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                "_ID DESC");
     }
 
     @Override

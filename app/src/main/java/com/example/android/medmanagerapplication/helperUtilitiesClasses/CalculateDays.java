@@ -51,4 +51,13 @@ public class CalculateDays {
 
 
     }
+
+    public static long dateInMillisconds(String date) throws ParseException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        Date mDate = sdf.parse(date);
+        long timeInMilliseconds = mDate.getTime();
+
+        return timeInMilliseconds;
+    }
 }

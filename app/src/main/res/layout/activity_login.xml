@@ -151,11 +151,19 @@
                     android:textSize="18sp"
                     app:fontFamily="@font/roboto_bold_italic" />
 
-                <com.google.android.gms.common.SignInButton
-                    android:id="@+id/sign_in_button"
+                <Button
+                    android:id="@+id/googleSignIn_Initiator_Btn"
+                    style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorSecondary" />
+                    android:layout_marginTop="16dp"
+                    android:background="#ff6f00"
+                    android:onClick="beginGoogleSignIn"
+                    android:shadowColor="@color/colorSecondaryLight"
+                    android:text="Google Sigin"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
 
             </LinearLayout>

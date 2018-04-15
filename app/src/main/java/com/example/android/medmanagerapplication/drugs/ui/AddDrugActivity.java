@@ -61,8 +61,8 @@ public class AddDrugActivity extends AppCompatActivity {
     String mEndDate;
 
     DatePickerDialog.OnDateSetListener startListener, endListener;
-    Calendar sCalendar = Calendar.getInstance();
-    Calendar eCalendar = Calendar.getInstance();
+    Calendar eCalendar;
+    Calendar sCalendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +106,7 @@ public class AddDrugActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+                sCalendar = Calendar.getInstance();
                 new DatePickerDialog(AddDrugActivity.this, startListener, sCalendar
                         .get(Calendar.YEAR), sCalendar.get(Calendar.MONTH),
                         sCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -136,6 +137,7 @@ public class AddDrugActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+                eCalendar = Calendar.getInstance();
                 new DatePickerDialog(AddDrugActivity.this, endListener, eCalendar
                         .get(Calendar.YEAR), eCalendar.get(Calendar.MONTH),
                         eCalendar.get(Calendar.DAY_OF_MONTH))
@@ -162,17 +164,33 @@ public class AddDrugActivity extends AppCompatActivity {
             }
         });
 
-        startDateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//        startDateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                CloseSoftKeyboardHelperClass.hideKeyboard(AddDrugActivity.this);
+//            }
+//        });
+
+        startDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void onClick(View v) {
                 CloseSoftKeyboardHelperClass.hideKeyboard(AddDrugActivity.this);
+
             }
         });
 
-        endDateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//        endDateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                CloseSoftKeyboardHelperClass.hideKeyboard(AddDrugActivity.this);
+//            }
+//        });
+
+        endDateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void onClick(View v) {
                 CloseSoftKeyboardHelperClass.hideKeyboard(AddDrugActivity.this);
+
             }
         });
 

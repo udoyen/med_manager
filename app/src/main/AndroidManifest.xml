@@ -89,10 +89,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".helperUtilitiesClasses.loginhelper.GoogleSigninHelperActivity"
-            android:label="@string/google_sigin_manifest_label">
-
-        </activity>
     </application>
 
 </manifest>

@@ -51,7 +51,7 @@ public class GoogleAccountSignOutHelper extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
-        showToast("Called from Google Account Helper");
+        showToast("Google Account login revoke!");
     }
 
 

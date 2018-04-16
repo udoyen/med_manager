@@ -22,6 +22,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -37,6 +38,7 @@ import com.example.android.medmanagerapplication.drugs.ui.DrugDetailActivity;
 import com.example.android.medmanagerapplication.drugs.ui.DrugListAdapter;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.AlarmDeleter;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.ExpiredNotificationClearingService;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.GoogleAccountSignOutHelper;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.JobSchedulerService;
 import com.example.android.medmanagerapplication.user.UserProfileActivity;
 
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     JobScheduler jobScheduler;
     private static final int JOB_ID = 1;
+
 
     public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
@@ -175,6 +178,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         getSupportLoaderManager().initLoader(DRUG_LOADER_ID, null, this);
 
 
+        PreferenceManager.setDefaultValues(this, R.xml.pref_med_manager, false);
+
+
 
 
     }
@@ -219,6 +225,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 return true;
             case R.id.action_addDrug:
                 onAddFabClick();
+                return true;
+            case R.id.revoke_google_account_signin:
+                Intent i = new Intent(this, GoogleAccountSignOutHelper.class);
+                startService(i);
                 return true;
             default:
                 break;

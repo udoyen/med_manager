@@ -68,4 +68,11 @@ public class CalculateDays {
         return date;
 
     }
+
+    public static long dailyInterval(long drugInterval) {
+
+        int result = (int) Math.ceil(24 / drugInterval);
+
+        return TimeUnit.HOURS.toMillis(result);
+    }
 }

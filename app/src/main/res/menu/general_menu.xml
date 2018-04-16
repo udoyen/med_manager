@@ -12,6 +12,12 @@
         android:orderInCategory="100"
         android:title="@string/user_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_revoke_google_signin"
+        android:checkable="false"
+        android:orderInCategory="102"
+        android:title="Revoke Google Signin"
+        app:showAsAction="never" />
 
 
 </menu>

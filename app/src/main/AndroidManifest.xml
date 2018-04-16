@@ -3,6 +3,7 @@
     package="com.example.android.medmanagerapplication">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -75,6 +76,7 @@
             android:exported="false" />
         <service android:name=".helperUtilitiesClasses.ExpiredNotificationClearingService" />
         <service android:name=".helperUtilitiesClasses.loginhelper.CheckUserStatus" />
+        <service android:name=".helperUtilitiesClasses.GoogleAccountSignOutHelper" />
 
         <activity
             android:name=".user.UserProfileActivity"

@@ -1,7 +1,9 @@
 package com.example.android.medmanagerapplication.drugs.ui;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -37,6 +39,8 @@ import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.AlarmDeleter;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CalculateDays;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CloseSoftKeyboardHelperClass;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.DrugReceiver;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.GoogleAccountSignOutHelper;
 import com.example.android.medmanagerapplication.user.UserProfileActivity;
 import com.travijuu.numberpicker.library.Enums.ActionEnum;
 import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
@@ -44,6 +48,7 @@ import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class DrugDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -62,6 +67,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
     DatePickerDialog pickerDialog;
     LoaderManager loaderManager;
     AlarmDeleter deleter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +104,14 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
             @Override
             public void onClick(View v) {
                 final Calendar calendar = Calendar.getInstance();
+                calendar.setFirstDayOfWeek(Calendar.SUNDAY);
+                calendar.setTimeZone(TimeZone.getDefault());
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 int month = calendar.get(Calendar.MONTH);
                 int year = calendar.get(Calendar.YEAR);
 
                 // Date picker dialog
-                pickerDialog = new DatePickerDialog(DrugDetailActivity.this, new DatePickerDialog.OnDateSetListener() {
+                pickerDialog = new DatePickerDialog(DrugDetailActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         Resources resource = getResources();
@@ -120,13 +128,15 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
+                final Calendar calendar2 = Calendar.getInstance();
+                calendar2.setFirstDayOfWeek(Calendar.SUNDAY);
+                calendar2.setTimeZone(TimeZone.getDefault());
+                int day = calendar2.get(Calendar.DAY_OF_MONTH);
+                int month = calendar2.get(Calendar.MONTH);
+                int year = calendar2.get(Calendar.YEAR);
 
                 // Date picker dialog
-                pickerDialog = new DatePickerDialog(DrugDetailActivity.this, new DatePickerDialog.OnDateSetListener() {
+                pickerDialog = new DatePickerDialog(DrugDetailActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         Resources resource = getResources();
@@ -301,6 +311,10 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
                 Intent iSettings = new Intent(this, SettingsActivity.class);
                 startActivity(iSettings);
                 return true;
+            case R.id.revoke_google_account_signin:
+                Intent i3 = new Intent(this, GoogleAccountSignOutHelper.class);
+                startService(i3);
+                return true;
             default:
                 break;
         }
@@ -401,12 +415,28 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         // TODO: Add DrugWidget Action here
 
         if (result == 1) {
+            addNotification();
             Snackbar.make(view, "Success: The drug item was updated!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         } else {
             Snackbar.make(view, "Error: The drug item was not updated!", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
+
+    }
+
+
+    /**
+     * update drug medication notifications
+     */
+    private void addNotification() throws ParseException {
+        Log.v(TAG, "DrugDetailActivity addNotifiction call with id: " + drugID + " " + "Start date: " + startDate.getText().toString() + " " + "End date: " + endDate.getText().toString());
+
+        Intent intent1 = new Intent(this, DrugReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, drugID, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
+        assert am != null;
+        am.setRepeating(AlarmManager.RTC_WAKEUP, CalculateDays.dateInMillisconds(startDate.getText().toString()), CalculateDays.dailyInterval(interval.getValue()), pendingIntent);
 
     }
 

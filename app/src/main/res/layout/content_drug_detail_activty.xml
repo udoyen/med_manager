@@ -28,6 +28,8 @@
             android:layout_marginTop="24dp"
             android:ems="10"
             android:hint="@string/enter_end_date_hint"
+            android:focusable="false"
+            android:inputType="date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_description" />
 
@@ -110,6 +112,8 @@
             android:layout_marginLeft="28dp"
             android:layout_marginStart="28dp"
             android:layout_marginTop="24dp"
+            android:focusable="false"
+            android:inputType="date"
             android:ems="10"
             android:hint="@string/enter_start_date"
             app:layout_constraintStart_toStartOf="parent"

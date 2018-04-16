@@ -85,7 +85,13 @@
     <string name="checkbox_pref_key">login_mode</string>
     <string name="prefcat_key">Signin Method</string>
     <string name="google_sigin_manifest_label">Med Manager - Google SignIn</string>
-    <string name="loading">loading...</string>
+    <string name="loading">loading…</string>
     <string name="google_sigin_option">Revoke Google SignIn</string>
+    <string name="switch_key">account_revoke</string>
+    <string name="switch_title">Google Account</string>
+    <string name="switch_summary">Turn this option on or off</string>
+    <string name="revoke_google_signin">Revoke Google Signin</string>
+    <string name="isSignedIn">signedin</string>
+    <string name="userDetails">user</string>
 
 </resources>

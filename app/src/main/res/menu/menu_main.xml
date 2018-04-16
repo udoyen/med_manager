@@ -21,4 +21,9 @@
         android:title="@string/action_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/revoke_google_account_signin"
+        android:title="@string/revoke_google_signin"
+        app:showAsAction="never"
+        android:orderInCategory="103"/>
 </menu>

@@ -30,12 +30,13 @@ import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CalculateDays;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.CloseSoftKeyboardHelperClass;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.DrugReceiver;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.GoogleAccountSignOutHelper;
 import com.example.android.medmanagerapplication.user.UserProfileActivity;
 import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.text.ParseException;
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
+import java.util.TimeZone;
 
 public class AddDrugActivity extends AppCompatActivity {
 
@@ -54,6 +55,7 @@ public class AddDrugActivity extends AppCompatActivity {
 
     String hStart;
     String hEnd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,11 +85,13 @@ public class AddDrugActivity extends AppCompatActivity {
             public void onClick(View v) {
                 CloseSoftKeyboardHelperClass.hideKeyboard(AddDrugActivity.this);
                 final Calendar calendar = Calendar.getInstance();
+                calendar.setFirstDayOfWeek(Calendar.SUNDAY);
+                calendar.setTimeZone(TimeZone.getDefault());
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 int month = calendar.get(Calendar.MONTH);
                 int year = calendar.get(Calendar.YEAR);
 
-                pickerDialog = new DatePickerDialog(AddDrugActivity.this,
+                pickerDialog = new DatePickerDialog(AddDrugActivity.this, R.style.DialogTheme,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -108,11 +112,13 @@ public class AddDrugActivity extends AppCompatActivity {
             public void onClick(View v) {
                 CloseSoftKeyboardHelperClass.hideKeyboard(AddDrugActivity.this);
                 final Calendar calendar2 = Calendar.getInstance();
+                calendar2.setFirstDayOfWeek(Calendar.SUNDAY);
+                calendar2.setTimeZone(TimeZone.getDefault());
                 int day = calendar2.get(Calendar.DAY_OF_MONTH);
                 int month = calendar2.get(Calendar.MONTH);
                 int year = calendar2.get(Calendar.YEAR);
 
-                pickerDialog2 = new DatePickerDialog(AddDrugActivity.this,
+                pickerDialog2 = new DatePickerDialog(AddDrugActivity.this,  R.style.DialogTheme,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -206,6 +212,10 @@ public class AddDrugActivity extends AppCompatActivity {
                 Intent iSettings = new Intent(this, SettingsActivity.class);
                 startActivity(iSettings);
                 return true;
+            case R.id.revoke_google_account_signin:
+                Intent i2 = new Intent(this, GoogleAccountSignOutHelper.class);
+                startService(i2);
+                return true;
             default:
                 break;
         }
@@ -281,6 +291,10 @@ public class AddDrugActivity extends AppCompatActivity {
         numberPicker.setValue(1);
     }
 
+    /**
+     * Used to pass added drug infomation to
+     * setup the notification
+     */
     public void setDrugItemInfo() {
         Log.v(TAG, "setDrumInfo called");
 
@@ -324,7 +338,7 @@ public class AddDrugActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) addId, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) this.getSystemService(ALARM_SERVICE);
         assert am != null;
-        am.setRepeating(AlarmManager.RTC_WAKEUP, CalculateDays.dateInMillisconds(hStart), dailyInterval(numberPicker.getValue()), pendingIntent);
+        am.setRepeating(AlarmManager.RTC_WAKEUP, CalculateDays.dateInMillisconds(hStart), CalculateDays.dailyInterval(numberPicker.getValue()), pendingIntent);
 
     }
 
@@ -354,10 +368,5 @@ public class AddDrugActivity extends AppCompatActivity {
 
     }
 
-    public long dailyInterval(long drugInterval) {
 
-        int result = (int) Math.ceil(24 / drugInterval);
-
-        return TimeUnit.HOURS.toMillis(result);
-    }
 }

@@ -14,6 +14,8 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -62,13 +64,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     // TODO: Remove
     public static final String TAG = LoginActivity.class.getSimpleName();
+    public static final int RC_SIGN_IN = 19001;
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     public boolean profileSet;
+    public GoogleSignInClient mGoogleSignInClient;
+    public ProgressDialog mProgressDialog;
     GoogleSignInAccount account;
     private User user;
+    boolean isSignedIn;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -81,10 +87,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mFirstName;
     private EditText mLastName;
 
-
-    public static final int RC_SIGN_IN = 19001;
-    public GoogleSignInClient mGoogleSignInClient;
-    public ProgressDialog mProgressDialog;
 
     public LoginActivity() {
 
@@ -416,12 +418,120 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             case R.id.sign_in_button:
                 signIn();
                 break;
-            case R.id.cancel_Button:
-                finish();
-                break;
+
         }
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+
+            isAvailable = true;
+
+
+        }
+
+        return isAvailable;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        SharedPreferences.Editor editor = getSharedPreferences(getString(R.string.userDetails), MODE_PRIVATE).edit();
+        editor.putBoolean(getString(R.string.isSignedIn), true);
+        editor.apply();
+        if (!prefs.getBoolean(getString(R.string.isSignedIn), true)) {
+            signOut();
+        }
+
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    public void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage(getString(R.string.loading));
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    public void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+    }
+
+    public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            hideProgressDialog();
+            // Signed in successfully, show authenticated UI.
+            goToMainPage(account);
+
+        } catch (ApiException e) {
+            hideProgressDialog();
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            Snackbar.make(findViewById(R.id.login_container), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+
+        }
+    }
+
+    public void signIn() {
+        showProgressDialog();
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    public void signOut() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Snackbar.make(findViewById(R.id.login_container), "You have revoked your google signin.", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public void goToMainPage(@Nullable GoogleSignInAccount account) {
+        if (account != null) {
+            Intent goToMain = new Intent(this, MainActivity.class);
+            startActivity(goToMain);
+            finish();
+        } else {
+            Intent goToMain = new Intent(this, LoginActivity.class);
+            startActivity(goToMain);
+            finish();
+        }
+    }
 
     private interface ProfileQuery {
 
@@ -595,100 +705,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
-        }
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-    }
-
-
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setMessage(getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.hide();
-        }
-    }
-
-
-    public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            hideProgressDialog();
-            // Signed in successfully, show authenticated UI.
-            goToMainPage(account);
-
-        } catch (ApiException e) {
-            hideProgressDialog();
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            Snackbar.make(findViewById(R.id.siginView), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-
-        }
-    }
-
-
-
-
-    public void signIn() {
-        showProgressDialog();
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    public void signOut(View view) {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent backIntent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(backIntent);
-                        finish();
-                    }
-                });
-    }
-
-
-
-    public void goToMainPage(@Nullable GoogleSignInAccount account) {
-        if (account != null) {
-            Intent goToMain = new Intent(this, MainActivity.class);
-            startActivity(goToMain);
-            finish();
-        } else {
-            Intent goToMain = new Intent(this, LoginActivity.class);
-            startActivity(goToMain);
-            finish();
         }
     }
 

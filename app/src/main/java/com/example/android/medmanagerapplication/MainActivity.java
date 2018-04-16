@@ -25,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
@@ -46,7 +47,7 @@ import java.util.Objects;
 
 //import android.content.Loader;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, DrugListAdapter.OnItemClicked {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, DrugListAdapter.OnItemClicked, SearchView.OnQueryTextListener {
 
     private static final int DRUG_LIST_ITEMS = 100;
     private DrugListAdapter drugListAdapter;
@@ -346,6 +347,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onPause();
         unregisterReceiver(broadcastReceiver);
 
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 }
 

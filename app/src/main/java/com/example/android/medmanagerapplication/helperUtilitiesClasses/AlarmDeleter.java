@@ -10,9 +10,9 @@ import android.util.Log;
 
 public class AlarmDeleter extends IntentService {
 
-    public static final String TAG = AlarmDeleter.class.getSimpleName();
+    private static final String TAG = AlarmDeleter.class.getSimpleName();
 
-    Context context;
+    private Context context;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.

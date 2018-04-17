@@ -1,22 +1,15 @@
 package com.example.android.medmanagerapplication.drugs;
 
-public class Drugs {
-    public long drugId;
-    public String name;
-    public String description;
-    public int interval;
-    public String startDate;
-    public String endDate;
-    public long duration;
+class Drugs {
 
     public Drugs (long durgId, String name, String description, int interval, String startDate, String endDate, long duration) {
-        this.drugId = durgId;
-        this.name = name;
-        this.description = description;
-        this.interval = interval;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.duration = duration;
+        long drugId = durgId;
+        String name1 = name;
+        String description1 = description;
+        int interval1 = interval;
+        String startDate1 = startDate;
+        String endDate1 = endDate;
+        long duration1 = duration;
     }
 }
 

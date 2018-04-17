@@ -16,7 +16,7 @@
         android:id="@+id/action_revoke_google_signin"
         android:checkable="false"
         android:orderInCategory="102"
-        android:title="Revoke Google Signin"
+        android:title="@string/revoke_google_signin"
         app:showAsAction="never" />
 
 

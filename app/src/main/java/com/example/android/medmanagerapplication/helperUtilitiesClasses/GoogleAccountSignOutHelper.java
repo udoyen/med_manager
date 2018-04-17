@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
@@ -16,8 +15,7 @@ import com.example.android.medmanagerapplication.R;
 
 public class GoogleAccountSignOutHelper extends IntentService {
 
-    Context context;
-    Resources resources;
+    private Context context;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -28,7 +26,8 @@ public class GoogleAccountSignOutHelper extends IntentService {
         super("google account helper");
     }
 
-    public void showToast(String message) {
+    @SuppressWarnings("SameParameterValue")
+    private void showToast(String message) {
         final String msg = message;
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -42,6 +41,7 @@ public class GoogleAccountSignOutHelper extends IntentService {
         });
     }
 
+    //TODO: Delete when done
     public void logOutUser () {
 
         Toast.makeText(context, "Called from Google Account Helper", Toast.LENGTH_LONG).show();

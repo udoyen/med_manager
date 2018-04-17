@@ -15,9 +15,6 @@ public class AlarmCheckerReceiver extends BroadcastReceiver {
 
     }
 
-    // TODO: Remove
-    private static final String TAG = AlarmCheckerReceiver.class.getSimpleName();
-
     private static final String CHECK_FOR_PAST_ALARMS = "com.example.android.medmanagerapplication.helperUtilitiesClasses.jobservice.CUSTOM_INTENT";
 
 

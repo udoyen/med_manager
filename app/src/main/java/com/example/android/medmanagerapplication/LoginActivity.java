@@ -2,6 +2,7 @@ package com.example.android.medmanagerapplication;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.app.ProgressDialog;
@@ -63,16 +64,16 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener {
 
     // TODO: Remove
-    public static final String TAG = LoginActivity.class.getSimpleName();
-    public static final int RC_SIGN_IN = 19001;
+    private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final int RC_SIGN_IN = 19001;
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-    public boolean profileSet;
-    public GoogleSignInClient mGoogleSignInClient;
-    public ProgressDialog mProgressDialog;
-    GoogleSignInAccount account;
+    private boolean profileSet;
+    private GoogleSignInClient mGoogleSignInClient;
+    private ProgressDialog mProgressDialog;
+    private GoogleSignInAccount account;
     private User user;
     boolean isSignedIn;
     /**
@@ -335,32 +336,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mProgressView.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
     @Override
@@ -407,12 +401,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
@@ -422,9 +410,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    // TODO: Check network before doing google signin
     private boolean isNetworkAvailable() {
         ConnectivityManager manager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert manager != null;
         NetworkInfo networkInfo = manager.getActiveNetworkInfo();
         boolean isAvailable = false;
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -471,7 +461,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    public void showProgressDialog() {
+    private void showProgressDialog() {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMessage(getString(R.string.loading));
@@ -481,13 +471,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressDialog.show();
     }
 
-    public void hideProgressDialog() {
+    private void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.hide();
         }
     }
 
-    public void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
 
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
@@ -505,13 +495,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    public void signIn() {
+    private void signIn() {
         showProgressDialog();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    public void signOut() {
+    private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
@@ -521,7 +511,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 });
     }
 
-    public void goToMainPage(@Nullable GoogleSignInAccount account) {
+    private void goToMainPage(@Nullable GoogleSignInAccount account) {
         if (account != null) {
             Intent goToMain = new Intent(this, MainActivity.class);
             startActivity(goToMain);
@@ -550,11 +540,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    @SuppressLint("StaticFieldLeak")
+    class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private String mEmail;
-        private String mPassword;
-        private Context mContext;
+        private final String mEmail;
+        private final String mPassword;
+        private final Context mContext;
         private String mFirstName;
         private String mLastName;
 
@@ -613,6 +604,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         return false;
                     }
                 } else {
+                    //noinspection UnusedAssignment
                     passwd = mPassword;
                     return true;
                 }

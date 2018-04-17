@@ -1,5 +1,6 @@
 package com.example.android.medmanagerapplication.drugs;
 
+import android.annotation.TargetApi;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -8,6 +9,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -15,10 +17,11 @@ import com.example.android.medmanagerapplication.database.AppDbHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class DrugContentProvider extends ContentProvider {
-    public static final int DRUGS = 200;
-    public static final int DRUG_ID = 201;
+    private static final int DRUGS = 200;
+    private static final int DRUG_ID = 201;
 
 
     // Declare a static variable for the Uri matcher that you construct
@@ -46,9 +49,10 @@ public class DrugContentProvider extends ContentProvider {
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
-    /***
+    /*
      * Handles requests for data by URI
      *
      * @param uri
@@ -95,7 +99,7 @@ public class DrugContentProvider extends ContentProvider {
         }
 
         // Set a notification URI on the Cursor and return that Cursor
-        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        retCursor.setNotificationUri(Objects.requireNonNull(getContext()).getContentResolver(), uri);
 
         // Return the desired Cursor
         return retCursor;
@@ -109,9 +113,10 @@ public class DrugContentProvider extends ContentProvider {
         return null;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
-    /***
+    /*
      * Handles requests to insert a single new row of data
      *
      * @param uri
@@ -140,7 +145,7 @@ public class DrugContentProvider extends ContentProvider {
         }
 
         // Notify the resolver if the uri has been changed, and return the newly inserted URI
-        getContext().getContentResolver().notifyChange(uri, null);
+        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
 
         // Return constructed uri (this points to the newly inserted row of data)
         return returnUri;
@@ -149,11 +154,12 @@ public class DrugContentProvider extends ContentProvider {
     /***
      * Deletes a single row of data
      *
-     * @param uri
-     * @param selection
-     * @param selectionArgs
+     * @param uri the required uri
+     * @param selection columns of interest
+     * @param selectionArgs where clause values
      * @return number of rows affected
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         // Get access to the database and write URI matching code to recognize a single item
@@ -175,7 +181,7 @@ public class DrugContentProvider extends ContentProvider {
         // Notify the resolver of a change and return the number of items deleted
         if (drugDeleted != 0) {
             // A plant (or more) was deleted, set notification
-            getContext().getContentResolver().notifyChange(uri, null);
+            Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
         }
         // Return the number of plant deleted
         return drugDeleted;
@@ -184,11 +190,12 @@ public class DrugContentProvider extends ContentProvider {
     /***
      * Updates a single row of data
      *
-     * @param uri
-     * @param selection
-     * @param selectionArgs
+     * @param uri the required uri
+     * @param selection the columns of interest
+     * @param selectionArgs the where clause values
      * @return number of rows affected
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
@@ -210,8 +217,7 @@ public class DrugContentProvider extends ContentProvider {
                 // Append any existing selection options to the ID filter
                 if (selectionArgs == null) selectionArgs = new String[]{id};
                 else {
-                    ArrayList<String> selectionArgsList = new ArrayList<String>();
-                    selectionArgsList.addAll(Arrays.asList(selectionArgs));
+                    ArrayList<String> selectionArgsList = new ArrayList<>(Arrays.asList(selectionArgs));
                     selectionArgsList.add(id);
                     selectionArgs = selectionArgsList.toArray(new String[selectionArgsList.size()]);
                 }
@@ -225,7 +231,7 @@ public class DrugContentProvider extends ContentProvider {
         // Notify the resolver of a change and return the number of items updated
         if (plantsUpdated != 0) {
             // A place (or more) was updated, set notification
-            getContext().getContentResolver().notifyChange(uri, null);
+            Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
         }
         // Return the number of places deleted
         return plantsUpdated;

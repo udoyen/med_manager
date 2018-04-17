@@ -2,7 +2,6 @@ package com.example.android.medmanagerapplication.helperUtilitiesClasses.loginhe
 
 import android.annotation.SuppressLint;
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -13,10 +12,7 @@ import android.util.Log;
 import com.example.android.medmanagerapplication.user.UserContract;
 
 public class CheckUserStatus extends IntentService {
-    public static final String TAG = CheckUserStatus.class.getSimpleName();
-
-    Cursor cursor;
-    Context context;
+    private static final String TAG = CheckUserStatus.class.getSimpleName();
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -33,7 +29,7 @@ public class CheckUserStatus extends IntentService {
 
         Log.v(TAG, "CheckUserStatus onHandleIntent called");
 
-        cursor = getContentResolver().query(UserContract.UserEntry.CONTENT_URI,
+        Cursor cursor = getContentResolver().query(UserContract.UserEntry.CONTENT_URI,
                 null,
                 null,
                 null,

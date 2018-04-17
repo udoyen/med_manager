@@ -11,7 +11,7 @@ public class DrugContract {
     public static final String AUTHORITY = "com.example.android.medmanagerapplication.drugs";
 
     // The base content URI = "content://" + <authority>
-    public static final Uri DRUG_BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+    private static final Uri DRUG_BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 
     // Define possible paths for accessing data in this contract
     public static final String PATH_DRUG = "drugs";

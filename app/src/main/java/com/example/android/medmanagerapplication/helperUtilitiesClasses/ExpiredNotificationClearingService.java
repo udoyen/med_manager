@@ -1,7 +1,6 @@
 package com.example.android.medmanagerapplication.helperUtilitiesClasses;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
@@ -16,10 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ExpiredNotificationClearingService extends IntentService {
 
-    public static final String TAG = ExpiredNotificationClearingService.class.getSimpleName();
+    private static final String TAG = ExpiredNotificationClearingService.class.getSimpleName();
 
-    Cursor cursor;
-    Context context;
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -39,11 +36,11 @@ public class ExpiredNotificationClearingService extends IntentService {
 
         Log.v(TAG, "ExpiredNotificationService onHandle method called");
 
-            cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI,
-                    null,
-                    null,
-                    null,
-                    null);
+        Cursor cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -62,6 +59,9 @@ public class ExpiredNotificationClearingService extends IntentService {
                 } while (cursor.moveToNext());
             }
         }
+
+        assert cursor != null;
+        cursor.close();
 
     }
 }

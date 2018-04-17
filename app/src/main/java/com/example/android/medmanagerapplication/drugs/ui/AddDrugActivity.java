@@ -40,21 +40,20 @@ import java.util.TimeZone;
 
 public class AddDrugActivity extends AppCompatActivity {
 
-    public static final String TAG = AddDrugActivity.class.getName();
+    private static final String TAG = AddDrugActivity.class.getName();
 
-    EditText nameEditTextView;
-    EditText descriptionEditTextView;
-    DatePickerDialog pickerDialog;
-    DatePickerDialog pickerDialog2;
-    EditText startDateEditText;
-    EditText endDateEditText;
-    NumberPicker numberPicker;
+    private EditText nameEditTextView;
+    private EditText descriptionEditTextView;
+    private DatePickerDialog pickerDialog;
+    private DatePickerDialog pickerDialog2;
+    private EditText startDateEditText;
+    private EditText endDateEditText;
+    private NumberPicker numberPicker;
     Context context;
-    public static long addId;
-    public static String addName;
+    private static long addId;
 
-    String hStart;
-    String hEnd;
+    private String hStart;
+    private String hEnd;
 
 
     @Override
@@ -226,9 +225,9 @@ public class AddDrugActivity extends AppCompatActivity {
     /**
      * Create new drug item
      *
-     * @param view
+     * @param view for action
      */
-    public void onCreateLoader(View view) throws ParseException {
+    private void onCreateLoader(View view) throws ParseException {
         Cursor cursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI, null, null, null, null);
         assert cursor != null;
         int bfCount = cursor.getCount();
@@ -295,7 +294,7 @@ public class AddDrugActivity extends AppCompatActivity {
      * Used to pass added drug infomation to
      * setup the notification
      */
-    public void setDrugItemInfo() {
+    private void setDrugItemInfo() {
         Log.v(TAG, "setDrumInfo called");
 
         String[] projection = {
@@ -313,7 +312,7 @@ public class AddDrugActivity extends AppCompatActivity {
         Log.v(TAG, "About to get information");
         assert cursor != null;
         cursor.moveToPosition(cursor.getCount() - 1);
-        addName = cursor.getString(cursor.getColumnIndex(DrugContract.DrugEntry.NAME));
+        String addName = cursor.getString(cursor.getColumnIndex(DrugContract.DrugEntry.NAME));
         addId = cursor.getLong(cursor.getColumnIndex(DrugContract.DrugEntry._ID));
         Log.v(TAG, "Name of item: " + addName + "" + "Id of item: " + addId);
 
@@ -348,23 +347,15 @@ public class AddDrugActivity extends AppCompatActivity {
      *
      * @return boolean
      */
-    public boolean checkUserInputs() throws ParseException {
+    private boolean checkUserInputs() throws ParseException {
 
         String name = nameEditTextView.getText().toString();
         String desc = descriptionEditTextView.getText().toString();
         String sDate = startDateEditText.getText().toString();
         String eDate = endDateEditText.getText().toString();
         int pValue = numberPicker.getValue();
-        if (TextUtils.isEmpty(String.valueOf(pValue)) || TextUtils.isEmpty(name) || TextUtils.isEmpty(desc) || TextUtils.isEmpty(sDate) || TextUtils.isEmpty(eDate)) {
-            if (!CalculateDays.compareDate(sDate, eDate)) {
+        return (TextUtils.isEmpty(String.valueOf(pValue)) || TextUtils.isEmpty(name) || TextUtils.isEmpty(desc) || TextUtils.isEmpty(sDate) || TextUtils.isEmpty(eDate)) && !CalculateDays.compareDate(sDate, eDate);
 
-                return true;
-
-            }
-        }
-
-
-        return false;
 
     }
 

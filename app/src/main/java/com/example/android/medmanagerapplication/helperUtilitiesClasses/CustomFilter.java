@@ -6,10 +6,10 @@ import com.example.android.medmanagerapplication.drugs.ui.DrugListAdapter;
 
 import java.util.ArrayList;
 
-public class CustomFilter extends Filter {
+class CustomFilter extends Filter {
 
-    DrugListAdapter adapter;
-    ArrayList<String> filterList;
+    private DrugListAdapter adapter;
+    private ArrayList<String> filterList;
 
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {

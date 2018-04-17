@@ -14,7 +14,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".drugs.ui.DrugDetailActivity"
         tools:showIn="@layout/activity_drug_detail_activty">
@@ -161,7 +161,7 @@
             android:layout_marginTop="28dp"
             android:fontFamily="@font/roboto_bold_italic"
             android:maxLines="100"
-            android:text="Medication Duration"
+            android:text="@string/medication_duration"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_Number_picker" />
@@ -177,8 +177,7 @@
             android:ems="10"
             android:fontFamily="@font/roboto_bold_italic"
             android:gravity="center_vertical|center_horizontal"
-            android:inputType="textPersonName"
-            android:text="1"
+            android:text="@string/_1"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@+id/detailDurationLabel_TextView"
             app:layout_constraintHorizontal_bias="1.0"

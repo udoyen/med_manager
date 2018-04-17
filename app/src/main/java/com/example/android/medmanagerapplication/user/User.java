@@ -1,9 +1,9 @@
 package com.example.android.medmanagerapplication.user;
 
 public class User {
-    public long userId;
-    public String email;
-    public String password;
+    private final long userId;
+    public final String email;
+    public final String password;
     public String lastname;
     public String firstname;
 

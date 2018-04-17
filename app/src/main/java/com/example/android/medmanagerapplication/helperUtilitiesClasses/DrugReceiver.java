@@ -18,11 +18,9 @@ import com.example.android.medmanagerapplication.R;
 
 public class DrugReceiver extends BroadcastReceiver {
 
-    public static final String TAG = DrugReceiver.class.getSimpleName();
+    private static final String TAG = DrugReceiver.class.getSimpleName();
 
-    public static final String DRUG_NOTIFICATION_CHANNEL = "drug_channel";
-    public String drugname;
-    public int drugId;
+    private static final String DRUG_NOTIFICATION_CHANNEL = "drug_channel";
 
 
     @Override
@@ -31,8 +29,8 @@ public class DrugReceiver extends BroadcastReceiver {
 
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = mPreferences.edit();
-        drugId = mPreferences.getInt("drugId", 1);
-        drugname = mPreferences.getString("drugName", "");
+        int drugId = mPreferences.getInt("drugId", 1);
+        String drugname = mPreferences.getString("drugName", "");
         editor.apply();
 
         Log.v(TAG, "From DrugReceiver Drug id: " + drugId + " " + "Drug Name: " + drugname);

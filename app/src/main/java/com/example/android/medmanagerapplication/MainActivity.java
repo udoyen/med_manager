@@ -44,31 +44,27 @@ import com.example.android.medmanagerapplication.helperUtilitiesClasses.JobSched
 import com.example.android.medmanagerapplication.user.UserProfileActivity;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 //import android.content.Loader;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, DrugListAdapter.OnItemClicked, SearchView.OnQueryTextListener {
 
-    private static final int DRUG_LIST_ITEMS = 100;
     private DrugListAdapter drugListAdapter;
     private RecyclerView mDrugsListRecylcerView;
 
-    public static final String TAG = MainActivity.class.getName();
+    private static final String TAG = MainActivity.class.getName();
 
     private static final int DRUG_LOADER_ID = 3;
 
     private static final String CHECK_FOR_PAST_ALARMS = "com.example.android.medmanagerapplication.helperUtilitiesClasses.jobservice.CUSTOM_INTENT";
 
-    FloatingActionButton fab;
+    private FloatingActionButton fab;
 
-    public boolean bDetail;
-    Context context;
-
-    JobScheduler jobScheduler;
     private static final int JOB_ID = 1;
 
 
-    public BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -104,13 +100,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         registerReceiver(this.broadcastReceiver, intentFilter);
 
         // Initialize JobScheduler
-        jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.schedule(new JobInfo.Builder(JOB_ID,
                 new ComponentName(this, JobSchedulerService.class))
-//                .setBackoffCriteria(30000, JobInfo.BACKOFF_POLICY_EXPONENTIAL)
-//                .setPeriodic(TimeUnit.DAYS.toMillis(24))
-                .setMinimumLatency(15000) //TODO: Remove
-                .setOverrideDeadline(10000)
+                .setBackoffCriteria(30000, JobInfo.BACKOFF_POLICY_EXPONENTIAL)
+                .setPeriodic(TimeUnit.DAYS.toMillis(24))
                 .setRequiresCharging(false)
                 .setPersisted(true)
                 .build());
@@ -160,10 +154,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
         mDrugsListRecylcerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -242,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     /**
      * Open the add drug Activity
      */
-    public void onAddFabClick() {
+    private void onAddFabClick() {
 
         Intent intent = new Intent(this, AddDrugActivity.class);
         startActivity(intent);
@@ -322,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
-    public boolean deleteDrug(int drugId) {
+    private boolean deleteDrug(int drugId) {
 
         Uri SINGLE_DRUG_DELETE = ContentUris.withAppendedId(
                 DrugContract.DrugEntry.CONTENT_URI, drugId

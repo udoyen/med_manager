@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -55,18 +54,14 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
     private static final String TAG = DrugDetailActivity.class.getSimpleName();
     private static final String DRUG_ID = "DrugID";
     private static final int DETAILPAGE_LOADER_ID = 4;
-    int drugID;
-    Cursor cursor;
-    Context context;
-    EditText name;
-    EditText description;
-    EditText startDate;
-    EditText endDate;
-    TextView duration;
-    NumberPicker interval;
-    DatePickerDialog pickerDialog;
-    LoaderManager loaderManager;
-    AlarmDeleter deleter;
+    private int drugID;
+    private EditText name;
+    private EditText description;
+    private EditText startDate;
+    private EditText endDate;
+    private TextView duration;
+    private NumberPicker interval;
+    private DatePickerDialog pickerDialog;
 
 
     @Override
@@ -272,7 +267,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         });
 
 
-        loaderManager = getSupportLoaderManager();
+        LoaderManager loaderManager = getSupportLoaderManager();
 
         loaderManager.initLoader(DETAILPAGE_LOADER_ID, null, this);
 
@@ -384,7 +379,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         loader.forceLoad();
     }
 
-    public boolean deleteDrug(int drugId) {
+    private boolean deleteDrug(int drugId) {
 
         Uri SINGLE_DRUG_DELETE = ContentUris.withAppendedId(
                 DrugContract.DrugEntry.CONTENT_URI, drugId
@@ -396,7 +391,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
     }
 
     @SuppressLint("Assert")
-    public void updateDrugItem(View view) throws ParseException {
+    private void updateDrugItem(View view) throws ParseException {
 
         // TODO: Remove
         Log.v(TAG, "AddDrugActivity onCreateLoader called");
@@ -440,22 +435,15 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
 
     }
 
-    public boolean checkUserInputs() throws ParseException {
+    private boolean checkUserInputs() throws ParseException {
 
         String nameText = name.getText().toString();
         String desc = description.getText().toString();
         String sDate = startDate.getText().toString();
         String eDate = endDate.getText().toString();
         int pValue = interval.getValue();
-        if (TextUtils.isEmpty(String.valueOf(pValue)) || TextUtils.isEmpty(nameText) || TextUtils.isEmpty(desc) || TextUtils.isEmpty(sDate) || TextUtils.isEmpty(eDate)) {
-            if (!CalculateDays.compareDate(sDate, eDate)) {
-                return true;
+        return (TextUtils.isEmpty(String.valueOf(pValue)) || TextUtils.isEmpty(nameText) || TextUtils.isEmpty(desc) || TextUtils.isEmpty(sDate) || TextUtils.isEmpty(eDate)) && !CalculateDays.compareDate(sDate, eDate);
 
-            }
-        }
-
-
-        return false;
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.android.medmanagerapplication.user;
 
+import android.annotation.TargetApi;
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -8,24 +9,27 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.example.android.medmanagerapplication.database.AppDbHelper;
 
+import java.util.Objects;
+
 public class UserContentProvider extends ContentProvider {
     // Define final integer constants for the directory of plants and a single item.
     // It's convention to use 100, 200, 300, etc for directories,
     // and related ints (101, 102, ..) for items in that directory.
-    public static final int USER = 100;
-    public static final int USER_ID = 101;
+    private static final int USER = 100;
+    private static final int USER_ID = 101;
 
     // Decaler a static variable for the Uri matcher that you construct
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private static final String TAG = UserContentProvider.class.getName();
 
     // Define a static buildUriMatcher that associates URI's with their int match
-    public static UriMatcher buildUriMatcher () {
+    private static UriMatcher buildUriMatcher() {
         //Initialize a UriMatcher
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -48,6 +52,7 @@ public class UserContentProvider extends ContentProvider {
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
@@ -85,7 +90,7 @@ public class UserContentProvider extends ContentProvider {
         }
 
         // Set a notification URI on the Cursor and return that Cursor
-        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        retCursor.setNotificationUri(Objects.requireNonNull(getContext()).getContentResolver(), uri);
 
         // Return the desired Cursor
         return retCursor;
@@ -97,6 +102,7 @@ public class UserContentProvider extends ContentProvider {
         return null;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
@@ -122,7 +128,7 @@ public class UserContentProvider extends ContentProvider {
 
 
         // Notify the resolver if the uri has been changed, and return the newly inserted URI
-        getContext().getContentResolver().notifyChange(uri, null);
+        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
 
         // Return constructed uri (this points to the newly inserted row of data)
         return returnUri;
@@ -133,6 +139,7 @@ public class UserContentProvider extends ContentProvider {
         return 0;
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         final SQLiteDatabase db = mUserDbHelper.getWritableDatabase();
@@ -159,7 +166,7 @@ public class UserContentProvider extends ContentProvider {
         // Notify the resolver of a change and return the number of items updated
         if (userUpdated != 0) {
             // A place (or more) was updated, set notification
-            getContext().getContentResolver().notifyChange(uri, null);
+            Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
         }
         // Return the number of places deleted
         return userUpdated;

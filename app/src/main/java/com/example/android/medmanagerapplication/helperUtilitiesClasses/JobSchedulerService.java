@@ -13,10 +13,10 @@ import android.util.Log;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class JobSchedulerService extends JobService{
 
-    public static final String TAG = JobSchedulerService.class.getSimpleName();
+    private static final String TAG = JobSchedulerService.class.getSimpleName();
 
     private static final String CHECK_FOR_PAST_ALARMS = "com.example.android.medmanagerapplication.helperUtilitiesClasses.jobservice.CUSTOM_INTENT";
-    private Handler mJobHandler = new Handler(new Handler.Callback() {
+    private final Handler mJobHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             Log.v(TAG, "handleMessage called from Jobscheduler service");
@@ -40,7 +40,7 @@ public class JobSchedulerService extends JobService{
         return true;
     }
 
-    public void broadcastIntent () {
+    private void broadcastIntent() {
         Log.v(TAG, "broadcastIntent called from Jobscheduler service");
 
         Intent intent = new Intent(String.valueOf(this));

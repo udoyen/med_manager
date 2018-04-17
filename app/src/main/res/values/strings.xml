@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Med Manager</string>
-    <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -32,51 +31,24 @@
     <string name="name_of_drug_hint">Name of Drug</string>
     <string name="enter_end_date_hint">Enter end date</string>
     <string name="mainPage_intervalTextView">Medication Interval  %d</string>
-    <string name="mainView_durationTextView">Duration %d days</string>
+    <plurals name="mainView_durationTextView">
+        <item quantity="zero">Duration 0 days</item>
+        <item quantity="one">Duration One day</item>
+        <item quantity="other">Duration %d days</item>
+    </plurals>
     <string name="mainView_StartTextView">Starts: %s</string>
     <string name="mainView_EndTextView">Ends: %s</string>
     <string name="notificatio_title">Medication Notice</string>
-    <string name="title_activity_home">HomeActivity</string>
     <string name="action_search">Search</string>
     <string name="med_manager_signin">Med Manager Signin</string>
     <string name="add_new_drug">Add New Drug</string>
     <string name="name_of_drug_2">Name of Drug:</string>
     <string name="title_activity_user_profile">User Profile</string>
-    <string name="title_activity_settings">User Settings</string>
 
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-
-    <string-array name="multi_select_list_preference_default_value" />
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
     <string name="user_settings">User Settings</string>
     <string name="email_address">email Address</string>
     <string name="password">Password:</string>
-    <string name="med_manager_user_profile">Med Manager User Profile</string>
-    <string name="show_password">Show Password</string>
+    <string name="med_manager_user_profile">User Profile</string>
     <string name="list_preference_key">sigin_pref</string>
     <string name="checkbox_login_mode">Login Mode</string>
     <string name="checkbox_summary_off">Manual Login</string>
@@ -84,14 +56,21 @@
     <string name="list_preference_title">SignIn Path</string>
     <string name="checkbox_pref_key">login_mode</string>
     <string name="prefcat_key">Signin Method</string>
-    <string name="google_sigin_manifest_label">Med Manager - Google SignIn</string>
     <string name="loading">loading…</string>
-    <string name="google_sigin_option">Revoke Google SignIn</string>
-    <string name="switch_key">account_revoke</string>
-    <string name="switch_title">Google Account</string>
-    <string name="switch_summary">Turn this option on or off</string>
     <string name="revoke_google_signin">Revoke Google Signin</string>
     <string name="isSignedIn">signedin</string>
     <string name="userDetails">user</string>
+    <string name="_1">1</string>
+    <string name="medication_duration">Medication Duration</string>
+    <string name="or">OR</string>
+    <string name="dash">—</string>
+
+    <string name="plus_sign">+</string>
+
+    <string name="first_name_label">First Name:</string>
+    <string name="last_name_label">Last Name:</string>
+    <string name="email_address_label">Email Address:</string>
+    <string name="password_label">Password</string>
+    <string name="mainduration_TextView">Duration</string>
 
 </resources>

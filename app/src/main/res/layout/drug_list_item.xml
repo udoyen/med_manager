@@ -26,7 +26,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -41,10 +42,11 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
                 android:padding="3dp"
-                android:text="Name of Drug"
+                android:text="@string/name_of_drug"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18sp"
-                app:fontFamily="@font/roboto_bold_italic" />
+                app:fontFamily="@font/roboto_bold_italic"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/interval_textView"
@@ -73,7 +75,8 @@
                 android:padding="4dp"
                 android:text="@string/mainView_StartTextView"
                 android:textSize="12sp"
-                app:fontFamily="@font/roboto_slab" />
+                app:fontFamily="@font/roboto_slab"
+                tools:ignore="NestedWeights" />
 
             <TextView
                 android:id="@+id/duration_textView"
@@ -83,7 +86,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
                 android:padding="4dp"
-                android:text="@string/mainView_durationTextView"
+                android:text="@string/mainduration_TextView"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="12sp"
                 app:fontFamily="@font/roboto_bold_italic" />

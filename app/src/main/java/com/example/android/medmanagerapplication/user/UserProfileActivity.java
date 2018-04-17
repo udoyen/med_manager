@@ -24,13 +24,13 @@ import com.example.android.medmanagerapplication.SettingsActivity;
 
 public class UserProfileActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    public static final String TAG = UserProfileActivity.class.getSimpleName();
+    private static final String TAG = UserProfileActivity.class.getSimpleName();
     private static final int USER_PROFILE_LOADER = 6;
 
-    EditText profileFName;
-    EditText profileLName;
-    EditText profileEmail;
-    EditText profilePassword;
+    private EditText profileFName;
+    private EditText profileLName;
+    private EditText profileEmail;
+    private EditText profilePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,13 +115,10 @@ public class UserProfileActivity extends AppCompatActivity implements LoaderMana
         String email = profileEmail.getText().toString();
         String password = profilePassword.getText().toString();
 
-        if (TextUtils.isEmpty(fname) || TextUtils.isEmpty(lname) ||
+        return TextUtils.isEmpty(fname) || TextUtils.isEmpty(lname) ||
                 TextUtils.isEmpty(email) ||
-                TextUtils.isEmpty(password)) {
-            return true;
-        }
+                TextUtils.isEmpty(password);
 
-        return false;
     }
 
 

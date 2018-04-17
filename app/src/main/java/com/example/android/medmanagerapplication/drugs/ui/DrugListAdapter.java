@@ -29,9 +29,9 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         void onItemClick(int position);
     }
 
-    private Context mContext;
+    private final Context mContext;
     private Cursor mCursor;
-    long id;
+    private long id;
 
 
     public DrugListAdapter(Context context, Cursor  cursor) {
@@ -56,7 +56,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         LayoutInflater inflater = LayoutInflater.from(mContext);
         boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
+        @SuppressWarnings("ConstantConditions") View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
         DrugViewHolder viewHolder = new DrugViewHolder(view);
 
         return viewHolder;
@@ -83,7 +83,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         long duration = mCursor.getLong(durationIndex);
 
 
-        String tDuration = String.format(resources.getString(R.string.mainView_durationTextView), duration);
+        String tDuration = resources.getQuantityString(R.plurals.mainView_durationTextView, (int) duration);
         String text = String.format(resources.getString(R.string.mainPage_intervalTextView), interval);
         String tStart = String.format(resources.getString(R.string.mainView_StartTextView), CalculateDays.timeInStringFormat(startDate));
         String tEnd = String.format(resources.getString(R.string.mainView_EndTextView), CalculateDays.timeInStringFormat(endDate));
@@ -155,7 +155,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         TextView endDateTextView;
         ConstraintLayout constraintLayout;
 
-        public DrugViewHolder(View itemView) {
+        DrugViewHolder(View itemView) {
             super(itemView);
             Log.v("Adapter", "DrugViewHolder called");
             drugNameTextView = itemView.findViewById(R.id.drugName_textView);

@@ -83,7 +83,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
         long duration = mCursor.getLong(durationIndex);
 
 
-        String tDuration = resources.getQuantityString(R.plurals.mainView_durationTextView, (int) duration);
+        String tDuration = resources.getQuantityString(R.plurals.mainView_durationTextView, (int) duration, (int) duration);
         String text = String.format(resources.getString(R.string.mainPage_intervalTextView), interval);
         String tStart = String.format(resources.getString(R.string.mainView_StartTextView), CalculateDays.timeInStringFormat(startDate));
         String tEnd = String.format(resources.getString(R.string.mainView_EndTextView), CalculateDays.timeInStringFormat(endDate));

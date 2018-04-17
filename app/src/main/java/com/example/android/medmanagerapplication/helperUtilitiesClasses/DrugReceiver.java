@@ -25,7 +25,6 @@ public class DrugReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO Auto-generated method stub
 
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = mPreferences.edit();
@@ -44,6 +43,7 @@ public class DrugReceiver extends BroadcastReceiver {
         mBuilder.setContentIntent(pendingIntent);
         mBuilder.setSmallIcon(R.drawable.ic_first_aid_white);
         mBuilder.setContentTitle(context.getString(R.string.notificatio_title));
+        mBuilder.setDefaults(NotificationCompat.DEFAULT_SOUND);
         mBuilder.setContentText(drugname);
         mBuilder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
         mBuilder.setPriority(Notification.PRIORITY_MAX);

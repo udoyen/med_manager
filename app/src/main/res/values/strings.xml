@@ -31,11 +31,13 @@
     <string name="name_of_drug_hint">Name of Drug</string>
     <string name="enter_end_date_hint">Enter end date</string>
     <string name="mainPage_intervalTextView">Medication Interval  %d</string>
+    <!-- Plurals -->
     <plurals name="mainView_durationTextView">
-        <item quantity="zero">Duration 0 days</item>
-        <item quantity="one">Duration One day</item>
+        <item quantity="zero">Duration Zero day</item>
+        <item quantity="one">Duration 1 day</item>
         <item quantity="other">Duration %d days</item>
     </plurals>
+
     <string name="mainView_StartTextView">Starts: %s</string>
     <string name="mainView_EndTextView">Ends: %s</string>
     <string name="notificatio_title">Medication Notice</string>

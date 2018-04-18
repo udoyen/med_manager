@@ -11,4 +11,4 @@ My ALC 2.0 final project:
 - Functions:
    - Create reminders
    - Use google socisl signin option
-   - Change user settings using preferences
+   - Change user settings using shared preferences

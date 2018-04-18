@@ -12,7 +12,7 @@ public class AlarmDeleter extends IntentService {
 
     private static final String TAG = AlarmDeleter.class.getSimpleName();
 
-    private Context context;
+    private Context mContext;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -31,16 +31,16 @@ public class AlarmDeleter extends IntentService {
         Log.v(TAG, "IntentService called");
 
         if (intent != null) {
-            int id = intent.getIntExtra("drugId", 1);
+            long id = intent.getLongExtra("drugId", 1);
             Log.v(TAG, "do loop in receiver called from AlarmDeleter class:" + id);
 
             try {
-                Intent notificationIntent = new Intent(context, DrugReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                Intent notificationIntent = new Intent(getApplicationContext(), DrugReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), (int) id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 assert alarmManager != null;
                 alarmManager.cancel(pendingIntent);
-            } catch (Exception e) {
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
         }

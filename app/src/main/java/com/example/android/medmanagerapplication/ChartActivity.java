@@ -54,7 +54,6 @@ public class ChartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-//        BarChart barChart = findViewById(R.id.chart);
 
         HorizontalBarChart horizontalBarChart = findViewById(R.id.chart);
 
@@ -112,13 +111,10 @@ public class ChartActivity extends AppCompatActivity {
             ArrayList<IBarDataSet> mDataSets;
             ArrayList<BarEntry> valueSet = new ArrayList<>();
             for (Drugs data : drugs) {
-                Log.v(TAG, "Inside second for loop");
 
                 if (getMyMonth(data.getStartDate()) == arrayHelper(months, s)) {
-                    Log.v(TAG, "Inside if loop");
 
                     valueSet.add(new BarEntry(getMyMonth(data.getStartDate()), data.getDuration()));
-                    Log.v(TAG, "ValueSet after addition: " + valueSet.size());
 
                 }
             }
@@ -130,13 +126,6 @@ public class ChartActivity extends AppCompatActivity {
             mDataSets.add(barDataSet);
             mDataSetReturn.addAll(mDataSets);
         }
-
-        Log.v(TAG, "Size of clone: " + mDataSetReturn.size());
-        Log.v(TAG, "Size of clone: " + mDataSetReturn.toString());
-
-//        Log.v(TAG, "Size of clone: " + va.size());
-
-
 
         return mDataSetReturn;
 

@@ -41,11 +41,7 @@ public class GoogleAccountSignOutHelper extends IntentService {
         });
     }
 
-    //TODO: Delete when done
-    public void logOutUser () {
 
-        Toast.makeText(context, "Called from Google Account Helper", Toast.LENGTH_LONG).show();
-    }
 
 
     @Override

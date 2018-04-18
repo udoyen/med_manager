@@ -11,7 +11,6 @@ import android.util.Log;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
 
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class ExpiredNotificationClearingService extends IntentService {
 
@@ -19,8 +18,6 @@ public class ExpiredNotificationClearingService extends IntentService {
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     *
      */
     public ExpiredNotificationClearingService() {
         super("expired_notification_clearing_service");
@@ -31,7 +28,6 @@ public class ExpiredNotificationClearingService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
 
         Date currentDate = new Date();
-        Date yesterday = new Date(System.currentTimeMillis() - TimeUnit.DAYS.toMillis((1)));
 
 
         Log.v(TAG, "ExpiredNotificationService onHandle method called");
@@ -42,21 +38,16 @@ public class ExpiredNotificationClearingService extends IntentService {
                 null,
                 null);
         if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    int duration = cursor.getColumnIndex(DrugContract.DrugEntry.DURATION);
-                    Date futureDate = new Date(System.currentTimeMillis() + duration);
-                    int id = (int) cursor.getLong(cursor.getColumnIndex(DrugContract.DrugEntry._ID));
+            while (cursor.moveToNext()) {
+                int duration = cursor.getColumnIndex(DrugContract.DrugEntry.DURATION);
+                Date futureDate = new Date(System.currentTimeMillis() + duration);
+                int id = (int) cursor.getLong(cursor.getColumnIndex(DrugContract.DrugEntry._ID));
 
-                    if (currentDate.after(futureDate)) {
-                        Log.v(TAG, "Result of date comparison: " + currentDate.after(futureDate));
-                        Log.v(TAG, "do loop in receiver called: " + id);
-                        Intent nRIntent = new Intent(ExpiredNotificationClearingService.this, AlarmDeleter.class);
-                        nRIntent.putExtra("drugId", id);
-                        startService(intent);
-                    }
-
-                } while (cursor.moveToNext());
+                if (currentDate.after(futureDate)) {
+                    Intent nRIntent = new Intent(ExpiredNotificationClearingService.this, AlarmDeleter.class);
+                    nRIntent.putExtra("drugId", id);
+                    startService(intent);
+                }
             }
         }
 

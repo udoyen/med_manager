@@ -3,6 +3,7 @@ package com.example.android.medmanagerapplication;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.example.android.medmanagerapplication.drugs.Drugs;
@@ -13,6 +14,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.common.util.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,12 +23,31 @@ import java.util.Random;
 
 public class ChartActivity extends AppCompatActivity {
 
+    public static final String TAG = ChartActivity.class.getSimpleName();
+
     private final ArrayList<Drugs> drugs = new ArrayList<>();
     private BarDataSet barDataSet;
     /**
      * Names for the stacked columns
      */
     private String[] mStackNames;
+
+    private String[] months = {
+
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC"
+
+    };
 
 
     @Override
@@ -48,13 +69,11 @@ public class ChartActivity extends AppCompatActivity {
         horizontalBarChart.invalidate();
 
 
-
-
     }
 
     private ArrayList<IBarDataSet> getDataSets() {
 
-        ArrayList<IBarDataSet> mDataSets = new ArrayList<>();
+        ArrayList<IBarDataSet> mDataSetReturn = new ArrayList<>();
 
 
         Cursor mCursor = getContentResolver().query(DrugContract.DrugEntry.CONTENT_URI,
@@ -81,34 +100,48 @@ public class ChartActivity extends AppCompatActivity {
         }
 
         mStackNames = new String[drugs.size()];
-        int i = 0;
         mCursor.close();
 
 
         float[] n = getDurationFloat();
 
-        // Categorize the drugs added
-        ArrayList<BarEntry> d = new ArrayList<>();
-        for (Drugs drug : drugs) {
 
-            d.add(new BarEntry(getMyMonth(drug.getStartDate()), drug.getDuration()));
+        for (String s : months) {
+            Log.v(TAG, "Inside first for loop" );
 
-            barDataSet = new BarDataSet(d, "DRUGS");
-            mStackNames[i] = drug.getName();
-            i++;
+            ArrayList<IBarDataSet> mDataSets;
+            ArrayList<BarEntry> valueSet = new ArrayList<>();
+            for (Drugs data : drugs) {
+                Log.v(TAG, "Inside second for loop");
+
+                if (getMyMonth(data.getStartDate()) == arrayHelper(months, s)) {
+                    Log.v(TAG, "Inside if loop");
+
+                    valueSet.add(new BarEntry(getMyMonth(data.getStartDate()), data.getDuration()));
+                    Log.v(TAG, "ValueSet after addition: " + valueSet.size());
+
+                }
+            }
+            Log.v(TAG, "ValueSet " + valueSet.size());
+
+            barDataSet = new BarDataSet(valueSet, "DRUGS");
+            barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+            mDataSets = new ArrayList<>();
+            mDataSets.add(barDataSet);
+            mDataSetReturn.addAll(mDataSets);
         }
 
-        barDataSet.setStackLabels(mStackNames);
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        barDataSet.setDrawValues(true);
-        barDataSet.setBarBorderWidth(0.7f);
-        mDataSets.add(barDataSet);
+        Log.v(TAG, "Size of clone: " + mDataSetReturn.size());
+        Log.v(TAG, "Size of clone: " + mDataSetReturn.toString());
 
-        return mDataSets;
+//        Log.v(TAG, "Size of clone: " + va.size());
+
+
+
+        return mDataSetReturn;
 
 
     }
-
 
 
     private float[] getDurationFloat() {
@@ -119,6 +152,11 @@ public class ChartActivity extends AppCompatActivity {
             t++;
         }
         return floats;
+    }
+
+    private int arrayHelper(String[] s, String value) {
+
+        return ArrayUtils.indexOf(s, value);
     }
 
 
@@ -157,9 +195,6 @@ public class ChartActivity extends AppCompatActivity {
 
         return new float[]{val1, val2, val3};
     }
-
-
-
 
 
 }

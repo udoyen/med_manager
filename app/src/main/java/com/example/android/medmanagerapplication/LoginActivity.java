@@ -40,7 +40,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.loginhelper.CheckUserStatus;
 import com.example.android.medmanagerapplication.user.User;
@@ -126,11 +125,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         SharedPreferences listShared = PreferenceManager.getDefaultSharedPreferences(this);
         String listPref = listShared.getString("sigin_pref", "manual");
 
-        if (listPref.equals("manual")) {
-
-            Toast.makeText(this, "The chosen signin method is: " + listPref, Toast.LENGTH_LONG).show();
-
-        }
 
         // Check for Google signin
         if (listPref.equals("google") && account != null) {
@@ -665,8 +659,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         // Update database
                                         getContentResolver().insert(UserContract.UserEntry.CONTENT_URI, values);
 
-                                        Toast myToast = Toast.makeText(mContext, R.string.userReportUpdate, Toast.LENGTH_SHORT);
-                                        myToast.show();
+
                                         Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
                                         LoginActivity.this.startActivity(myIntent);
                                     } catch (Exception e) {

@@ -24,7 +24,7 @@ public class AlarmCheckerReceiver extends BroadcastReceiver {
 
         if (Objects.equals(intent.getAction(), CHECK_FOR_PAST_ALARMS)) {
 
-            Toast.makeText(context, "AlarmChecker receiver fired!", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Checking for past alarms!", Toast.LENGTH_LONG).show();
         }
 
     }

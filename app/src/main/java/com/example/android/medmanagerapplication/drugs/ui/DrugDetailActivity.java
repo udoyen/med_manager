@@ -30,7 +30,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.ChartActivity;
 import com.example.android.medmanagerapplication.R;
@@ -42,8 +41,6 @@ import com.example.android.medmanagerapplication.helperUtilitiesClasses.CloseSof
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.DrugReceiver;
 import com.example.android.medmanagerapplication.helperUtilitiesClasses.GoogleAccountSignOutHelper;
 import com.example.android.medmanagerapplication.user.UserProfileActivity;
-import com.travijuu.numberpicker.library.Enums.ActionEnum;
-import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 import com.travijuu.numberpicker.library.NumberPicker;
 
 import java.text.ParseException;
@@ -271,15 +268,6 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         LoaderManager loaderManager = getSupportLoaderManager();
 
         loaderManager.initLoader(DETAILPAGE_LOADER_ID, null, this);
-
-        interval.setValueChangedListener(new ValueChangedListener() {
-
-            @Override
-            public void valueChanged(int value, ActionEnum action) {
-
-                Toast.makeText(DrugDetailActivity.this, "From number picker value change event", Toast.LENGTH_LONG).show();
-            }
-        });
 
 
     }

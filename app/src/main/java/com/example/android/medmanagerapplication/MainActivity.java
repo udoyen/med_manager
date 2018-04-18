@@ -31,7 +31,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.android.medmanagerapplication.drugs.DrugContract;
 import com.example.android.medmanagerapplication.drugs.ui.AddDrugActivity;
@@ -74,8 +73,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 // Use this to remove expired notifications
                 if (Objects.equals(intent.getAction(), CHECK_FOR_PAST_ALARMS)) {
 
-                    Log.v(TAG, "Broadcast receiver fired from HomeActivity");
-                    Toast.makeText(MainActivity.this, "BroadcastReceiver to clean database started", Toast.LENGTH_LONG).show();
                     Intent clearIntent = new Intent(MainActivity.this, ExpiredNotificationClearingService.class);
                     startService(clearIntent);
 
@@ -218,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startService(i);
                 return true;
             case R.id.action_chart_from_main:
-                Toast.makeText(this, "Fired from chart", Toast.LENGTH_LONG).show();
                 Intent chart = new Intent(this, ChartActivity.class);
                 startActivity(chart);
                 return true;

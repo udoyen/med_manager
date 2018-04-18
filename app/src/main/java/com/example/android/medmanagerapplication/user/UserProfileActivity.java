@@ -84,9 +84,6 @@ public class UserProfileActivity extends AppCompatActivity implements LoaderMana
 
     private boolean upDateUserProfile(View view) {
 
-        // TODO: Remove
-        Log.v(TAG, "UserProfile upDateUserProfile called");
-
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(UserContract.UserEntry.FIRSTNAME, profileFName.getText().toString());

@@ -50,8 +50,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
     @NonNull
     @Override
     public DrugViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.v("Adapter", "Drug Adapter onCreateViewHolder called");
-        // TODO: Clean up
+
         int layoutIdForListItem = R.layout.drug_list_item;
         LayoutInflater inflater = LayoutInflater.from(mContext);
         boolean shouldAttachToParentImmediately = false;
@@ -124,11 +123,11 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
                 this.notifyDataSetChanged();
             }
         } catch (Exception e) {
-            Log.v(TAG, "swapCursor error: " + e);
+            Log.i(TAG, "swapCursor error: " + e);
         }
 
 
-        // TODO: Tidy
+
 
     }
 
@@ -145,7 +144,7 @@ public class DrugListAdapter extends RecyclerView.Adapter<DrugListAdapter.DrugVi
 
 
 
-    public class DrugViewHolder extends RecyclerView.ViewHolder {
+    class DrugViewHolder extends RecyclerView.ViewHolder {
 
 
         TextView drugNameTextView;

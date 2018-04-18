@@ -239,8 +239,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
                         Intent intent = new Intent(DrugDetailActivity.this, AlarmDeleter.class);
                         intent.putExtra("drugId", drugID);
                         startService(intent);
-                        //TODO: Remove
-//                        deleter.cancelNotification(drugID);
+
                         finish();
                     } else {
                         Snackbar.make(view, "Item was not deleted!", Snackbar.LENGTH_LONG)
@@ -386,8 +385,6 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
     @SuppressLint("Assert")
     private void updateDrugItem(View view) throws ParseException {
 
-        // TODO: Remove
-        Log.v(TAG, "AddDrugActivity onCreateLoader called");
         // Calculate the duration in days
         long dur = CalculateDays.getDaysBetweenDates(startDate.getText().toString(), endDate.getText().toString());
 
@@ -400,7 +397,7 @@ public class DrugDetailActivity extends AppCompatActivity implements LoaderManag
         contentValues.put(DrugContract.DrugEntry.DURATION, dur);
 
         int result = getContentResolver().update(DrugContract.DrugEntry.CONTENT_URI, contentValues, "_ID = ?", new String[]{String.valueOf(drugID)});
-        // TODO: Add DrugWidget Action here
+
 
         if (result == 1) {
             addNotification();

@@ -141,8 +141,6 @@ public class AddDrugActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Remove
-                Log.v(TAG, "AddDrugActivity add drug button called");
 
                 String start = startDateEditText.getText().toString();
                 String end = endDateEditText.getText().toString();
@@ -239,8 +237,7 @@ public class AddDrugActivity extends AppCompatActivity {
         Log.v(TAG, "Count before: " + bfCount);
 
 
-        // TODO: Remove
-        Log.v(TAG, "AddDrugActivity onCreateLoader called");
+
         // Calculate the duration in days
         long dur = CalculateDays.getDaysBetweenDates(startDateEditText.getText().toString(), endDateEditText.getText().toString());
 
@@ -253,7 +250,7 @@ public class AddDrugActivity extends AppCompatActivity {
         contentValues.put(DrugContract.DrugEntry.DURATION, dur);
 
         getContentResolver().insert(DrugContract.DrugEntry.CONTENT_URI, contentValues);
-        // TODO: Add DrugWidget Action here
+
         // Pass item information to DrugReceiver class
         String[] projection = {
                 DrugContract.DrugEntry._ID,

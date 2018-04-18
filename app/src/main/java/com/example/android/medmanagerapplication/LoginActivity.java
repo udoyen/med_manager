@@ -62,7 +62,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, View.OnClickListener {
 
-    // TODO: Remove
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 19001;
     /**
@@ -94,7 +93,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v(TAG, "Login onCreate called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Configure sign-in to request the user's ID, email address, and basic
@@ -318,7 +316,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
+
         return password.length() > 4;
     }
 
@@ -398,13 +396,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
-                signIn();
+                if (isNetworkAvailable()) {
+                    signIn();
+
+                } else {
+                    Snackbar.make(findViewById(R.id.login_container), "No network on your device!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
                 break;
 
         }
     }
 
-    // TODO: Check network before doing google signin
     private boolean isNetworkAvailable() {
         ConnectivityManager manager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -563,11 +566,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Log.v(TAG, "doInBackground() called");
-            // TODO: attempt authentication against a network service.
-            Log.v(TAG, "Authenticating user");
+
             String passwd = "";
-            String mEmail = "";
             // Authentication against a database
 
             String[] projection = {
@@ -581,20 +581,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     null);
             assert cursor != null;
             int passwordIndex = cursor.getColumnIndex(UserContract.UserEntry.PASSWORD);
-            //TODO: Tidy
-            Log.v(TAG, "passwordIndex: " + passwordIndex);
+
             if (cursor.moveToFirst()) {
                 passwd = cursor.getString(passwordIndex);
-                Log.v(TAG, "password: " + passwd);
             }
             try {
-                Log.v(TAG, "getCount(): " + cursor.getCount());
                 if (cursor.getCount() > 0) {
-                    Log.v(TAG, "Account is present check password");
                     if (passwd.equals(user.password)) {
                         return true;
                     } else {
-                        Log.v(TAG, "Bad password!");
                         return false;
                     }
                 } else {
@@ -603,7 +598,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     return true;
                 }
             } catch (Exception e) {
-                Log.v(TAG, "Try block Error: " + e.getMessage());
+                Log.i(TAG, "Try block Error: " + e.getMessage());
             } finally {
                 cursor.close();
             }

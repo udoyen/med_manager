@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Initialize JobScheduler
         JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        assert jobScheduler != null;
         jobScheduler.schedule(new JobInfo.Builder(JOB_ID,
                 new ComponentName(this, JobSchedulerService.class))
                 .setBackoffCriteria(30000, JobInfo.BACKOFF_POLICY_EXPONENTIAL)
@@ -292,15 +293,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             int drugId = cursor.getColumnIndex(DrugContract.DrugEntry._ID);
             cursor.moveToFirst();
             int id = cursor.getInt(drugId);
-            //TODO: Tidy
-            Log.v(TAG, "Clicked position: " + position + " " + "Drug id: " + id);
+
             cursor.close();
             Intent intent = new Intent(this, DrugDetailActivity.class);
             // Pass information to the Activity here
             intent.putExtra("DrugID", id);
             startActivity(intent);
         } catch (Exception e) {
-            Log.v(TAG, "Item detail presentation error!: " + e);
+            Log.i(TAG, "Item detail presentation error!: " + e);
         } finally {
             assert cursor != null;
             cursor.close();

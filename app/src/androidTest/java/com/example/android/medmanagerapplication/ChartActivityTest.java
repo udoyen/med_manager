@@ -20,11 +20,6 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -49,7 +44,6 @@ public class ChartActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 0)));
-        appCompatEditText.perform(scrollTo(), replaceText("George"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.lastname),
@@ -59,7 +53,6 @@ public class ChartActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 1)));
-        appCompatEditText2.perform(scrollTo(), replaceText("Udosen"), closeSoftKeyboard());
 
         ViewInteraction appCompatAutoCompleteTextView = onView(
                 allOf(withId(R.id.email),
@@ -69,7 +62,6 @@ public class ChartActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatAutoCompleteTextView.perform(replaceText("datamesh@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.password),
@@ -79,7 +71,6 @@ public class ChartActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("hello"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.emailSignIn_btn), withText("Sign in or register"),
@@ -89,7 +80,6 @@ public class ChartActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 4)));
-        appCompatButton.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(android.R.id.button1), withText("Yes"),
@@ -98,7 +88,6 @@ public class ChartActivityTest {
                                         withId(R.id.buttonPanel),
                                         0),
                                 3)));
-        appCompatButton2.perform(scrollTo(), click());
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
@@ -110,7 +99,6 @@ public class ChartActivityTest {
                                         0),
                                 1),
                         isDisplayed()));
-        floatingActionButton.perform(click());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.nameOfDrug),
@@ -119,7 +107,6 @@ public class ChartActivityTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 1)));
-        appCompatEditText4.perform(scrollTo(), click());
 
         ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.nameOfDrug),
@@ -128,7 +115,6 @@ public class ChartActivityTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 1)));
-        appCompatEditText5.perform(scrollTo(), replaceText("Hert"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText6 = onView(
                 allOf(withId(R.id.drug_description),
@@ -137,7 +123,6 @@ public class ChartActivityTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 2)));
-        appCompatEditText6.perform(scrollTo(), replaceText("drug"), closeSoftKeyboard());
 
         pressBack();
 
@@ -148,7 +133,6 @@ public class ChartActivityTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 5)));
-        appCompatEditText7.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
@@ -159,7 +143,6 @@ public class ChartActivityTest {
                                                 3)),
                                 3),
                         isDisplayed()));
-        appCompatButton3.perform(click());
 
         ViewInteraction appCompatEditText8 = onView(
                 allOf(withId(R.id.endDate_editText),
@@ -168,7 +151,6 @@ public class ChartActivityTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 0)));
-        appCompatEditText8.perform(scrollTo(), click());
 
         ViewInteraction appCompatEditText9 = onView(
                 allOf(withId(R.id.endDate_editText),
@@ -177,7 +159,7 @@ public class ChartActivityTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 0)));
-        appCompatEditText9.perform(scrollTo(), click());
+
 
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
@@ -188,7 +170,7 @@ public class ChartActivityTest {
                                                 3)),
                                 3),
                         isDisplayed()));
-        appCompatButton4.perform(click());
+
 
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(android.R.id.button2), withText("Cancel"),
@@ -199,7 +181,7 @@ public class ChartActivityTest {
                                                 3)),
                                 2),
                         isDisplayed()));
-        appCompatButton5.perform(click());
+
 
         ViewInteraction floatingActionButton2 = onView(
                 allOf(withId(R.id.update_drug_detail),
@@ -208,9 +190,7 @@ public class ChartActivityTest {
                                         withClassName(is("android.widget.ScrollView")),
                                         0),
                                 8)));
-        floatingActionButton2.perform(scrollTo(), click());
 
-        pressBack();
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
@@ -222,7 +202,7 @@ public class ChartActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatTextView.perform(click());
+
 
         ViewInteraction textView = onView(
                 allOf(withText("Drug Chart"),
@@ -233,7 +213,6 @@ public class ChartActivityTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Drug Chart")));
 
         ViewInteraction textView2 = onView(
                 allOf(withText("Drug Chart"),
@@ -244,7 +223,6 @@ public class ChartActivityTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView2.check(matches(isDisplayed()));
 
         ViewInteraction view = onView(
                 allOf(withId(R.id.action_bar),
@@ -255,7 +233,6 @@ public class ChartActivityTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        view.check(matches(isDisplayed()));
 
         ViewInteraction view2 = onView(
                 allOf(withId(R.id.chart),
@@ -265,7 +242,6 @@ public class ChartActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        view2.check(matches(isDisplayed()));
 
         ViewInteraction view3 = onView(
                 allOf(withId(R.id.chart),
@@ -275,7 +251,7 @@ public class ChartActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        view3.check(matches(isDisplayed()));
+
 
     }
 

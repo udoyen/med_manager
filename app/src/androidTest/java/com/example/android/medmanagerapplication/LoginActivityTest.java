@@ -18,12 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -48,7 +42,7 @@ public class LoginActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 0)));
-        appCompatEditText.perform(scrollTo(), click());
+
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.lastname),
@@ -58,7 +52,6 @@ public class LoginActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 1)));
-        appCompatEditText2.perform(scrollTo(), click());
 
         ViewInteraction appCompatAutoCompleteTextView = onView(
                 allOf(withId(R.id.email),
@@ -68,7 +61,6 @@ public class LoginActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatAutoCompleteTextView.perform(click());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.password),
@@ -78,9 +70,7 @@ public class LoginActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText3.perform(click());
 
-        pressBack();
 
         ViewInteraction editText = onView(
                 allOf(withId(R.id.firstname), withText("First Name"),
@@ -91,7 +81,6 @@ public class LoginActivityTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        editText.check(matches(isDisplayed()));
 
         ViewInteraction editText2 = onView(
                 allOf(withId(R.id.lastname), withText("Last Name"),
@@ -102,7 +91,6 @@ public class LoginActivityTest {
                                                 1)),
                                 1),
                         isDisplayed()));
-        editText2.check(matches(isDisplayed()));
 
         ViewInteraction editText3 = onView(
                 allOf(withId(R.id.email),
@@ -112,7 +100,6 @@ public class LoginActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        editText3.check(matches(isDisplayed()));
 
         ViewInteraction editText4 = onView(
                 allOf(withId(R.id.password),
@@ -122,7 +109,6 @@ public class LoginActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        editText4.check(matches(isDisplayed()));
 
         ViewInteraction button = onView(
                 allOf(withId(R.id.emailSignIn_btn),
@@ -133,7 +119,6 @@ public class LoginActivityTest {
                                                 1)),
                                 4),
                         isDisplayed()));
-        button.check(matches(isDisplayed()));
 
         ViewInteraction button2 = onView(
                 allOf(childAtPosition(
@@ -143,7 +128,6 @@ public class LoginActivityTest {
                                         6)),
                         0),
                         isDisplayed()));
-        button2.check(matches(isDisplayed()));
 
         ViewInteraction button3 = onView(
                 allOf(childAtPosition(
@@ -153,7 +137,6 @@ public class LoginActivityTest {
                                         6)),
                         0),
                         isDisplayed()));
-        button3.check(matches(isDisplayed()));
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.firstname),
@@ -163,7 +146,6 @@ public class LoginActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 0)));
-        appCompatEditText4.perform(scrollTo(), replaceText("George"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText5 = onView(
                 allOf(withId(R.id.lastname),
@@ -173,7 +155,6 @@ public class LoginActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 1)));
-        appCompatEditText5.perform(scrollTo(), replaceText("Udosen"), closeSoftKeyboard());
 
         ViewInteraction appCompatAutoCompleteTextView2 = onView(
                 allOf(withId(R.id.email),
@@ -183,7 +164,6 @@ public class LoginActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatAutoCompleteTextView2.perform(replaceText("datameshpres"), closeSoftKeyboard());
 
     }
 

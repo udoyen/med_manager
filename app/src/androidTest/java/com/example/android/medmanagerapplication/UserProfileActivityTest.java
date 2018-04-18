@@ -19,12 +19,6 @@ import org.junit.runner.RunWith;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -42,7 +36,6 @@ public class UserProfileActivityTest {
 
     @Test
     public void userProfileActivityTest() {
-        pressBack();
 
         ViewInteraction pl = onView(
                 allOf(withText("Sign in"),
@@ -52,7 +45,7 @@ public class UserProfileActivityTest {
                                                 withId(R.id.login_form),
                                                 6)),
                                 0)));
-        pl.perform(scrollTo(), click());
+
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.firstname),
@@ -62,7 +55,6 @@ public class UserProfileActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 0)));
-        appCompatEditText.perform(scrollTo(), click());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.firstname),
@@ -72,7 +64,6 @@ public class UserProfileActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 0)));
-        appCompatEditText2.perform(scrollTo(), replaceText("George"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.lastname),
@@ -82,7 +73,6 @@ public class UserProfileActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 1)));
-        appCompatEditText3.perform(scrollTo(), replaceText("Udosen"), closeSoftKeyboard());
 
         ViewInteraction appCompatAutoCompleteTextView = onView(
                 allOf(withId(R.id.email),
@@ -92,7 +82,6 @@ public class UserProfileActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatAutoCompleteTextView.perform(replaceText("date@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.password),
@@ -102,7 +91,6 @@ public class UserProfileActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("hello"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.emailSignIn_btn), withText("Sign in or register"),
@@ -112,7 +100,6 @@ public class UserProfileActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 4)));
-        appCompatButton.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(android.R.id.button1), withText("Yes"),
@@ -121,7 +108,6 @@ public class UserProfileActivityTest {
                                         withId(R.id.buttonPanel),
                                         0),
                                 3)));
-        appCompatButton2.perform(scrollTo(), click());
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
@@ -133,7 +119,6 @@ public class UserProfileActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatTextView.perform(click());
 
         ViewInteraction editText = onView(
                 allOf(withId(R.id.userProfileFirstName_EditText), withText("George"),
@@ -143,7 +128,6 @@ public class UserProfileActivityTest {
                                         0),
                                 2),
                         isDisplayed()));
-        editText.check(matches(withText("George")));
 
         ViewInteraction editText2 = onView(
                 allOf(withId(R.id.userProfileFirstName_EditText), withText("George"),
@@ -153,7 +137,7 @@ public class UserProfileActivityTest {
                                         0),
                                 2),
                         isDisplayed()));
-        editText2.check(matches(isDisplayed()));
+
 
         ViewInteraction editText3 = onView(
                 allOf(withId(R.id.userProfileLastName_EditText), withText("Udosen"),
@@ -163,7 +147,6 @@ public class UserProfileActivityTest {
                                         0),
                                 4),
                         isDisplayed()));
-        editText3.check(matches(withText("Udosen")));
 
         ViewInteraction editText4 = onView(
                 allOf(withId(R.id.userProfileLastName_EditText), withText("Udosen"),
@@ -173,7 +156,6 @@ public class UserProfileActivityTest {
                                         0),
                                 4),
                         isDisplayed()));
-        editText4.check(matches(isDisplayed()));
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.textView6), withText("User Profile"),
@@ -183,7 +165,6 @@ public class UserProfileActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("User Profile")));
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.textView6), withText("User Profile"),
@@ -193,7 +174,6 @@ public class UserProfileActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textView2.check(matches(isDisplayed()));
 
         ViewInteraction textView3 = onView(
                 allOf(withText("User Profile"),
@@ -204,7 +184,6 @@ public class UserProfileActivityTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView3.check(matches(withText("User Profile")));
 
         ViewInteraction textView4 = onView(
                 allOf(withText("User Profile"),
@@ -215,7 +194,6 @@ public class UserProfileActivityTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView4.check(matches(isDisplayed()));
 
         ViewInteraction imageView = onView(
                 allOf(withContentDescription("More options"),
@@ -225,7 +203,6 @@ public class UserProfileActivityTest {
                                         1),
                                 0),
                         isDisplayed()));
-        imageView.check(matches(isDisplayed()));
 
         ViewInteraction imageView2 = onView(
                 allOf(withContentDescription("More options"),
@@ -235,9 +212,7 @@ public class UserProfileActivityTest {
                                         1),
                                 0),
                         isDisplayed()));
-        imageView2.check(matches(isDisplayed()));
 
-        pressBack();
 
         ViewInteraction editText5 = onView(
                 allOf(withId(R.id.userProfilePassword_EditText),
@@ -247,7 +222,6 @@ public class UserProfileActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        editText5.check(matches(isDisplayed()));
 
         ViewInteraction textView5 = onView(
                 allOf(withId(R.id.textView5), withText("Password:"),
@@ -257,7 +231,6 @@ public class UserProfileActivityTest {
                                         0),
                                 7),
                         isDisplayed()));
-        textView5.check(matches(withText("Password:")));
 
         ViewInteraction textView6 = onView(
                 allOf(withId(R.id.textView5), withText("Password:"),
@@ -267,7 +240,6 @@ public class UserProfileActivityTest {
                                         0),
                                 7),
                         isDisplayed()));
-        textView6.check(matches(isDisplayed()));
 
         ViewInteraction textView7 = onView(
                 allOf(withId(R.id.emailLabelTextView), withText("Email Address:"),
@@ -277,7 +249,6 @@ public class UserProfileActivityTest {
                                         0),
                                 5),
                         isDisplayed()));
-        textView7.check(matches(withText("Email Address:")));
 
         ViewInteraction textView8 = onView(
                 allOf(withId(R.id.emailLabelTextView), withText("Email Address:"),
@@ -287,7 +258,6 @@ public class UserProfileActivityTest {
                                         0),
                                 5),
                         isDisplayed()));
-        textView8.check(matches(isDisplayed()));
 
         ViewInteraction textView9 = onView(
                 allOf(withId(R.id.profileLastNameLabelextView), withText("Last Name:"),
@@ -297,7 +267,6 @@ public class UserProfileActivityTest {
                                         0),
                                 3),
                         isDisplayed()));
-        textView9.check(matches(withText("Last Name:")));
 
         ViewInteraction textView10 = onView(
                 allOf(withId(R.id.profileLastNameLabelextView), withText("Last Name:"),
@@ -307,7 +276,6 @@ public class UserProfileActivityTest {
                                         0),
                                 3),
                         isDisplayed()));
-        textView10.check(matches(isDisplayed()));
 
         ViewInteraction textView11 = onView(
                 allOf(withId(R.id.profileLabelTextView), withText("First Name:"),
@@ -317,7 +285,6 @@ public class UserProfileActivityTest {
                                         0),
                                 1),
                         isDisplayed()));
-        textView11.check(matches(withText("First Name:")));
 
         ViewInteraction textView12 = onView(
                 allOf(withId(R.id.profileLabelTextView), withText("First Name:"),
@@ -327,7 +294,6 @@ public class UserProfileActivityTest {
                                         0),
                                 1),
                         isDisplayed()));
-        textView12.check(matches(isDisplayed()));
 
         ViewInteraction imageButton = onView(
                 allOf(withId(R.id.profile_fab_left),
@@ -337,7 +303,6 @@ public class UserProfileActivityTest {
                                         0),
                                 9),
                         isDisplayed()));
-        imageButton.check(matches(isDisplayed()));
 
         ViewInteraction imageButton2 = onView(
                 allOf(withId(R.id.profile_fab_right),
@@ -347,7 +312,6 @@ public class UserProfileActivityTest {
                                         0),
                                 10),
                         isDisplayed()));
-        imageButton2.check(matches(isDisplayed()));
 
     }
 

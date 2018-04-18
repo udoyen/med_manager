@@ -20,11 +20,6 @@ import org.junit.runner.RunWith;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -51,7 +46,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 0)));
-        appCompatEditText.perform(scrollTo(), click());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.firstname),
@@ -61,7 +55,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 0)));
-        appCompatEditText2.perform(scrollTo(), replaceText("George"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.lastname),
@@ -71,7 +64,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 1)));
-        appCompatEditText3.perform(scrollTo(), replaceText("Udosen"), closeSoftKeyboard());
 
         ViewInteraction appCompatAutoCompleteTextView = onView(
                 allOf(withId(R.id.email),
@@ -81,7 +73,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatAutoCompleteTextView.perform(replaceText("date@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.password),
@@ -91,7 +82,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("hello"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.emailSignIn_btn), withText("Sign in or register"),
@@ -101,7 +91,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                                 withClassName(is("android.support.constraint.ConstraintLayout")),
                                                 1)),
                                 4)));
-        appCompatButton.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(android.R.id.button1), withText("Yes"),
@@ -110,7 +99,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         withId(R.id.buttonPanel),
                                         0),
                                 3)));
-        appCompatButton2.perform(scrollTo(), click());
 
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
@@ -122,7 +110,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 1),
                         isDisplayed()));
-        floatingActionButton.perform(click());
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -133,7 +120,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-        appCompatImageButton.perform(click());
 
         ViewInteraction imageView = onView(
                 allOf(withContentDescription("More options"),
@@ -143,7 +129,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         1),
                                 1),
                         isDisplayed()));
-        imageView.check(matches(isDisplayed()));
 
         ViewInteraction imageView2 = onView(
                 allOf(withId(R.id.search_button), withContentDescription("Search"),
@@ -154,7 +139,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        imageView2.check(matches(isDisplayed()));
 
         ViewInteraction imageButton = onView(
                 allOf(withId(R.id.update_drug_detail),
@@ -164,7 +148,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 1),
                         isDisplayed()));
-        imageButton.check(matches(isDisplayed()));
 
         ViewInteraction imageButton2 = onView(
                 allOf(withId(R.id.update_drug_detail),
@@ -174,7 +157,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 1),
                         isDisplayed()));
-        imageButton2.check(matches(isDisplayed()));
 
         ViewInteraction floatingActionButton2 = onView(
                 allOf(withId(R.id.update_drug_detail),
@@ -184,7 +166,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 1),
                         isDisplayed()));
-        floatingActionButton2.perform(click());
 
         ViewInteraction editText = onView(
                 allOf(withId(R.id.nameOfDrug), withText("Name of Drug"),
@@ -194,7 +175,7 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 1),
                         isDisplayed()));
-        editText.check(matches(isDisplayed()));
+
 
         ViewInteraction editText2 = onView(
                 allOf(withId(R.id.drug_description), withText("Drug Description"),
@@ -204,7 +185,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 3),
                         isDisplayed()));
-        editText2.check(matches(isDisplayed()));
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.nameOfDrugLable_textView), withText("Name of Drug:"),
@@ -214,7 +194,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Name of Drug:")));
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.nameOfDrugLable_textView), withText("Name of Drug:"),
@@ -224,7 +203,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textView2.check(matches(isDisplayed()));
 
         ViewInteraction textView3 = onView(
                 allOf(withId(R.id.drugDescriptionLabel_textView), withText("Drug Description:"),
@@ -234,7 +212,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 2),
                         isDisplayed()));
-        textView3.check(matches(withText("Drug Description:")));
 
         ViewInteraction textView4 = onView(
                 allOf(withId(R.id.drugDescriptionLabel_textView), withText("Drug Description:"),
@@ -244,7 +221,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 2),
                         isDisplayed()));
-        textView4.check(matches(isDisplayed()));
 
         ViewInteraction editText3 = onView(
                 allOf(withId(R.id.startDate_editText), withText("Enter Start Date"),
@@ -254,7 +230,7 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 4),
                         isDisplayed()));
-        editText3.check(matches(withText("Enter Start Date")));
+
 
         ViewInteraction editText4 = onView(
                 allOf(withId(R.id.startDate_editText), withText("Enter Start Date"),
@@ -264,7 +240,7 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 4),
                         isDisplayed()));
-        editText4.check(matches(isDisplayed()));
+
 
         ViewInteraction editText5 = onView(
                 allOf(withId(R.id.endDate_editText), withText("Enter end date"),
@@ -274,7 +250,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 5),
                         isDisplayed()));
-        editText5.check(matches(withText("Enter end date")));
 
         ViewInteraction editText6 = onView(
                 allOf(withId(R.id.endDate_editText), withText("Enter end date"),
@@ -284,7 +259,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 5),
                         isDisplayed()));
-        editText6.check(matches(isDisplayed()));
 
         ViewInteraction view = onView(
                 allOf(withId(R.id.action_bar),
@@ -295,7 +269,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        view.check(matches(isDisplayed()));
 
         ViewInteraction imageButton3 = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -306,7 +279,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        imageButton3.check(matches(isDisplayed()));
 
         ViewInteraction imageView3 = onView(
                 allOf(withContentDescription("More options"),
@@ -316,7 +288,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         2),
                                 0),
                         isDisplayed()));
-        imageView3.check(matches(isDisplayed()));
 
         ViewInteraction imageView4 = onView(
                 allOf(withContentDescription("More options"),
@@ -326,9 +297,7 @@ public class MainActivity_and_AddDrugActivityTest {
                                         2),
                                 0),
                         isDisplayed()));
-        imageView4.check(matches(isDisplayed()));
 
-        pressBack();
 
         ViewInteraction textView5 = onView(
                 allOf(withId(R.id.interval_textView), withText("Select a medication interval:"),
@@ -338,7 +307,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 6),
                         isDisplayed()));
-        textView5.check(matches(withText("Select a medication interval:")));
 
         ViewInteraction textView6 = onView(
                 allOf(withId(R.id.interval_textView), withText("Select a medication interval:"),
@@ -348,7 +316,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 6),
                         isDisplayed()));
-        textView6.check(matches(isDisplayed()));
 
         ViewInteraction button = onView(
                 allOf(withId(R.id.decrement),
@@ -358,7 +325,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        button.check(matches(isDisplayed()));
 
         ViewInteraction editText7 = onView(
                 allOf(withId(R.id.display), withText("1"),
@@ -368,7 +334,7 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 1),
                         isDisplayed()));
-        editText7.check(matches(withText("1")));
+
 
         ViewInteraction button2 = onView(
                 allOf(withId(R.id.increment),
@@ -378,7 +344,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 2),
                         isDisplayed()));
-        button2.check(matches(isDisplayed()));
 
         ViewInteraction button3 = onView(
                 allOf(withId(R.id.increment),
@@ -388,7 +353,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 2),
                         isDisplayed()));
-        button3.check(matches(isDisplayed()));
 
         ViewInteraction imageButton4 = onView(
                 allOf(withId(R.id.fab_backBtn),
@@ -398,7 +362,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 8),
                         isDisplayed()));
-        imageButton4.check(matches(isDisplayed()));
 
         ViewInteraction imageButton5 = onView(
                 allOf(withId(R.id.update_drug_detail),
@@ -408,7 +371,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 9),
                         isDisplayed()));
-        imageButton5.check(matches(isDisplayed()));
 
         ViewInteraction imageButton6 = onView(
                 allOf(withId(R.id.update_drug_detail),
@@ -418,9 +380,7 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 9),
                         isDisplayed()));
-        imageButton6.check(matches(isDisplayed()));
 
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
         ViewInteraction linearLayout = onView(
                 allOf(childAtPosition(
@@ -429,7 +389,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                 0),
                         3),
                         isDisplayed()));
-        linearLayout.check(matches(isDisplayed()));
 
         ViewInteraction textView7 = onView(
                 allOf(withId(R.id.title), withText("Drug Chart"),
@@ -439,7 +398,6 @@ public class MainActivity_and_AddDrugActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        textView7.check(matches(withText("Drug Chart")));
 
         ViewInteraction textView8 = onView(
                 allOf(withId(R.id.title), withText("Revoke Google Signin"),

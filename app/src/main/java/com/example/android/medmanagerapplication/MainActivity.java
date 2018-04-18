@@ -170,10 +170,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
         PreferenceManager.setDefaultValues(this, R.xml.pref_med_manager, false);
-
-
-
-
     }
 
     @Override
@@ -221,6 +217,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 Intent i = new Intent(this, GoogleAccountSignOutHelper.class);
                 startService(i);
                 return true;
+            case R.id.action_chart_from_main:
+                Toast.makeText(this, "Fired from chart", Toast.LENGTH_LONG).show();
+                Intent chart = new Intent(this, ChartActivity.class);
+                startActivity(chart);
+                return true;
             default:
                 break;
         }
@@ -266,7 +267,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         data.moveToFirst();
         int c = drugListAdapter.getItemCount();
         int d = data.getCount();
-        Log.v(TAG, "Item Count is: " + c + " " + "And cursor count: " + d);
+        Log.v(TAG, "Item Count is: " + c + " " + "And mCursor count: " + d);
         drugListAdapter.swapCursor(data);
 
 

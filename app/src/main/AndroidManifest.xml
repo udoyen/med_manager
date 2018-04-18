@@ -91,8 +91,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".ChartActivity"
-            android:label="Drug Chart">
+        <activity
+            android:name=".ChartActivity"
+            android:label="Drug Chart"
+            android:theme="@style/AppTheme">
 
         </activity>
     </application>

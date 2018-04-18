@@ -641,7 +641,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.v(TAG, "Checking if user exists!");
                 if (cursor.getCount() > 0) {
                     finish();
-                    Log.v(TAG, "Close the cursor object");
+                    Log.v(TAG, "Close the mCursor object");
                     cursor.close();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     LoginActivity.this.startActivity(intent);

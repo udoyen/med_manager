@@ -19,8 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.android.medmanagerapplication.ChartActivity;
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.SettingsActivity;
+import com.example.android.medmanagerapplication.helperUtilitiesClasses.GoogleAccountSignOutHelper;
 
 public class UserProfileActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -144,6 +146,14 @@ public class UserProfileActivity extends AppCompatActivity implements LoaderMana
             case R.id.action_user_settings:
                 Intent iSettings = new Intent(this, SettingsActivity.class);
                 startActivity(iSettings);
+                return true;
+            case R.id.revoke_google_account_signin:
+                Intent i = new Intent(this, GoogleAccountSignOutHelper.class);
+                startService(i);
+                return true;
+            case R.id.action_chart:
+                Intent i2 = new Intent(this, ChartActivity.class);
+                startService(i2);
                 return true;
             default:
                 break;

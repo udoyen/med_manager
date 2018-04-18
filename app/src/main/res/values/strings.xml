@@ -74,5 +74,6 @@
     <string name="email_address_label">Email Address:</string>
     <string name="password_label">Password</string>
     <string name="mainduration_TextView">Duration</string>
+    <string name="drug_chart">Drug Chart</string>
 
 </resources>

@@ -23,7 +23,12 @@
         app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/revoke_google_account_signin"
+        android:orderInCategory="103"
         android:title="@string/revoke_google_signin"
-        app:showAsAction="never"
-        android:orderInCategory="103"/>
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_chart_from_main"
+        android:orderInCategory="104"
+        android:title="@string/drug_chart"
+        app:showAsAction="never" />
 </menu>

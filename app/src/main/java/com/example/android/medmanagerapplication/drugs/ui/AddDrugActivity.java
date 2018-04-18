@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.example.android.medmanagerapplication.ChartActivity;
 import com.example.android.medmanagerapplication.R;
 import com.example.android.medmanagerapplication.SettingsActivity;
 import com.example.android.medmanagerapplication.drugs.DrugContract;
@@ -212,8 +213,12 @@ public class AddDrugActivity extends AppCompatActivity {
                 startActivity(iSettings);
                 return true;
             case R.id.revoke_google_account_signin:
-                Intent i2 = new Intent(this, GoogleAccountSignOutHelper.class);
-                startService(i2);
+                Intent google = new Intent(this, GoogleAccountSignOutHelper.class);
+                startService(google);
+                return true;
+            case R.id.action_chart:
+                Intent chart = new Intent(this, ChartActivity.class);
+                startActivity(chart);
                 return true;
             default:
                 break;

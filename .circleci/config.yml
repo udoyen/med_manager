@@ -46,8 +46,8 @@ machine:
     java:
         version: oraclejdk8
     environment:
-        ANDROID_HOME: /home/george/Android/Sdk
-        ANDROID_BUILD_TOOLS: 25.0.2
+        ANDROID_HOME: /usr/local/android-sdk-linux
+        ANDROID_BUILD_TOOLS: 27
         APPLICATION_ID: com.example.android.medmanagerapplication
 
 
@@ -72,11 +72,11 @@ dependencies:
 
     cache_directories:
         # Android SDK
-        - /home/george/Android/Sdk/tools
-        - /home/george/Android/Sdk/platform-tools
-        - /home/george/Android/Sdk/build-tools
-        - /home/george/Android/Sdk/licenses
-        - /home/george/Android/Sdk/extras/google/m2repository
+        - /usr/local/android-sdk-linux/tools
+        - /usr/local/android-sdk-linux/platform-tools
+        - /usr/local/android-sdk-linux/build-tools
+        - /usr/local/android-sdk-linux/licenses
+        - /usr/local/android-sdk-linux/extras/google/m2repository
 
         # Gradle caches
         - /home/ubuntu/.gradle/caches/
@@ -117,4 +117,4 @@ test:
 
         # Collect the Detekt reports
         - mkdir -p $CIRCLE_TEST_REPORTS/reports/detekt
-        - find app/build/reports/ -name "report.detekt" -exec cp {} $CIRCLE_TEST_REPORTS/reports/detekt/ \;
+- find app/build/reports/ -name "report.detekt" -exec cp {} $CIRCLE_TEST_REPORTS/reports/detekt/ \;
